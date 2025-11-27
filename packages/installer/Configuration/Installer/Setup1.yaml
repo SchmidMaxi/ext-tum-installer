@@ -1,0 +1,11 @@
+####
+# Setup 1 config file
+#
+imports:
+  - { resource: Partials/SysFilemounts.yaml }
+  - { resource: Partials/BeUsers.yaml }
+  - { resource: Partials/WebPagesSystem.yaml }
+  - { resource: Partials/SysCategory.yaml }
+  - { resource: Partials/BeGroupsSystem.yaml }
+  - { resource: Partials/BeGroups.yaml }
+  - { resource: Partials/WebPages.yaml }

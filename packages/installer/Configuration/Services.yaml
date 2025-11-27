@@ -1,0 +1,12 @@
+services:
+  # Standard-Einstellungen für alle Klassen in dieser Datei
+  _defaults:
+    autowire: true      # Automatisch Abhängigkeiten (wie SetupService) in den Constructor injizieren
+    autoconfigure: true # Automatisch als Command oder Controller erkennen
+    public: false       # Services sind standardmäßig privat (gut für Performance)
+
+  # Alle Klassen im Ordner Classes/ als Services registrieren
+  Tum\Installer\:
+    resource: '../Classes/*'
+    # Diese Ordner ausnehmen (das sind keine Services, sondern einfache Daten-Objekte)
+    exclude: '../Classes/Domain/Model/*'

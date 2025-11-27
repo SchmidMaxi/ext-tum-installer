@@ -1,0 +1,37 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers">
+
+<f:layout name="Default" />
+
+<f:section name="Content">
+    <h1>TUM Installer</h1>
+
+    <f:flashMessages />
+
+    <div class="card">
+        <div class="card-header">
+            Installation starten
+        </div>
+        <div class="card-body">
+            <f:form action="execute">
+                <div class="mb-3">
+                    <label for="setupSelect" class="form-label">Wähle ein Setup:</label>
+
+                    <f:form.select name="setupName" id="setupSelect" class="form-select">
+                        <f:for each="{setups}" as="setup">
+                            <f:form.select.option value="{setup}">{setup}</f:form.select.option>
+                        </f:for>
+                    </f:form.select>
+                </div>
+
+                <p class="text-muted">
+                    <core:icon identifier="actions-info" />
+                    Hinweis: Das Setup importiert Seiten, Benutzer und Gruppen.
+                </p>
+
+                <f:form.submit value="Installation starten" class="btn btn-primary" />
+            </f:form>
+        </div>
+    </div>
+</f:section>
+</html>

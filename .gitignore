@@ -1,0 +1,11 @@
+.DS_Store
+.idea
+nbproject
+/var/*
+!/var/labels
+/vendor
+/public/*
+!/public/.htaccess
+!/public/robots.txt
+!/public/typo3conf
+env.php

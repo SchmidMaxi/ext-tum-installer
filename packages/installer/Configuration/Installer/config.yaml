@@ -1,0 +1,25 @@
+base: 'https://{$domain -> strtolower()}/{$navName -> strtolower()}/'
+baseVariants:
+  -
+    base: 'https://{$lrzid -> strtolower()}-v12.typo3.lrz.de/{$navName -> strtolower()}/'
+errorHandling:
+  -
+    errorContentSource: 't3://page?uid={db::pages::title::404-notfound-{$navName -> strtolower()}::uid::pid::{db::pages::title::fp-{$navName -> strtolower()}::uid}}'
+languages:
+  -
+    title: Deutsch
+    base: 'https://{$domain -> strtolower()}/{$navName -> strtolower()}/'
+    websiteTitle: '{$navName -> strtolower()}'
+    baseVariants:
+      -
+        base: 'https://{$lrzid -> strtolower()}-v12.typo3.lrz.de/{$navName -> strtolower()}/'
+        condition: 'applicationContext == "Production/Testing"'
+  -
+    base: 'https://{$domain -> strtolower()}/en/{$navName -> strtolower()}/'
+    websiteTitle: '{$navName -> strtolower()}-EN'
+    baseVariants:
+      -
+        base: 'https://{$lrzid -> strtolower()}-v12.typo3.lrz.de/en/{$navName -> strtolower()}/'
+        condition: 'applicationContext == "Production/Testing"'
+rootPageId: '{db::pages::title::{$navName -> strtolower()}::uid}'
+websiteTitle: '{$navName -> strtolower()}'

@@ -1,0 +1,8 @@
+base: 'https://{$domain -> strtolower()}/'
+baseVariants:
+  -
+    base: 'https://{$lrzid -> strtolower()}-v12.typo3.lrz.de/'
+errorHandling:
+  -
+    errorContentSource: 't3://page?uid={db::pages::title::404-notfound-{$navName -> strtolower()}::uid::pid::{db::pages::title::fp-{$navName -> strtolower()}::uid}}'
+rootPageId: '{db::pages::title::{$wid -> strtoupper()}::uid}'

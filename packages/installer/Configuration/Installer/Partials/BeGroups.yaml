@@ -1,0 +1,70 @@
+be_groups:
+
+  #1 func-W00XXX-fp-t3
+  -
+    pid: '0'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    title: 'func-{$wid -> strtoupper()}-fp-{$navName -> strtolower()}'
+
+  #2 gd-W00XXX-t3
+  -
+    pid: '0'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    description: 'gd = groupdelegation'
+    title: 'gd-{$wid -> strtoupper()}-{$navName -> strtolower()}'
+    tables_modify: tx_groupdelegation_organisationunit
+    groupMods: site_groupdelegation
+    tx_groupdelegation_issubadmingroup: 1
+    tx_groupdelegation_canactivate: 1
+    tx_groupdelegation_delegateable: 3
+
+  #3 pgrp-W00XXX-t3
+  -
+    pid: '0'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    title: 'pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}'
+    db_mountpoints: '{db::pages::title::{$domain}::uid}'
+    file_mountpoints: '{db::sys_filemounts::title::{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+    category_perms: '{db::sys_category::title::{$wid -> strtoupper()}-cat-{$navName -> strtolower()}::uid}'
+
+  #6 role-W00XXX-manager-t3
+  -
+    pid: '0'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    title: 'role-{$wid -> strtoupper()}-manager-{$navName -> strtolower()}'
+    subgroup: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid},{db::be_groups::title::priv-Content::uid},{db::be_groups::title::priv-Page::uid}'
+
+  #7 role-W00XXX-redakteur-t3
+  -
+    pid: '0'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    title: 'role-{$wid -> strtoupper()}-redakteur-{$navName -> strtolower()}'
+    subgroup: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid},{db::be_groups::title::priv-Content::uid}'
+
+tx_groupdelegation_subadmin_begroups_mm:
+
+  # Relation gd-W00XXX-t3 to func-W00XXX-fp-t3
+  -
+    uid_local: '{db::be_groups::title::gd-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+    uid_foreign: '{db::be_groups::title::func-{$wid -> strtoupper()}-fp-{$navName -> strtolower()}::uid}'
+    sorting: '1'
+    sorting_foreign: '0'
+
+  # Relation gd-W00XXX-t3 to role-W00XXX-manager-t3
+  -
+    uid_local: '{db::be_groups::title::gd-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+    uid_foreign: '{db::be_groups::title::role-{$wid -> strtoupper()}-manager-{$navName -> strtolower()}::uid}'
+    sorting: '2'
+    sorting_foreign: '0'
+
+  # Relation gd-W00XXX-t3 to role-W00XXX-redakteur-t3
+  -
+    uid_local: '{db::be_groups::title::gd-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+    uid_foreign: '{db::be_groups::title::role-{$wid -> strtoupper()}-redakteur-{$navName -> strtolower()}::uid}'
+    sorting: '3'
+    sorting_foreign: '0'

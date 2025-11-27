@@ -1,0 +1,83 @@
+pages:
+  # sRoot folder
+  -
+    pid: '0'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    title: sRoot
+    doktype: folder
+    sorting: Sorting::next
+    perms_userid: '{db::be_users::username::tumin::uid}'
+
+  # categories folder
+  -
+    pid: '{db::pages::title::sRoot::uid}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    title: categories
+    doktype: folder
+    sorting: Sorting::next
+    perms_userid: '{db::be_users::username::tumin::uid}'
+
+  # W00XXX folder
+  -
+    pid: '0'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    title: '{$wid -> strtoupper()}'
+    doktype: folder
+    sorting: Sorting::next
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "edit_content", "new_pages" ]
+
+  # web.tum.typo3.de
+  -
+    pid: '{db::pages::title::{$wid -> strtoupper()}::uid}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: '{$domain -> strtolower()}'
+    doktype: shortcut
+    is_siteroot: '1'
+    slug: '/'
+#    slug_locked: 1
+#    tx_sluggi_sync: 1
+    shortcut_mode: first_subpage
+    backend_layout_next_level: 'pagets__3col'
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page" ]
+    perms_everybody: [ "show_page" ]
+
+sys_template:
+  # tum root template
+  -
+    pid: '{db::pages::title::{$wid -> strtoupper()}::uid}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: 'tum'
+    root: 1
+    clear: [ "constants", "setup" ]
+
+    constants: >
+      # Such Modus
+
+      CSE_PARENTSEARCH = local
+
+      # Parent Site
+
+      CSE_PARENTSITE =
+
+      # Search box
+
+      SEARCH_BOX = 0
+
+
+      # FOOTER-Links from www.tum.de:
+
+      # to disable -> set value = 0
+
+      GLOBAL_FOOTER = 0
+
+
+

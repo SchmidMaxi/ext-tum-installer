@@ -1,0 +1,7 @@
+sys_filemounts:
+  -
+    pid: '0'
+    tstamp: Datetime::now
+    sorting: Sorting::next
+    title: '{$wid -> strtoupper()}-{$navName -> strtolower()}'
+    identifier: '1:/{$wid -> strtolower()}/{$navName -> strtolower()}'

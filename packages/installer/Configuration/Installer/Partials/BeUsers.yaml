@@ -1,0 +1,90 @@
+be_users:
+  -
+    pid: '0'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    username: ge59miy
+    password: $argon2i$v=19$m=65536,t=4,p=1$ZUNoVThEb29IWjdia1k0MQ$/OErdOnZlh4gFY/3H2XuVTdM3yQLH8/ndnxhjyL/bGI
+    admin: 1
+    email: s.bazzone@tum.de
+    realName: Sandra Bazzone
+    TSconfig: >
+      options {
+        pageTree.showPageIdWithTitle = 1
+
+      }
+
+  -
+    pid: '0'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    username: ge79qof
+    password: $argon2i$v=19$m=65536,t=16,p=1$cFI2RlE3alZrWVRDV1ZnRw$7fQc+GvklrAp8LVhIn+ng1Z3S/H4FlIxiP0ZONUKmlc
+    admin: 1
+    email: jaksch@tum.de
+    realName: Daniela Jaksch
+    TSconfig: >
+      options {
+        pageTree.showPageIdWithTitle = 1
+
+      }
+
+  -
+    pid: '0'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    username: go75reh
+    password: $argon2i$v=19$m=65536,t=4,p=1$M2dLLm9KSUs1ODFadkkuUQ$HAIGICq/zNin94GnZ9ygj0bdFYtf5y3wIKGxrvxFKJ8
+    admin: 1
+    email: maxim.schmid@tum.de
+    realName: Maximilian Schmid
+    TSconfig: >
+      options {
+        pageTree.showPageIdWithTitle = 1
+
+      }
+
+  -
+    pid: '0'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    username: go75rew
+    password: $argon2i$v=19$m=65536,t=4,p=1$Qi9hck1xYVVzL3owb1MxYg$itGUJQEOG+LIk2GwA2SCkcuRIGBm6tNi/LxhUbojRJg
+    admin: 1
+    email: ekaterina.harazim@tum.de
+    realName: Ekaterina Harazim
+    TSconfig: >
+      options {
+        pageTree.showPageIdWithTitle = 1
+
+      }
+
+  -
+    pid: '0'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    username: go75pag
+    password: $argon2i$v=19$m=65536,t=4,p=1$bXNJUUphS2IyMXgubXhxcA$pVsIcj/Cw8Z8Z8KRs4b083GVjkKKBwuFMD/ve65DDMU
+    admin: 1
+    email: stefan.wille@tum.de
+    realName: Stefan Wille
+    TSconfig: >
+      options {
+        pageTree.showPageIdWithTitle = 1
+
+      }
+
+  -
+    pid: '0'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    username: teilchen
+    password: $argon2id$v=19$m=65536,t=16,p=1$U2tYTjgyRlZKdHgwM1laaQ$k7XhoDbaY5nJxFKor0m7wt6XmPYQrYa+iymMSuZF6is
+    admin: 1
+    email: stephan.kleiber@elementare-teilchen.de
+    realName: Stephan Kleiber
+    TSconfig: >
+      options {
+        pageTree.showPageIdWithTitle = 1
+
+      }

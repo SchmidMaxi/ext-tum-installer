@@ -1,0 +1,8 @@
+sys_category:
+  -
+    pid: '{db::pages::title::categories::uid}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    sys_language_uid: '0'
+    title: '{$wid -> strtoupper()}-cat-{$navName -> strtolower()}'

@@ -1,0 +1,11 @@
+tum:
+  THIS_OU_NAME:
+    de: '{$thisOuNameDe}'
+    en: '{$thisOuNameEn}'
+  PARENT_OU: '{$parentOu}'
+  PARENT_OU_NAME:
+    de: '{$parentOuNameDe}'
+    en: '{$parentOuNameEn}'
+  PARENT_OU_URL:
+    de: '{$parentOuUrlDe}'
+    en: '{$parentOuUrlEn}'
