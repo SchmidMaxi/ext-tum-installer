@@ -7,14 +7,14 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Tum\Installer\Service\SetupService;
 
-// Das Attribut "AsCommand" definiert den Namen, den du im Terminal tippst.
 #[AsCommand(
     name: 'tum:installer:run',
-    description: 'Führt ein definiertes Setup aus (z.B. Setup1, Setup3).'
+    description: 'Führt ein Setup aus und erstellt optional die Site Config.'
 )]
 class RunSetupCommand extends Command
 {
@@ -24,46 +24,57 @@ class RunSetupCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * Hier konfigurieren wir Argumente (Was muss man eingeben?)
-     */
     protected function configure(): void
     {
-        $this->addArgument(
-            'setup',
-            InputArgument::REQUIRED,
-            'Der Name des Setups (z.B. Setup1)'
-        );
+        $this
+            ->addArgument('setup', InputArgument::REQUIRED, 'Name des Setups (z.B. Setup1)')
+            // Wir definieren Optionen für die Config-Variablen in deinen YAMLs
+            ->addOption('nav-name', null, InputOption::VALUE_REQUIRED, 'Name für {$navName} und Site Config')
+            ->addOption('domain', null, InputOption::VALUE_REQUIRED, 'Domain für {$domain} und Site Config')
+            ->addOption('wid', null, InputOption::VALUE_REQUIRED, 'WID Kennung für {$wid}')
+            ->addOption('lrz-id', null, InputOption::VALUE_REQUIRED, 'LRZ ID (falls benötigt)');
     }
 
-    /**
-     * Hier passiert die eigentliche Arbeit
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // SymfonyStyle macht hübsche Ausgaben (Farben, Boxen)
         $io = new SymfonyStyle($input, $output);
-
         $setupName = $input->getArgument('setup');
 
-        $io->title(sprintf('Starte TUM Installer Setup: %s', $setupName));
+        // Config-Array aus den Optionen bauen
+        $config = [
+            'navName' => $input->getOption('nav-name'),
+            'domain' => $input->getOption('domain'),
+            'wid' => $input->getOption('wid'),
+            'lrzid' => $input->getOption('lrz-id'),
+        ];
+
+        // Validierung (Minimal)
+        if (empty($config['navName']) || empty($config['domain'])) {
+            $io->warning('NavName oder Domain fehlen. Site Config wird eventuell nicht erstellt.');
+        }
+
+        $io->title(sprintf('Starte Setup: %s', $setupName));
 
         try {
-            // Aufruf unseres Services aus dem vorigen Schritt
-            $this->setupService->runSetup($setupName);
+            // 1. DB Import
+            $io->section('Importiere Datenbank-Daten...');
+            $this->setupService->runSetup($setupName, $config);
+            $io->success('Datenbank-Import abgeschlossen.');
 
-            $io->success('Setup wurde erfolgreich durchgeführt!');
-            return Command::SUCCESS;
-
-        } catch (\Throwable $exception) {
-            // Fehler fangen und rot ausgeben
-            $io->error(sprintf('Fehler beim Setup: %s', $exception->getMessage()));
-
-            // Stacktrace anzeigen bei Bedarf ( -v )
-            if ($io->isVerbose()) {
-                $io->writeln($exception->getTraceAsString());
+            // 2. Site Config erstellen
+            if (!empty($config['navName']) && !empty($config['domain'])) {
+                $io->section('Erstelle Site Configuration...');
+                $this->setupService->createSiteConfiguration($config);
+                $io->success('Site Configuration erstellt.');
             }
 
+            return Command::SUCCESS;
+
+        } catch (\Throwable $e) {
+            $io->error($e->getMessage());
+            if ($io->isVerbose()) {
+                $io->writeln($e->getTraceAsString());
+            }
             return Command::FAILURE;
         }
     }
