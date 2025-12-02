@@ -17,44 +17,53 @@ class BackendInstallerController extends ActionController
     ) {}
 
     /**
-     * Schritt 1: Das Auswahl-Formular anzeigen
+     * Zeigt das Formular an
      */
     public function indexAction(): ResponseInterface
     {
-        // Erstellt den Rahmen des TYPO3 Backends (Header, DocHeader etc.)
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $moduleTemplate->setTitle('TUM Installer');
 
-        // Wir geben mögliche Setups an die View
-        $this->view->assign('setups', ['Setup1', 'Setup3']); // Könnte man auch dynamisch aus dem Ordner lesen
+        // Hier könntest du Setups dynamisch aus dem Ordner lesen,
+        // der Einfachheit halber hardcoden wir sie erstmal oder geben leeres Array.
+        $this->view->assign('setups', ['Setup1', 'Setup3']);
 
         $moduleTemplate->setContent($this->view->render());
         return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
-     * Schritt 2: Das Setup ausführen (wenn man auf "Start" klickt)
+     * Führt das Setup aus
+     * Die Argumente heißen genau wie die 'name'-Attribute in deinem HTML Formular
      */
-    public function executeAction(string $setupName): ResponseInterface
+    public function executeAction(string $setupName, string $navName, string $domain, string $wid = '', string $lrzid = ''): ResponseInterface
     {
+        // Config Array bauen
+        $config = [
+            'navName' => $navName,
+            'domain' => $domain,
+            'wid' => $wid,
+            'lrzid' => $lrzid
+        ];
+
         try {
-            // Die eigentliche Arbeit macht unser Service
-            $this->setupService->runSetup($setupName);
+            // 1. Setup Service rufen (Macht DB Import + Site Config)
+            $this->setupService->runSetup($setupName, $config);
+            $this->setupService->createSiteConfiguration($config);
 
             $this->addFlashMessage(
-                sprintf('Das Setup "%s" wurde erfolgreich installiert.', $setupName),
+                sprintf('Installation für "%s" (%s) erfolgreich abgeschlossen!', $navName, $domain),
                 'Erfolg',
                 AbstractMessage::OK
             );
         } catch (\Throwable $e) {
             $this->addFlashMessage(
                 $e->getMessage(),
-                'Fehler beim Setup',
+                'Fehler bei Installation',
                 AbstractMessage::ERROR
             );
         }
 
-        // Redirect zurück zum Formular
         return $this->redirect('index');
     }
 }
