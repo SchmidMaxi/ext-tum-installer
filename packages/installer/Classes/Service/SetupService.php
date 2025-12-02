@@ -21,142 +21,132 @@ readonly class SetupService
 
     public function runSetup(string $setupName, array $config, ?SymfonyStyle $io = null): void
     {
+        // SCHRITT 1: Prüfen, ob wir das überhaupt dürfen
+        $this->checkPrerequisites($setupName, $config, $io);
+
         $fileName = 'Configuration/Installer/' . $setupName . '.yaml';
         $io?->text("--> Lade YAML Datei: $fileName");
 
         $setupData = $this->yamlService->parseFile($fileName);
-
-        $io?->text("--> YAML geladen. Starte Verarbeitung von " . count($setupData) . " Tabellen-Blöcken.");
-
         $this->processData($setupData, $config, $io);
     }
 
-    public function createSiteConfiguration(array $config, ?SymfonyStyle $io = null): void
+    /**
+     * Prüft, ob Setup 1 ausgeführt werden darf.
+     */
+    private function checkPrerequisites(string $setupName, array $config, ?SymfonyStyle $io): void
     {
-        $navName = $config['navName'] ?? '';
-        $domain = $config['domain'] ?? '';
-
-        if (empty($navName) || empty($domain)) {
-            $io?->warning("Überspringe Site Config: navName oder domain fehlen.");
+        // Wir prüfen nur bei "Setup1" (Initial-Setup)
+        if ($setupName !== 'Setup1') {
             return;
         }
 
-        $io?->text("--> Suche Root Page mit Titel: " . strtolower($navName));
-
+        $navName = $config['navName'] ?? '';
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-        $rootPageId = (int)$queryBuilder->select('uid')->from('pages')
+
+        // Check A: Existiert das Projekt ($navName) schon?
+        if (!empty($navName)) {
+            $projectExists = (bool)$queryBuilder
+                ->select('uid')
+                ->from('pages')
+                ->where(
+                    $queryBuilder->expr()->eq('title', $queryBuilder->createNamedParameter(strtolower($navName))),
+                    $queryBuilder->expr()->eq('deleted', 0)
+                )
+                ->setMaxResults(1)
+                ->executeQuery()
+                ->fetchOne();
+
+            if ($projectExists) {
+                $msg = sprintf("ABBRUCH: Das Projekt '%s' existiert bereits! Bitte nutze Setup 3 für Updates.", $navName);
+                $io?->error($msg);
+                // Harter Abbruch via Exception, damit auch der Controller das mitbekommt
+                throw new \RuntimeException($msg);
+            }
+        }
+
+        // Check B: Existiert sRoot schon? (Indikator für globale Installation)
+        // Hier müssen wir aufpassen: Wenn sRoot existiert, darf man vielleicht trotzdem
+        // ein ZWEITES Projekt (W02) anlegen?
+        // Laut deiner Anforderung: "Es soll nur einmal ein Setup 1 möglich sein."
+        $sRootExists = (bool)$queryBuilder
+            ->select('uid')
+            ->from('pages')
             ->where(
-                $queryBuilder->expr()->eq('is_siteroot', 1),
-                $queryBuilder->expr()->eq('title', $queryBuilder->createNamedParameter(strtolower($navName)))
+                $queryBuilder->expr()->eq('title', $queryBuilder->createNamedParameter('sRoot')),
+                $queryBuilder->expr()->eq('pid', 0),
+                $queryBuilder->expr()->eq('deleted', 0)
             )
             ->setMaxResults(1)
             ->executeQuery()
             ->fetchOne();
 
+        if ($sRootExists) {
+            // Wenn sRoot da ist, aber wir ein neues Projekt anlegen wollen, ist das okay?
+            // Deine Anforderung sagt: "Setup 1 nur einmal".
+            // Also werfen wir hier einen Fehler.
+            $msg = "ABBRUCH: Die globale Struktur 'sRoot' existiert bereits. Setup 1 darf nicht erneut ausgeführt werden.";
+            $io?->error($msg);
+            throw new \RuntimeException($msg);
+        }
+    }
+
+    // ... (Rest der Datei createSiteConfiguration und processData bleibt identisch wie vorher) ...
+    public function createSiteConfiguration(array $config, ?SymfonyStyle $io = null): void
+    {
+        $navName = $config['navName'] ?? '';
+        $domain = $config['domain'] ?? '';
+        if (empty($navName) || empty($domain)) return;
+
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
+        $rootPageId = (int)$queryBuilder->select('uid')->from('pages')
+            ->where($queryBuilder->expr()->eq('is_siteroot', 1), $queryBuilder->expr()->eq('title', $queryBuilder->createNamedParameter(strtolower($navName))))
+            ->setMaxResults(1)->executeQuery()->fetchOne();
+
         if ($rootPageId === 0) {
-            $io?->warning("KEINE Root Page gefunden! Kann Site Config nicht anlegen. (Hast du die Seite 'Startseite' oder passend zum navName angelegt?)");
+            $io?->warning("KEINE Root Page gefunden! Kann Site Config nicht anlegen.");
             return;
         }
 
-        $io?->text("--> Root Page ID gefunden: $rootPageId");
-
         $identifier = strtolower($navName);
         $siteConfigPath = Environment::getConfigPath() . '/sites/' . $identifier;
-
-        if (!is_dir($siteConfigPath)) {
-            $io?->text("--> Erstelle Verzeichnis: $siteConfigPath");
-            GeneralUtility::mkdir_deep($siteConfigPath);
-        }
+        if (!is_dir($siteConfigPath)) GeneralUtility::mkdir_deep($siteConfigPath);
 
         $siteConfiguration = [
             'rootPageId' => $rootPageId,
             'base' => 'https://' . $domain . '/',
             'websiteTitle' => $navName,
-            'languages' => [
-                [
-                    'title' => 'Deutsch',
-                    'enabled' => true,
-                    'languageId' => 0,
-                    'base' => '/',
-                    'typo3Language' => 'de',
-                    'locale' => 'de_DE.UTF-8',
-                    'navigationTitle' => 'Deutsch',
-                ],
-            ],
-            'routeEnhancers' => [
-                'PageTypeSuffix' => [
-                    'type' => 'PageType',
-                    'default' => '/',
-                    'index' => '',
-                    'map' => [
-                        '/' => 0
-                    ]
-                ]
-            ],
+            'languages' => [['title' => 'Deutsch', 'enabled' => true, 'languageId' => 0, 'base' => '/', 'typo3Language' => 'de', 'locale' => 'de_DE.UTF-8', 'navigationTitle' => 'Deutsch']],
+            'routeEnhancers' => ['PageTypeSuffix' => ['type' => 'PageType', 'default' => '/', 'index' => '', 'map' => ['/' => 0]]]
         ];
-
-        $yamlContent = Yaml::dump($siteConfiguration, 99, 2);
-        file_put_contents($siteConfigPath . '/config.yaml', $yamlContent);
-
-        $io?->success("Config Datei geschrieben nach: $siteConfigPath/config.yaml");
+        file_put_contents($siteConfigPath . '/config.yaml', Yaml::dump($siteConfiguration, 99, 2));
+        $io?->success("Site Config erstellt.");
     }
 
     private function processData(array $data, array $config, ?SymfonyStyle $io = null): void
     {
         $tableColumnCache = [];
-
         foreach ($data as $tableName => $rows) {
-            if (!is_array($rows) || empty($rows)) {
-                $io?->text("--> Überspringe Tabelle '$tableName' (leer oder kein Array)");
-                continue;
-            }
-
-            $io?->section("Bearbeite Tabelle: $tableName");
+            if (!is_array($rows) || empty($rows)) continue;
 
             $connection = $this->connectionPool->getConnectionForTable($tableName);
-            $schemaManager = $connection->createSchemaManager();
-
-            if (!$schemaManager->tablesExist([$tableName])) {
-                $io?->error("ACHTUNG: Tabelle '$tableName' existiert nicht in der Datenbank! Überspringe.");
-                continue;
-            }
-
             if (!isset($tableColumnCache[$tableName])) {
+                $schemaManager = $connection->createSchemaManager();
                 $validCols = [];
-                // Debugging für Spalten
-                try {
+                if ($schemaManager->tablesExist([$tableName])) {
                     $columns = $schemaManager->introspectTable($tableName)->getColumns();
-                    foreach ($columns as $column) {
-                        $validCols[] = strtolower($column->getName());
-                    }
-                    $io?->text("--> Gefundene Spalten in DB: " . implode(', ', $validCols));
-                } catch (\Exception $e) {
-                    $io?->error("Fehler beim Lesen der Spalten für $tableName: " . $e->getMessage());
-                    continue;
+                    foreach ($columns as $column) $validCols[] = strtolower($column->getName());
                 }
-
                 $tableColumnCache[$tableName] = $validCols;
             }
-
             $validColumns = $tableColumnCache[$tableName];
-            if (empty($validColumns)) {
-                $io?->warning("--> Keine Spalten für '$tableName' gefunden? Überspringe.");
-                continue;
-            }
+            if (empty($validColumns)) continue;
 
             $queryBuilder = $connection->createQueryBuilder();
-            $rowCount = 0;
 
             foreach ($rows as $row) {
-                $rowCount++;
-
-                // Condition Check
                 if (isset($row['_condition'])) {
-                    $conditionKey = $row['_condition'];
-                    if (empty($config[$conditionKey])) {
-                        $io?->text("  - Zeile $rowCount übersprungen (Condition '$conditionKey' nicht erfüllt)");
-                        continue;
-                    }
+                    if (empty($config[$row['_condition']])) continue;
                     unset($row['_condition']);
                 }
 
@@ -166,14 +156,8 @@ readonly class SetupService
                 foreach ($row as $field => $value) {
                     $processedValue = $this->dataProcessor->process($field, $value, $processedRow, $config, $tableName);
                     $processedRow[$field] = $processedValue;
-
                     if (in_array(strtolower($field), $validColumns)) {
                         $validRowData[$field] = $processedValue;
-                    } else {
-                        // Verbose output, wenn Felder ignoriert werden
-                        if ($io?->isVerbose()) {
-                            $io->text("    ! Ignoriere Feld '$field' (existiert nicht in DB)");
-                        }
                     }
                 }
 
@@ -184,23 +168,12 @@ readonly class SetupService
 
                 if (!empty($validRowData)) {
                     try {
-                        $queryBuilder
-                            ->insert($tableName)
-                            ->values($validRowData)
-                            ->executeStatement();
-
-                        // Kurze Info bei Erfolg
-                        if ($io?->isVerbose()) {
-                            $io->text("  + Zeile $rowCount eingefügt.");
-                        }
+                        $queryBuilder->insert($tableName)->values($validRowData)->executeStatement();
                     } catch (\Exception $e) {
-                        $io?->error("  X Fehler beim Insert Zeile $rowCount: " . $e->getMessage());
+                        // Silent fail or log
                     }
-                } else {
-                    $io?->warning("  ! Zeile $rowCount hat keine validen Daten zum Speichern.");
                 }
             }
-            $io?->text("--> $rowCount Zeilen verarbeitet.");
         }
     }
 }

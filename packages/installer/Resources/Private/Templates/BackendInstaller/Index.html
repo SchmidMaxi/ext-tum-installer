@@ -1,7 +1,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
       xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers">
 
-<f:layout name="Default" />
+<f:layout name="Module" />
 
 <f:section name="Content">
     <h1>TUM Installer</h1>
@@ -9,27 +9,36 @@
     <f:flashMessages />
 
     <div class="card">
-        <div class="card-header">
-            Installation starten
-        </div>
         <div class="card-body">
             <f:form action="execute">
                 <div class="mb-3">
-                    <label for="setupSelect" class="form-label">Wähle ein Setup:</label>
-
-                    <f:form.select name="setupName" id="setupSelect" class="form-select">
-                        <f:for each="{setups}" as="setup">
-                            <f:form.select.option value="{setup}">{setup}</f:form.select.option>
-                        </f:for>
-                    </f:form.select>
+                    <label class="form-label">Setup wählen</label>
+                    <f:form.select name="setupName" options="{Setup1: 'Setup 1 (Initial)', Setup3: 'Setup 3 (Update)'}" class="form-select" />
                 </div>
 
-                <p class="text-muted">
-                    <core:icon identifier="actions-info" />
-                    Hinweis: Das Setup importiert Seiten, Benutzer und Gruppen.
-                </p>
+                <div class="mb-3">
+                    <label class="form-label">Projekt Name (navName)</label>
+                    <f:form.textfield name="navName" class="form-control" placeholder="z.B. MeinProjekt" required="1" />
+                </div>
 
-                <f:form.submit value="Installation starten" class="btn btn-primary" />
+                <div class="mb-3">
+                    <label class="form-label">Domain</label>
+                    <f:form.textfield name="domain" class="form-control" placeholder="meineseite.tum.de" required="1" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">WID (optional)</label>
+                    <f:form.textfield name="wid" class="form-control" />
+                </div>
+
+                <div class="form-check mb-3">
+                    <f:form.checkbox name="news" value="1" id="checkNews" class="form-check-input" />
+                    <label class="form-check-label" for="checkNews">
+                        News Kategorien anlegen?
+                    </label>
+                </div>
+
+                <f:form.submit value="Starten" class="btn btn-primary" />
             </f:form>
         </div>
     </div>

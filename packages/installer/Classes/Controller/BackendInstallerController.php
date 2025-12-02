@@ -16,50 +16,46 @@ class BackendInstallerController extends ActionController
         private readonly ModuleTemplateFactory $moduleTemplateFactory
     ) {}
 
-    /**
-     * Zeigt das Formular an
-     */
     public function indexAction(): ResponseInterface
     {
+        // 1. Module Template erstellen (Standard Rahmen)
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $moduleTemplate->setTitle('TUM Installer');
 
-        // Hier könntest du Setups dynamisch aus dem Ordner lesen,
-        // der Einfachheit halber hardcoden wir sie erstmal oder geben leeres Array.
-        $this->view->assign('setups', ['Setup1', 'Setup3']);
+        // 2. Variablen an die View übergeben
+        // HINWEIS: In v13/14 weisen wir Variablen direkt dem ModuleTemplate zu,
+        // wenn wir renderResponse nutzen.
+        $moduleTemplate->assign('setups', ['Setup1', 'Setup3']);
 
-        $moduleTemplate->setContent($this->view->render());
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        // 3. View rendern (Sucht automatisch nach Templates/BackendInstaller/Index.html)
+        return $moduleTemplate->renderResponse('BackendInstaller/Index');
     }
 
-    /**
-     * Führt das Setup aus
-     * Die Argumente heißen genau wie die 'name'-Attribute in deinem HTML Formular
-     */
-    public function executeAction(string $setupName, string $navName, string $domain, string $wid = '', string $lrzid = ''): ResponseInterface
+    public function executeAction(string $setupName, string $navName, string $domain, string $wid = '', string $lrzid = '', int $news = 0): ResponseInterface
     {
-        // Config Array bauen
         $config = [
             'navName' => $navName,
             'domain' => $domain,
             'wid' => $wid,
-            'lrzid' => $lrzid
+            'lrzid' => $lrzid,
+            'news' => (bool)$news // Checkbox kommt oft als int 0/1
         ];
 
         try {
-            // 1. Setup Service rufen (Macht DB Import + Site Config)
+            // Hier greift jetzt unser neuer Schutzmechanismus!
             $this->setupService->runSetup($setupName, $config);
             $this->setupService->createSiteConfiguration($config);
 
             $this->addFlashMessage(
-                sprintf('Installation für "%s" (%s) erfolgreich abgeschlossen!', $navName, $domain),
+                sprintf('Installation für "%s" erfolgreich!', $navName),
                 'Erfolg',
                 AbstractMessage::OK
             );
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
+            // Wenn der Service "ABBRUCH" wirft, landen wir hier
             $this->addFlashMessage(
                 $e->getMessage(),
-                'Fehler bei Installation',
+                'Fehler',
                 AbstractMessage::ERROR
             );
         }
