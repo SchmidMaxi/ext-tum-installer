@@ -79,7 +79,7 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::next
     title: 'fp-{$navName -> strtolower()}'
-    doktype: folder
+    doktype: 254
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page" ]
     perms_groupid: '{db::be_groups::title::func-{$wid -> strtoupper()}-fp-{$navName -> strtolower()}::uid}'

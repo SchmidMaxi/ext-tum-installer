@@ -135,7 +135,7 @@ return [
             'frontend.cache.autoTagging' => true,
             'security.system.enforceAllowedFileExtensions' => true,
         ],
-        'sitename' => 'TYPO3 13 DEV',
+        'sitename' => 'TYPO3 V14 DEV',
         'systemMaintainers' => [
             1,
         ],

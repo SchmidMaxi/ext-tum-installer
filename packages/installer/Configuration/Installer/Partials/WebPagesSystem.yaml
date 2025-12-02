@@ -5,7 +5,7 @@ pages:
     tstamp: Datetime::now
     crdate: Datetime::now
     title: sRoot
-    doktype: folder
+    doktype: 254
     sorting: Sorting::next
     perms_userid: '{db::be_users::username::tumin::uid}'
 
@@ -15,9 +15,17 @@ pages:
     tstamp: Datetime::now
     crdate: Datetime::now
     title: categories
-    doktype: folder
+    doktype: 254
     sorting: Sorting::next
     perms_userid: '{db::be_users::username::tumin::uid}'
+
+  # newscategories folder
+  - pid: '{db::pages::title::sRoot::uid}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    title: newscategories
+    doktype: 254
+    _condition: news
 
   # W00XXX folder
   -
@@ -25,7 +33,7 @@ pages:
     tstamp: Datetime::now
     crdate: Datetime::now
     title: '{$wid -> strtoupper()}'
-    doktype: folder
+    doktype: 254
     sorting: Sorting::next
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page", "edit_content", "new_pages" ]
@@ -37,7 +45,7 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::next
     title: '{$domain -> strtolower()}'
-    doktype: shortcut
+    doktype: 4
     is_siteroot: '1'
     slug: '/'
 #    slug_locked: 1
