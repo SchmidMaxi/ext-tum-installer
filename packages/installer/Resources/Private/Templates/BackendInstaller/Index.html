@@ -44,14 +44,13 @@
                         <label class="form-label">Einrichtungsname (EN)</label>
                         <f:form.textfield name="siteNameEn" class="form-control" placeholder="Central Information Technology (TYPO3-Team)" />
                     </div>
-
                 </div>
 
                 <h3>2. Übergeordnete Einheit (Parent OU)</h3>
                 <div class="row mb-4">
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Parent OU</label>
-                        <f:form.select name="parentOu" options="{'CIT':'CIT', 'ED':'ED', 'GS':'GS', 'HFP':'HFP', 'LS':'LS', 'MH':'MH', 'MGT':'MGT', 'NAT':'NAT', 'SOT':'SOT'}" class="form-select" />
+                        <f:form.select name="parentOu" prependOptionLabel="" options="{'CIT':'CIT', 'ED':'ED', 'GS':'GS', 'HFP':'HFP', 'LS':'LS', 'MH':'MH', 'MGT':'MGT', 'NAT':'NAT', 'SOT':'SOT'}" class="form-select" />
                     </div>
                 </div>
                 <div class="row mb-4">
@@ -86,31 +85,38 @@
                 </div>
 
                 <h3>4. Erweiterungen & Features</h3>
-                <div class=" mb-4">
-                    <div class="form-check">
-                        <f:form.checkbox name="news" value="1" id="checkNews" class="form-check-input" />
-                        <label class="form-check-label" for="checkNews">News System</label>
-                    </div>
-                    <div class="form-check">
-                        <f:form.checkbox name="curlContent" value="1" id="checkCurl" class="form-check-input" />
-                        <label class="form-check-label" for="checkCurl">CurlContent</label>
-                    </div>
-                    <div class="form-check">
-                        <f:form.checkbox name="memberList" value="1" id="checkMember" class="form-check-input" />
-                        <label class="form-check-label" for="checkMember">TUM MemberList</label>
-                    </div>
-                    <div class="form-check">
-                        <f:form.checkbox name="courses" value="1" id="checkCourses" class="form-check-input" />
-                        <label class="form-check-label" for="checkCourses">TUM Courses</label>
-                    </div>
-                    <div class="form-check">
-                        <f:form.checkbox name="vcard" value="1" id="checkVcard" class="form-check-input" />
-                        <label class="form-check-label" for="checkVcard">TUM vCard</label>
-                    </div>
-
-                    <div class="form-check mt-4">
-                        <f:form.checkbox name="intropage" value="1" id="checkIntro" class="form-check-input" />
-                        <label class="form-check-label" for="checkIntro">Intropage</label>
+                <div class="mb-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <f:form.checkbox name="news" value="1" id="checkNews" class="form-check-input" />
+                                <label class="form-check-label" for="checkNews">News System</label>
+                            </div>
+                            <div class="form-check">
+                                <f:form.checkbox name="intropage" value="1" id="checkIntro" class="form-check-input" />
+                                <label class="form-check-label" for="checkIntro">Intropage</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <f:form.checkbox name="curlContent" value="1" id="checkCurl" class="form-check-input" />
+                                <label class="form-check-label" for="checkCurl">CurlContent</label>
+                            </div>
+                            <div class="form-check">
+                                <f:form.checkbox name="memberList" value="1" id="checkMember" class="form-check-input" />
+                                <label class="form-check-label" for="checkMember">TUM MemberList</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                <f:form.checkbox name="courses" value="1" id="checkCourses" class="form-check-input" />
+                                <label class="form-check-label" for="checkCourses">TUM Courses</label>
+                            </div>
+                            <div class="form-check">
+                                <f:form.checkbox name="vcard" value="1" id="checkVcard" class="form-check-input" />
+                                <label class="form-check-label" for="checkVcard">TUM vCard</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

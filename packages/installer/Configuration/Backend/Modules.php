@@ -4,18 +4,18 @@ use Tum\Installer\Controller\BackendInstallerController;
 
 return [
     'tum_installer' => [
-        'parent' => 'system',           // Wir hängen uns in den Bereich "System"
-        'position' => ['bottom'],       // Ganz unten
-        'access' => 'admin',            // Nur für Admins sichtbar
+        'parent' => 'system',
+        'position' => ['bottom'],
+        'access' => 'admin',
         'workspaces' => 'live',
-        'iconIdentifier' => 'module-install', // Standard Icon (oder eigenes definieren)
+        'iconIdentifier' => 'tum-installer-icon',
         'path' => '/module/system/installer',
-        'labels' => 'LLL:EXT:installer/Resources/Private/Language/locallang_mod.xlf', // Titel & Beschreibung
+        'labels' => 'LLL:EXT:installer/Resources/Private/Language/locallang_mod.xlf',
         'extensionName' => 'Installer',
         'controllerActions' => [
             BackendInstallerController::class => [
-                'index',    // Formular anzeigen
-                'execute',  // Setup ausführen
+                'index',
+                'execute',
             ],
         ],
     ],

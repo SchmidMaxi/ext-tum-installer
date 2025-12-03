@@ -20,12 +20,14 @@ pages:
     perms_userid: '{db::be_users::username::tumin::uid}'
 
   # newscategories folder
-  - pid: '{db::pages::title::sRoot::uid}'
+  -
+    _condition: news
+    pid: '{db::pages::title::sRoot::uid}'
     tstamp: Datetime::now
     crdate: Datetime::now
     title: newscategories
     doktype: 254
-    _condition: news
+    sorting: Sorting::next
 
   # W00XXX folder
   -

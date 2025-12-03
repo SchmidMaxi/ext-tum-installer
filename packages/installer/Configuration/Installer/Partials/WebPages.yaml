@@ -188,10 +188,16 @@ pages:
   # NEWS SYSTEM ORDNER
   -
     _condition: news
-    pid: '{db::pages::title::sRoot::uid}'
+    pid: '{db::pages::title::{$navName -> strtolower()}::uid}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
     title: 'news-system-{$navName -> strtolower()}'
-    doktype: folder
+    doktype: 254
     perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "edit_content" ]
+    perms_groupid: '{db::be_groups::title::func-{$wid -> strtoupper()}-news-{$navName -> strtolower()}::uid}'
+    module: 'news'
 
 sys_template:
   # tum root template

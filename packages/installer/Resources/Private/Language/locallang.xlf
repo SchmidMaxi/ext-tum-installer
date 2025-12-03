@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2023-10-25T11:48:33Z" product-name="installer">
+		<header/>
+		<body>
+			<trans-unit id="header">
+				<source>TUM Installer</source>
+			</trans-unit>
+			<trans-unit id="btn.start">
+				<source>Start Installation</source>
+			</trans-unit>
+
+			<trans-unit id="label.setup_name">
+				<source>Select Setup</source>
+			</trans-unit>
+			<trans-unit id="label.nav_name">
+				<source>Project Shortcode (navName)</source>
+			</trans-unit>
+			<trans-unit id="label.domain">
+				<source>Domain</source>
+			</trans-unit>
+			<trans-unit id="label.site_name_de">
+				<source>Site Name (DE)</source>
+			</trans-unit>
+			<trans-unit id="label.site_name_en">
+				<source>Site Name (EN)</source>
+			</trans-unit>
+			<trans-unit id="label.wid">
+				<source>WID</source>
+			</trans-unit>
+			<trans-unit id="label.lrzid">
+				<source>LRZ ID (Satellite)</source>
+			</trans-unit>
+
+			<trans-unit id="legend.parent_ou">
+				<source>Parent Organization Unit</source>
+			</trans-unit>
+			<trans-unit id="label.parent_ou_id">
+				<source>Parent OU ID</source>
+			</trans-unit>
+			<trans-unit id="label.parent_ou_name_de">
+				<source>Parent Name (DE)</source>
+			</trans-unit>
+			<trans-unit id="label.parent_ou_name_en">
+				<source>Parent Name (EN)</source>
+			</trans-unit>
+
+			<trans-unit id="legend.features">
+				<source>Extensions &amp; Features</source>
+			</trans-unit>
+			<trans-unit id="check.news">
+				<source>News System</source>
+			</trans-unit>
+			<trans-unit id="check.intropage">
+				<source>Intropage</source>
+			</trans-unit>
+			<trans-unit id="check.curl_content">
+				<source>CurlContent</source>
+			</trans-unit>
+			<trans-unit id="check.member_list">
+				<source>TUM MemberList</source>
+			</trans-unit>
+			<trans-unit id="check.courses">
+				<source>TUM Courses</source>
+			</trans-unit>
+			<trans-unit id="check.vcard">
+				<source>TUM vCard</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

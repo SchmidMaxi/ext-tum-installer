@@ -46,6 +46,14 @@ be_groups:
     title: 'role-{$wid -> strtoupper()}-redakteur-{$navName -> strtolower()}'
     subgroup: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid},{db::be_groups::title::priv-Content::uid}'
 
+  #8 func-W00XXX-news-t3
+  -
+    _condition: news
+    pid: '0'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    title: 'func-{$wid -> strtoupper()}-news-{$navName -> strtolower()}'
+
 tx_groupdelegation_subadmin_begroups_mm:
 
   # Relation gd-W00XXX-t3 to func-W00XXX-fp-t3

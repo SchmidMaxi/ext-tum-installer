@@ -6,7 +6,7 @@ namespace Tum\Installer\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Tum\Installer\Service\SetupService;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity; // <--- NEU: Enum statt AbstractMessage
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class BackendInstallerController extends ActionController
@@ -20,17 +20,6 @@ class BackendInstallerController extends ActionController
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $moduleTemplate->setTitle('TUM Installer');
-
-        $moduleTemplate->assign('setups', ['Setup1', 'Setup3']);
-
-        // Dummy Daten für Parent OU Selectbox (Da wir keine Quelle haben)
-        $moduleTemplate->assign('parentOus', [
-            '' => 'Keine',
-            '1' => 'Zentrale (1)',
-            '2' => 'Fakultät Informatik (2)',
-            // Hier müssten echte Werte hin oder aus DB geladen werden
-        ]);
-
         return $moduleTemplate->renderResponse('BackendInstaller/Index');
     }
 
@@ -83,9 +72,17 @@ class BackendInstallerController extends ActionController
             $this->setupService->runSetup($setupName, $config);
             $this->setupService->createSiteConfiguration($config, $setupName);
 
-            $this->addFlashMessage(sprintf('Installation für "%s" erfolgreich!', $navName), 'Erfolg', AbstractMessage::OK);
+            $this->addFlashMessage(
+                sprintf('Installation für "%s" (%s) erfolgreich abgeschlossen!', $navName, $domain),
+                'Erfolg',
+                ContextualFeedbackSeverity::OK // <--- NEU
+            );
         } catch (\Exception $e) {
-            $this->addFlashMessage($e->getMessage(), 'Fehler', AbstractMessage::ERROR);
+            $this->addFlashMessage(
+                $e->getMessage(),
+                'Fehler bei der Installation',
+                ContextualFeedbackSeverity::ERROR // <--- NEU
+            );
         }
 
         return $this->redirect('index');

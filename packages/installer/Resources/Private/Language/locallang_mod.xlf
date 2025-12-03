@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2023-10-25T11:48:33Z" product-name="installer">
+		<header/>
+		<body>
+			<trans-unit id="mlang_tabs_tab">
+				<source>TUM Installer</source>
+			</trans-unit>
+			<trans-unit id="mlang_labels_tabdescr">
+				<source>Wizard to install and configure TUM websites automatically.</source>
+			</trans-unit>
+			<trans-unit id="mlang_labels_tablabel">
+				<source>TUM Site Installer</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
