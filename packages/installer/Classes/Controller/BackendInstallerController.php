@@ -18,46 +18,74 @@ class BackendInstallerController extends ActionController
 
     public function indexAction(): ResponseInterface
     {
-        // 1. Module Template erstellen (Standard Rahmen)
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $moduleTemplate->setTitle('TUM Installer');
 
-        // 2. Variablen an die View übergeben
-        // HINWEIS: In v13/14 weisen wir Variablen direkt dem ModuleTemplate zu,
-        // wenn wir renderResponse nutzen.
         $moduleTemplate->assign('setups', ['Setup1', 'Setup3']);
 
-        // 3. View rendern (Sucht automatisch nach Templates/BackendInstaller/Index.html)
+        // Dummy Daten für Parent OU Selectbox (Da wir keine Quelle haben)
+        $moduleTemplate->assign('parentOus', [
+            '' => 'Keine',
+            '1' => 'Zentrale (1)',
+            '2' => 'Fakultät Informatik (2)',
+            // Hier müssten echte Werte hin oder aus DB geladen werden
+        ]);
+
         return $moduleTemplate->renderResponse('BackendInstaller/Index');
     }
 
-    public function executeAction(string $setupName, string $navName, string $domain, string $wid = '', string $lrzid = '', int $news = 0): ResponseInterface
+    public function executeAction(
+        string $setupName,
+        string $navName,
+        string $domain,
+        string $siteNameDe = '',
+        string $siteNameEn = '',
+        string $wid = '',
+        string $lrzid = '',
+        string $parentOu = '',
+        string $parentOuNameDe = '',
+        string $parentOuNameEn = '',
+        string $parentOuUrlDe = '',
+        string $parentOuUrlEn = '',
+        string $imprint = '',
+        string $accessibility = '',
+        int $news = 0,
+        int $intropage = 0,
+        int $curlContent = 0,
+        int $memberList = 0,
+        int $courses = 0,
+        int $vcard = 0
+    ): ResponseInterface
     {
         $config = [
             'navName' => $navName,
             'domain' => $domain,
+            'siteNameDe' => $siteNameDe ?: $navName,
+            'siteNameEn' => $siteNameEn ?: $navName . ' (EN)',
             'wid' => $wid,
             'lrzid' => $lrzid,
-            'news' => (bool)$news // Checkbox kommt oft als int 0/1
+            'parentOu' => $parentOu,
+            'parentOuNameDe' => $parentOuNameDe,
+            'parentOuNameEn' => $parentOuNameEn,
+            'parentOuUrlDe' => $parentOuUrlDe,
+            'parentOuUrlEn' => $parentOuUrlEn,
+            'imprint' => $imprint,
+            'accessibility' => $accessibility,
+            'news' => (bool)$news,
+            'intropage' => (bool)$intropage,
+            'curlContent' => (bool)$curlContent,
+            'memberList' => (bool)$memberList,
+            'courses' => (bool)$courses,
+            'vcard' => (bool)$vcard,
         ];
 
         try {
-            // Hier greift jetzt unser neuer Schutzmechanismus!
             $this->setupService->runSetup($setupName, $config);
-            $this->setupService->createSiteConfiguration($config);
+            $this->setupService->createSiteConfiguration($config, $setupName);
 
-            $this->addFlashMessage(
-                sprintf('Installation für "%s" erfolgreich!', $navName),
-                'Erfolg',
-                AbstractMessage::OK
-            );
+            $this->addFlashMessage(sprintf('Installation für "%s" erfolgreich!', $navName), 'Erfolg', AbstractMessage::OK);
         } catch (\Exception $e) {
-            // Wenn der Service "ABBRUCH" wirft, landen wir hier
-            $this->addFlashMessage(
-                $e->getMessage(),
-                'Fehler',
-                AbstractMessage::ERROR
-            );
+            $this->addFlashMessage($e->getMessage(), 'Fehler', AbstractMessage::ERROR);
         }
 
         return $this->redirect('index');

@@ -6,12 +6,12 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::navname
     title: '{$navName -> strtolower()}'
-    doktype: shortcut
+    doktype: 4
     is_siteroot: '1'
     shortcut_mode: first_subpage
     slug: '/'
-#    slug_locked: 1
-#    tx_sluggi_sync: 1
+    slug_locked: 1
+    tx_sluggi_sync: 1
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page", "new_pages" ]
     perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
@@ -27,11 +27,12 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::next
     title: 'Startseite'
-    doktype: default
+    doktype: 1
     slug: '/startseite'
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page", "edit_content", "edit_page", "new_pages" ]
     perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+    tsconfig_includes: '{$introTsConfig}'
 
   # Lehre
   -
@@ -40,7 +41,7 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::next
     title: 'Lehre'
-    doktype: default
+    doktype: 1
     slug: '/lehre'
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page", "edit_content", "edit_page", "delete_page", "new_pages" ]
@@ -53,7 +54,7 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::next
     title: 'Forschung'
-    doktype: default
+    doktype: 1
     slug: '/forschung'
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page", "edit_content", "edit_page", "delete_page", "new_pages" ]
@@ -66,10 +67,35 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::next
     title: 'Mitarbeiter'
-    doktype: default
+    doktype: 1
     slug: '/mitarbeiter'
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page", "edit_content", "edit_page", "delete_page", "new_pages" ]
+    perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+
+  # Aktuelles
+  -
+    _condition: news
+    pid: '{db::pages::title::{$navName -> strtolower()}::uid}'
+    tstamp: Datetime::now
+    sorting: Sorting::next
+    title: 'Aktuelles'
+    doktype: 1
+    slug: '/aktuelles'
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "edit_content", "edit_page", "new_pages" ]
+    perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+
+  # intronav
+  -
+    _condition: intropage
+    pid: '{db::pages::title::{$navName -> strtolower()}::uid}'
+    tstamp: Datetime::now
+    sorting: Sorting::next
+    title: 'intronav'
+    doktype: 254
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "edit_content" ]
     perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
 
   # fp-t3
@@ -91,7 +117,7 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::next
     title: 'Impressum'
-    doktype: default
+    doktype: 1
     slug: '/impressum'
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page", "edit_content" ]
@@ -104,7 +130,7 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::next
     title: 'Datenschutz'
-    doktype: default
+    doktype: 1
     slug: '/datenschutz'
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_groupid: '{db::be_groups::title::func-{$wid -> strtoupper()}-fp-{$navName -> strtolower()}::uid}'
@@ -116,7 +142,7 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::next
     title: 'Kontakt-rechts'
-    doktype: default
+    doktype: 1
     slug: '/kontakt-rechts'
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page", "edit_content", "edit_page", "new_pages" ]
@@ -129,7 +155,7 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::next
     title: 'Suche'
-    doktype: default
+    doktype: 1
     slug: '/suche'
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_groupid: '{db::be_groups::title::func-{$wid -> strtoupper()}-fp-{$navName -> strtolower()}::uid}'
@@ -141,7 +167,7 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::next
     title: 'Barrierefreiheit'
-    doktype: default
+    doktype: 1
     slug: '/barrierefreiheit'
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_groupid: '{db::be_groups::title::func-{$wid -> strtoupper()}-fp-{$navName -> strtolower()}::uid}'
@@ -153,12 +179,19 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::next
     title: '404-notfound-{$navName -> strtolower()}'
-    doktype: default
+    doktype: 1
     slug: '/404-notfound-{$navName -> strtolower()}'
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page", "edit_content" ]
     perms_groupid: '{db::be_groups::title::func-{$wid -> strtoupper()}-fp-{$navName -> strtolower()}::uid}'
 
+  # NEWS SYSTEM ORDNER
+  -
+    _condition: news
+    pid: '{db::pages::title::sRoot::uid}'
+    title: 'news-system-{$navName -> strtolower()}'
+    doktype: folder
+    perms_userid: '{db::be_users::username::tumin::uid}'
 
 sys_template:
   # tum root template
@@ -275,3 +308,32 @@ tt_content:
     pages: '{db::pages::title::{$navName -> strtolower()}::uid}'
     header_layout: 100
     imagecols: 1
+
+  # News Plugin
+  - _condition: news
+    pid: '{db::pages::title::Aktuelles::uid}'
+    CType: list
+    list_type: news_pi1
+    header: 'News'
+    pi_flexform: |
+      <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+      <T3FlexForms>
+          <data>
+              <sheet index="sDEF">
+                  <language index="lDEF">
+                      <field index="settings.startingpoint">
+                          <value index="vDEF">{db::pages::title::news-system-{$navName -> strtolower()}::uid}</value>
+                      </field>
+                      <field index="settings.detailPid">
+                          <value index="vDEF">{db::pages::title::Aktuelles::uid}</value>
+                      </field>
+                      <field index="settings.backPid">
+                          <value index="vDEF">{db::pages::title::Aktuelles::uid}</value>
+                      </field>
+                      <field index="settings.topNewsFirst">
+                          <value index="vDEF">1</value>
+                      </field>
+                  </language>
+              </sheet>
+          </data>
+      </T3FlexForms>

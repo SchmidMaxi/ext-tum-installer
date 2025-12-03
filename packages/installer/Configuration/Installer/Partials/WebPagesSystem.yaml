@@ -48,8 +48,8 @@ pages:
     doktype: 4
     is_siteroot: '1'
     slug: '/'
-#    slug_locked: 1
-#    tx_sluggi_sync: 1
+    slug_locked: 1
+    tx_sluggi_sync: 1
     shortcut_mode: first_subpage
     backend_layout_next_level: 'pagets__3col'
     perms_userid: '{db::be_users::username::tumin::uid}'
