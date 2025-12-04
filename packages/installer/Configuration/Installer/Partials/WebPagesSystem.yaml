@@ -45,8 +45,8 @@ pages:
     pid: '{db::pages::title::{$wid -> strtoupper()}::uid}'
     tstamp: Datetime::now
     crdate: Datetime::now
-    sorting: Sorting::next
     title: '{$domain -> strtolower()}'
+    sorting: Sorting::navname
     doktype: 4
     is_siteroot: '1'
     slug: '/'

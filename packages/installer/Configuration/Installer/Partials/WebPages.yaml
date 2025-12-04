@@ -4,8 +4,8 @@ pages:
   - pid: '{db::pages::title::{$domain -> strtolower()}::uid}'
     tstamp: Datetime::now
     crdate: Datetime::now
-    sorting: Sorting::navname
     title: '{$navName -> strtolower()}'
+    sorting: Sorting::navname
     doktype: 4
     is_siteroot: '1'
     shortcut_mode: first_subpage

@@ -6,7 +6,7 @@ namespace Tum\Installer\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Tum\Installer\Service\SetupService;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity; // <--- NEU: Enum statt AbstractMessage
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class BackendInstallerController extends ActionController
@@ -20,6 +20,7 @@ class BackendInstallerController extends ActionController
     {
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $moduleTemplate->setTitle('TUM Installer');
+        // Selectbox Optionen sind nun im Template, daher keine assign nötig
         return $moduleTemplate->renderResponse('BackendInstaller/Index');
     }
 
@@ -73,15 +74,15 @@ class BackendInstallerController extends ActionController
             $this->setupService->createSiteConfiguration($config, $setupName);
 
             $this->addFlashMessage(
-                sprintf('Installation für "%s" (%s) erfolgreich abgeschlossen!', $navName, $domain),
+                sprintf('Installation für "%s" erfolgreich!', $navName),
                 'Erfolg',
-                ContextualFeedbackSeverity::OK // <--- NEU
+                ContextualFeedbackSeverity::OK
             );
         } catch (\Exception $e) {
             $this->addFlashMessage(
                 $e->getMessage(),
                 'Fehler bei der Installation',
-                ContextualFeedbackSeverity::ERROR // <--- NEU
+                ContextualFeedbackSeverity::ERROR
             );
         }
 
