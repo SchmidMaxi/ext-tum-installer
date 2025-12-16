@@ -14,7 +14,7 @@ pages:
     slug_locked: 1
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page", "new_pages" ]
-    perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+    perms_groupid: '{db::be_groups::title::pgrp-{$widUpper}-{$navName -> strtolower()}::uid}'
 
   # -----------------------------------------------------------------------------------
   # HAUPTSEITEN (Level 1)
@@ -104,7 +104,6 @@ pages:
     perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
 
   # Shortcut: Startseite (in intronav)
-  # Hier nutzen wir die verschachtelte Logik: pid -> folder -> siteRoot
   -
     _condition: intropage
     pid: '{db::pages::title::intronav::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
@@ -169,7 +168,6 @@ pages:
     perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
 
   # Shortcut: Aktuelles (in intronav)
-  # Bedingung: NUR wenn 'news' UND 'intropage' aktiv sind
   -
     _condition: news && intropage
     pid: '{db::pages::title::intronav::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
@@ -302,29 +300,14 @@ sys_template:
     sorting: Sorting::next
     title: '+ext-{$navName -> strtolower()}'
     root: 1
-
-    # WICHTIG: Hier nutzen wir jetzt auch die verschachtelte Syntax,
-    # damit wir exakt die Seiten DIESES Imports finden.
     constants: >
-
       ### Common
-
       HOMEPID = {db::pages::title::Startseite::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}
-
       IMPRESSUMPID = {db::pages::title::Impressum::uid::pid::{db::pages::title::fp-{$navName -> strtolower()}::uid}}
-
-      # AUDIENCEPID = 31
-
       PRIVACY_URL = {db::pages::title::Datenschutz::uid::pid::{db::pages::title::fp-{$navName -> strtolower()}::uid}}
-
       CONTACTPID = {db::pages::title::Kontakt-rechts::uid::pid::{db::pages::title::fp-{$navName -> strtolower()}::uid}}
-
       SEARCHRESULTSPID = {db::pages::title::Suche::uid::pid::{db::pages::title::fp-{$navName -> strtolower()}::uid}}
-
       ACCESSPID = {db::pages::title::Barrierefreiheit::uid::pid::{db::pages::title::fp-{$navName -> strtolower()}::uid}}
-
-      # LANGUAGE_NAV = 0
-
       MATOMO_ID = {$matomoId}
 
 # -----------------------------------------------------------------------------------
@@ -402,10 +385,9 @@ tt_content:
   # News Plugin
   -
     _condition: news
-    # Zielseite: Aktuelles (im aktuellen Tree)
+    # Zielseite: Aktuelles
     pid: '{db::pages::title::Aktuelles::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
-    CType: list
-    list_type: news_pi1
+    CType: news_pi1
     header: 'News'
     pi_flexform: |
       <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
@@ -416,6 +398,14 @@ tt_content:
                       <field index="settings.startingpoint">
                           <value index="vDEF">{db::pages::title::news-system-{$navName -> strtolower()}::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}</value>
                       </field>
+                      <field index="settings.recursive">
+                          <value index="vDEF">0</value>
+                      </field>
+                  </language>
+              </sheet>
+
+              <sheet index="additional">
+                  <language index="lDEF">
                       <field index="settings.detailPid">
                           <value index="vDEF">{db::pages::title::Aktuelles::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}</value>
                       </field>

@@ -1,20 +1,13 @@
 sys_category:
-  # -----------------------------------------------------------------------------------
-  # 1. Haupt-Kategorie
-  # -----------------------------------------------------------------------------------
   -
     pid: '{db::pages::title::categories::uid::pid::{db::pages::title::sRoot::uid}}'
     tstamp: Datetime::now
     crdate: Datetime::now
     sorting: Sorting::next
     sys_language_uid: '0'
-    # Nutzt jetzt die berechnete Variable
+    # Nutzung der Variable
     title: '{$widUpper}-cat-{$navName}'
 
-  # -----------------------------------------------------------------------------------
-  # 2. TUM vCard Kategorie
-  # Condition: vcard
-  # -----------------------------------------------------------------------------------
   -
     _condition: vcard
     pid: '{db::pages::title::categories::uid::pid::{db::pages::title::sRoot::uid}}'
@@ -23,13 +16,9 @@ sys_category:
     sorting: Sorting::next
     sys_language_uid: '0'
     title: 'PAGE:TUMvCard-{$navName}'
-    # Parent-Lookup funktioniert jetzt, weil der Titel oben korrekt ist
+    # Lookup via Variable
     parent: '{db::sys_category::title::{$widUpper}-cat-{$navName}::uid}'
 
-  # -----------------------------------------------------------------------------------
-  # 3. News Kategorie
-  # Condition: news
-  # -----------------------------------------------------------------------------------
   -
     _condition: news
     pid: '{db::pages::title::newscategories::uid::pid::{db::pages::title::sRoot::uid}}'

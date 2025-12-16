@@ -43,8 +43,6 @@ class BackendInstallerController extends ActionController
         string $imprint = '',
         string $accessibility = '',
         string $matomoId = '',
-
-        // Checkboxes (int 0/1 vom Fluid Form)
         int $news = 0,
         int $intropage = 0,
         int $curlContent = 0,
@@ -57,7 +55,6 @@ class BackendInstallerController extends ActionController
             $type = SetupType::tryFrom($setupName);
             if (!$type) throw new \InvalidArgumentException("Ungültiger Setup Typ: $setupName");
 
-            // Archiv Override (Optional)
             if ($type === SetupType::ARCHIV) {
                 try {
                     $extConf = $this->extensionConfiguration->get('installer');
@@ -81,7 +78,7 @@ class BackendInstallerController extends ActionController
                 imprint: $imprint,
                 accessibility: $accessibility,
                 matomoId: $matomoId,
-
+                // WICHTIG: Hier KEIN widUpper übergeben!
                 hasNews: (bool)$news,
                 hasIntropage: (bool)$intropage,
                 hasCurlContent: (bool)$curlContent,

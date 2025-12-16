@@ -44,6 +44,11 @@ readonly class InstallationConfig
     public function withUpdates(array $updates): self
     {
         $args = get_object_vars($this);
+
+        if (isset($args['widUpper'])) {
+            unset($args['widUpper']);
+        }
+
         foreach ($updates as $key => $value) {
             $args[$key] = $value;
         }

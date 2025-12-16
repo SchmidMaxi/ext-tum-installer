@@ -6,15 +6,16 @@ services:
 
   Tum\Installer\:
     resource: '../Classes/*'
+    # WICHTIG: Schließt Models und Enums aus, da diese keine Services sind!
+    exclude:
+      - '../Classes/Domain/Model/*'
 
   # 1. AUTOMATISCHES TAGGING
-  # Jede Klasse, die dieses Interface implementiert, bekommt den Tag 'tum.installer.strategy'
   _instanceof:
     Tum\Installer\Domain\Strategy\SetupStrategyInterface:
       tags: ['tum.installer.strategy']
 
   # 2. INJECTION DES ITERATORS
-  # Wir sagen dem Service explizit, was in $strategies rein soll
   Tum\Installer\Service\InstallerService:
     arguments:
       $strategies: !tagged_iterator tum.installer.strategy
