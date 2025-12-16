@@ -23,38 +23,44 @@ class InstallerService
         private readonly DatabaseImporterService $dbImporter,
         private readonly SiteConfigurationService $siteConfigService,
         private readonly FolderStructureService $folderService,
-        private readonly ConnectionPool $connectionPool // NEU: Für DB-Checks
+        private readonly ConnectionPool $connectionPool // WICHTIG: Für den DB-Check
     ) {}
 
     /**
-     * Prüft, ob das gewählte Setup durchgeführt werden darf.
-     * Setup1 und Standalone dürfen nicht ausgeführt werden, wenn bereits
-     * eine Root-Seite (außer Archiv) existiert.
+     * Prüft, ob Setup1 oder Standalone installiert werden dürfen.
+     * Gibt FALSE zurück, wenn bereits eine Haupt-Installation existiert.
      */
     public function isSetupAllowed(SetupType $type): bool
     {
-        // Nur Setup1 und Standalone sind kritisch und schließen sich aus
+        // Wir prüfen nur bei Setup1 und Standalone.
+        // Setup3 oder Archiv Installationen könnten theoretisch parallel laufen (je nach Logik),
+        // hier blockieren wir aber primär das Überschreiben der Root-Struktur.
         if ($type !== SetupType::SETUP1 && $type !== SetupType::STANDALONE) {
             return true;
         }
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-        $existingRoots = $queryBuilder
-            ->select('title')
+        $existingPages = $queryBuilder
+            ->select('uid', 'title', 'is_siteroot', 'doktype')
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('pid', 0),
-                $queryBuilder->expr()->eq('is_siteroot', 1),
                 $queryBuilder->expr()->eq('deleted', 0)
             )
             ->executeQuery()
             ->fetchAllAssociative();
 
-        foreach ($existingRoots as $root) {
-            $title = $root['title'] ?? '';
-            // Wir ignorieren Archive (beginnen meist mit Archiv-...)
-            // Wenn eine andere Root Page da ist (z.B. Setup1, Standalone, Setup3), blockieren wir.
-            if (!str_starts_with($title, 'Archiv')) {
+        foreach ($existingPages as $page) {
+            $title = $page['title'] ?? '';
+            $isSiteRoot = (bool)($page['is_siteroot'] ?? false);
+
+            // 1. Check auf Setup1: Ordner "sRoot" existiert
+            if ($title === 'sRoot') {
+                return false;
+            }
+
+            // 2. Check auf Standalone: Eine Root-Seite existiert (die nicht Archiv heißt)
+            if ($isSiteRoot && !str_starts_with($title, 'Archiv')) {
                 return false;
             }
         }
@@ -64,10 +70,13 @@ class InstallerService
 
     public function install(InstallationConfig $initialConfig): void
     {
-        // Sicherheitscheck auch hier nochmal
+        // Sicherheitscheck: Darf überhaupt installiert werden?
         if (!$this->isSetupAllowed($initialConfig->type)) {
             throw new \RuntimeException(
-                sprintf('Installation von "%s" nicht möglich, da bereits eine Haupt-Instanz existiert.', $initialConfig->type->value)
+                sprintf(
+                    'Installation blockiert: Es existiert bereits eine Installation (Setup1 oder Standalone). Der Typ "%s" kann nicht zusätzlich installiert werden.',
+                    $initialConfig->type->value
+                )
             );
         }
 

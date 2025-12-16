@@ -55,6 +55,17 @@ class BackendInstallerController extends ActionController
             $type = SetupType::tryFrom($setupName);
             if (!$type) throw new \InvalidArgumentException("Ungültiger Setup Typ: $setupName");
 
+            // NEU: Vorab-Check ob Installation erlaubt ist
+            if (!$this->installerService->isSetupAllowed($type)) {
+                $this->addFlashMessage(
+                    'Es existiert bereits eine Haupt-Installation (Setup1 oder Standalone). Eine weitere Installation ist nicht möglich.',
+                    'Installation blockiert',
+                    ContextualFeedbackSeverity::WARNING
+                );
+                return $this->redirect('index');
+            }
+
+            // Archiv Override
             if ($type === SetupType::ARCHIV) {
                 try {
                     $extConf = $this->extensionConfiguration->get('installer');
@@ -78,7 +89,6 @@ class BackendInstallerController extends ActionController
                 imprint: $imprint,
                 accessibility: $accessibility,
                 matomoId: $matomoId,
-                // WICHTIG: Hier KEIN widUpper übergeben!
                 hasNews: (bool)$news,
                 hasIntropage: (bool)$intropage,
                 hasCurlContent: (bool)$curlContent,
