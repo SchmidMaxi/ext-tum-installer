@@ -7,18 +7,19 @@ use Tum\Installer\Domain\Model\InstallationConfig;
 use Tum\Installer\Service\Helper\DataProcessingService;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility; // Wichtig für trimExplode
 
 class DatabaseImporterService
 {
     public function __construct(
         private readonly ConnectionPool $connectionPool,
-        private readonly DataProcessingService $dataProcessor, // Dein alter Service
+        private readonly DataProcessingService $dataProcessor,
         private readonly PasswordHashFactory $passwordHashFactory
     ) {}
 
     public function import(array $data, InstallationConfig $config): void
     {
-        $configArray = $config->toArray(); // Legacy Support für DataProcessor
+        $configArray = $config->toArray();
 
         foreach ($data as $tableName => $rows) {
             if (!is_array($rows) || empty($rows) || $tableName === 'imports') continue;
@@ -36,19 +37,34 @@ class DatabaseImporterService
 
             $queryBuilder = $connection->createQueryBuilder();
             foreach ($rows as $row) {
-                // Conditions prüfen
+
+                // ---------------------------------------------------------
+                // UPDATE: Conditions mit AND (&&) Support prüfen
+                // ---------------------------------------------------------
                 if (isset($row['_condition'])) {
-                    $cond = $row['_condition'];
-                    // Prüfen ob Flag im Config Objekt true ist (via Array Access)
-                    if (empty($configArray[$cond])) continue;
+                    $conditionString = (string)$row['_condition'];
+
+                    // Zerlege String wie "news && intropage" in Einzelteile
+                    $conditions = GeneralUtility::trimExplode('&&', $conditionString, true);
+
+                    $skipRow = false;
+                    foreach ($conditions as $cond) {
+                        // Wenn AUCH NUR EINE Bedingung nicht im Config-Array ist (oder false ist) -> Überspringen
+                        if (empty($configArray[$cond])) {
+                            $skipRow = true;
+                            break;
+                        }
+                    }
+
+                    if ($skipRow) continue;
                     unset($row['_condition']);
                 }
+                // ---------------------------------------------------------
 
                 $validRowData = [];
-                $processedRow = []; // Context für DataProcessor
+                $processedRow = [];
 
                 foreach ($row as $field => $value) {
-                    // Werte verarbeiten ({$navName} etc.)
                     $processedValue = $this->dataProcessor->process($field, $value, $processedRow, $configArray, $tableName);
                     $processedRow[$field] = $processedValue;
 
@@ -57,7 +73,6 @@ class DatabaseImporterService
                     }
                 }
 
-                // Password Hashing
                 if ($tableName === 'be_users' && isset($validRowData['password'])) {
                     $hashInstance = $this->passwordHashFactory->getDefaultHashInstance('BE');
                     $validRowData['password'] = $hashInstance->getHashedPassword($validRowData['password']);

@@ -165,9 +165,10 @@ pages:
     perms_group: [ "show_page", "edit_content", "edit_page" ]
     perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
 
-  # Shortcut: Aktuelles (in intronav) - Nur wenn News aktiv
+  # Shortcut: Aktuelles (in intronav)
+  # Bedingung: NUR wenn 'news' UND 'intropage' aktiv sind
   -
-    _condition: news
+    _condition: news && intropage
     pid: '{db::pages::title::intronav::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
     tstamp: Datetime::now
     crdate: Datetime::now

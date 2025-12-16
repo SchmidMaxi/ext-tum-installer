@@ -67,12 +67,18 @@ class DataProcessingService
         if (str_starts_with($val, 'Sorting::')) {
             return self::TYPE_SORTING;
         }
-        if (preg_match('/^{db::.*}$/', $val)) {
+
+        // FIX: Regex erlaubt keine geschweiften Klammern im Inneren mehr ([^{}]+).
+        // Das erzwingt, dass verschachtelte {db::{db::...}} erst als MIXED_STRING erkannt werden.
+        if (preg_match('/^{db::[^{}]+}$/', $val)) {
             return self::TYPE_DATABASE;
         }
+
+        // Config lassen wir etwas toleranter, aber im Zweifel auch hier strikter, falls nötig.
         if (preg_match('/^{\$[a-zA-Z0-9_]+( -> .*)?}$/', $val)) {
             return self::TYPE_CONFIG;
         }
+
         if (str_contains($val, '{')) {
             return self::TYPE_MIXED_STRING;
         }
@@ -132,7 +138,6 @@ class DataProcessingService
 
         $table = $parts[0]; $searchField = $parts[1]; $searchValue = $parts[2]; $selectField = $parts[3];
 
-        // KEIN TRY-CATCH MEHR - Wir wollen den Fehler sehen!
         $qb = $this->connectionPool->getQueryBuilderForTable($table);
         $qb->select($selectField)
             ->from($table)
@@ -170,13 +175,11 @@ class DataProcessingService
     }
 
     private function resolveMixedString(string $property, string $value, array $processedRow, array $config, string $tableName): mixed {
+        // Findet innerste Klammerpaare zuerst
         preg_match_all('/{([^{]*?)}/', $value, $matches);
         $hasChanges = false;
         if (!empty($matches[0])) {
             foreach ($matches[0] as $match) {
-                // PROTECTION: Wenn der Match identisch mit dem Value ist, drehen wir uns im Kreis.
-                // Das passiert, wenn getType() den String als "Mixed" erkennt (wegen Klammern),
-                // aber keine spezifische Auflösung (Config/DB) greift.
                 if ($match === $value) {
                     return $value;
                 }
@@ -190,8 +193,11 @@ class DataProcessingService
             }
         }
 
-        $newType = $this->getType($value);
-        if ($newType === self::TYPE_MIXED_STRING && $hasChanges) {
+        // FIX: Wir prüfen nicht mehr auf TYPE_MIXED_STRING.
+        // Wenn sich etwas geändert hat (z.B. innere Klammer aufgelöst),
+        // werfen wir es erneut in den process(), damit das neue Ergebnis
+        // (z.B. jetzt ein valider {db::...} String) aufgelöst werden kann.
+        if ($hasChanges) {
             return $this->process($property, $value, $processedRow, $config, $tableName);
         }
 
