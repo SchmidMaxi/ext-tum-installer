@@ -1,128 +1,185 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers">
+      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true">
 
 <f:layout name="Module" />
 
 <f:section name="Content">
-    <h1>TUM Installer</h1>
+    <h1><f:translate key="header" extensionName="installer" /></h1>
+
     <f:flashMessages />
 
-    <div class="card">
-        <div class="card-body">
-            <f:form action="execute">
+    <f:form action="execute" controller="BackendInstaller" method="post">
 
-                <h3>1. Basis Daten</h3>
-                <div class="row mb-4">
-                    <div class="col-12 mb-3">
-                        <label class="form-label">Setup wählen</label>
-                        <f:form.select name="setupName" options="{Setup1: 'Setup 1 (Initial)', Setup3: 'Setup 3 (Update)'}" class="form-select" />
-                    </div>
+        <h3>1. Basis Daten</h3>
+        <div class="row mb-4">
+            <div class="col-12 mb-3">
+                <label class="form-label">Setup wählen</label>
+                <f:form.select name="setupName" id="setupName" class="form-select">
+                    <f:form.select.option value="Setup1">Setup 1</f:form.select.option>
+                    <f:form.select.option value="Setup3">Setup 3</f:form.select.option>
+                    <f:form.select.option value="Standalone">Standalone</f:form.select.option>
+                    <f:form.select.option value="Archiv">Archiv</f:form.select.option>
+                </f:form.select>
+            </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">WID</label>
-                        <f:form.textfield name="wid" class="form-control" placeholder="w00byo" required="1" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">LRZ ID (Satellite)</label>
-                        <f:form.textfield name="lrzid" class="form-control" placeholder="lu28fix" required="1" />
-                    </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">WID</label>
+                <f:form.textfield name="wid" class="form-control" value="w00byo" required="1" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">LRZ ID (Satellite)</label>
+                <f:form.textfield name="lrzid" class="form-control" value="lu28fix" required="1" />
+            </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Domain</label>
-                        <f:form.textfield name="domain" class="form-control" placeholder="web.typo3.tum.de" required="1" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Projekt Kürzel (navName)</label>
-                        <f:form.textfield name="navName" class="form-control" placeholder="t3" required="1" />
-                    </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Domain</label>
+                <f:form.textfield name="domain" class="form-control" value="web.typo3.tum.de" required="1" />
+            </div>
+            <div class="col-md-6 mb-3" data-show-for="Setup1 Setup3">
+                <label class="form-label">Projekt Kürzel (navName)</label>
+                <f:form.textfield name="navName" class="form-control" value="t3" required="1" />
+            </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Einrichtungsname (DE)</label>
-                        <f:form.textfield name="siteNameDe" class="form-control" placeholder="Zentrale Informationstechnik (TYPO3-Team)" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Einrichtungsname (EN)</label>
-                        <f:form.textfield name="siteNameEn" class="form-control" placeholder="Central Information Technology (TYPO3-Team)" />
-                    </div>
-                </div>
+            <div class="w-100"></div>
 
-                <h3>2. Übergeordnete Einheit (Parent OU)</h3>
-                <div class="row mb-4">
-                    <div class="col-md-4 mb-3">
-                        <label class="form-label">Parent OU</label>
-                        <f:form.select name="parentOu" prependOptionLabel="" options="{'CIT':'CIT', 'ED':'ED', 'GS':'GS', 'HFP':'HFP', 'LS':'LS', 'MH':'MH', 'MGT':'MGT', 'NAT':'NAT', 'SOT':'SOT'}" class="form-select" />
-                    </div>
-                </div>
-                <div class="row mb-4">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Parent Name (DE)</label>
-                        <f:form.textfield name="parentOuNameDe" class="form-control" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Parent Name (EN)</label>
-                        <f:form.textfield name="parentOuNameEn" class="form-control" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Parent URL (DE)</label>
-                        <f:form.textfield name="parentOuUrlDe" class="form-control" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Parent URL (EN)</label>
-                        <f:form.textfield name="parentOuUrlEn" class="form-control" />
-                    </div>
-                </div>
-
-                <h3>3. Kontakt & Footer</h3>
-                <div class="row mb-4">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Impressum Kontakt (Adressblock)</label>
-                        <f:form.textarea name="imprint" class="form-control" rows="4" />
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Accessibility Kontakt (Erste Zeile fett)</label>
-                        <f:form.textarea name="accessibility" class="form-control" rows="4" />
-                    </div>
-                </div>
-
-                <h3>4. Erweiterungen & Features</h3>
-                <div class="mb-4">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-check">
-                                <f:form.checkbox name="news" value="1" id="checkNews" class="form-check-input" />
-                                <label class="form-check-label" for="checkNews">News System</label>
-                            </div>
-                            <div class="form-check">
-                                <f:form.checkbox name="intropage" value="1" id="checkIntro" class="form-check-input" />
-                                <label class="form-check-label" for="checkIntro">Intropage</label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-check">
-                                <f:form.checkbox name="curlContent" value="1" id="checkCurl" class="form-check-input" />
-                                <label class="form-check-label" for="checkCurl">CurlContent</label>
-                            </div>
-                            <div class="form-check">
-                                <f:form.checkbox name="memberList" value="1" id="checkMember" class="form-check-input" />
-                                <label class="form-check-label" for="checkMember">TUM MemberList</label>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-check">
-                                <f:form.checkbox name="courses" value="1" id="checkCourses" class="form-check-input" />
-                                <label class="form-check-label" for="checkCourses">TUM Courses</label>
-                            </div>
-                            <div class="form-check">
-                                <f:form.checkbox name="vcard" value="1" id="checkVcard" class="form-check-input" />
-                                <label class="form-check-label" for="checkVcard">TUM vCard</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <f:form.submit value="Installation starten" class="btn btn-primary" />
-            </f:form>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Einrichtungsname (DE)</label>
+                <f:form.textfield name="siteNameDe" class="form-control" value="Zentrale Informationstechnik (TYPO3-Team)" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Einrichtungsname (EN)</label>
+                <f:form.textfield name="siteNameEn" class="form-control" value="Central Information Technology (TYPO3-Team)" />
+            </div>
         </div>
-    </div>
+
+        <h3>2. Übergeordnete Einheit (Parent OU)</h3>
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">School (Parent OU)</label>
+                <f:form.select name="parentOu" prependOptionLabel="" options="{'CIT':'CIT', 'ED':'ED', 'GS':'GS', 'HFP':'HFP', 'LS':'LS', 'MH':'MH', 'MGT':'MGT', 'NAT':'NAT', 'SOT':'SOT'}" class="form-select" />
+            </div>
+            <div class="col-md-6 mb-3" data-show-for="Archiv">
+                <label class="form-label">Department</label>
+                <f:form.textfield name="Department" class="form-control" placeholder="Z.B. lss" />
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Parent Name (DE)</label>
+                <f:form.textfield name="parentOuNameDe" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Parent Name (EN)</label>
+                <f:form.textfield name="parentOuNameEn" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Parent URL (DE)</label>
+                <f:form.textfield name="parentOuUrlDe" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Parent URL (EN)</label>
+                <f:form.textfield name="parentOuUrlEn" class="form-control" />
+            </div>
+        </div>
+
+        <h3>3. Kontakt & Footer</h3>
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Impressum Kontakt (Adressblock)</label>
+                <f:form.textarea name="imprint" class="form-control" rows="4" value="Markus Haggenmiller
+Arcisstr. 21
+80333 München
+E-Mail: markus.haggenmiller(at)tum.de" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Accessibility Kontakt (Erste Zeile fett)</label>
+                <f:form.textarea name="accessibility" class="form-control" rows="4"
+                value="ZIT / TYPO3
+Arcisstr. 21
+80333 München
++49 89 289 26846
+typo3@tum.de" />
+            </div>
+        </div>
+
+        <h3>4. Erweiterungen & Features</h3>
+        <div class="mb-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <f:form.checkbox name="news" value="1" id="checkNews" class="form-check-input" checked="true" />
+                        <label class="form-check-label" for="checkNews">News System</label>
+                    </div>
+                    <div class="form-check">
+                        <f:form.checkbox name="intropage" value="1" id="checkIntro" class="form-check-input" />
+                        <label class="form-check-label" for="checkIntro">Intropage</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <f:form.checkbox name="curlContent" value="1" id="checkCurl" class="form-check-input" />
+                        <label class="form-check-label" for="checkCurl">CurlContent</label>
+                    </div>
+                    <div class="form-check">
+                        <f:form.checkbox name="memberList" value="1" id="checkMember" class="form-check-input" />
+                        <label class="form-check-label" for="checkMember">TUM MemberList</label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-check">
+                        <f:form.checkbox name="courses" value="1" id="checkCourses" class="form-check-input" />
+                        <label class="form-check-label" for="checkCourses">TUM Courses</label>
+                    </div>
+                    <div class="form-check">
+                        <f:form.checkbox name="vcard" value="1" id="checkVcard" class="form-check-input" />
+                        <label class="form-check-label" for="checkVcard">TUM vCard</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <f:form.submit value="{f:translate(key:'btn.start', extensionName:'installer')}" class="btn btn-primary" />
+    </f:form>
+
+    <f:asset.script identifier="tum_installer_visibility_logic" useNonce="true" >
+        document.addEventListener('DOMContentLoaded', () => {
+            const select = document.getElementById('setupName');
+
+            if (select) {
+                // Initialen Status setzen
+                updateVisibility(select.value);
+
+                // Event Listener anhängen
+                select.addEventListener('change', (e) => {
+                    updateVisibility(e.target.value);
+                });
+            }
+
+            function updateVisibility(selectedValue) {
+                const elements = document.querySelectorAll('[data-show-for]');
+
+                elements.forEach(el => {
+                    // String in Array splitten (bei Leerzeichen)
+                    const allowedSetups = el.dataset.showFor.split(' ');
+
+                    if (allowedSetups.includes(selectedValue)) {
+                        el.classList.remove('d-none');
+                        toggleInputs(el, false);
+                    } else {
+                        el.classList.add('d-none');
+                        toggleInputs(el, true);
+                    }
+                });
+            }
+
+            function toggleInputs(parentElement, isDisabled) {
+                const inputs = parentElement.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => {
+                    input.disabled = isDisabled;
+                });
+            }
+        });
+    </f:asset.script>
 </f:section>
 </html>

@@ -1,12 +1,20 @@
 services:
-  # Standard-Einstellungen für alle Klassen in dieser Datei
   _defaults:
-    autowire: true      # Automatisch Abhängigkeiten (wie SetupService) in den Constructor injizieren
-    autoconfigure: true # Automatisch als Command oder Controller erkennen
-    public: false       # Services sind standardmäßig privat (gut für Performance)
+    autowire: true
+    autoconfigure: true
+    public: false
 
-  # Alle Klassen im Ordner Classes/ als Services registrieren
   Tum\Installer\:
     resource: '../Classes/*'
-    # Diese Ordner ausnehmen (das sind keine Services, sondern einfache Daten-Objekte)
-    exclude: '../Classes/Domain/Model/*'
+
+  # 1. AUTOMATISCHES TAGGING
+  # Jede Klasse, die dieses Interface implementiert, bekommt den Tag 'tum.installer.strategy'
+  _instanceof:
+    Tum\Installer\Domain\Strategy\SetupStrategyInterface:
+      tags: ['tum.installer.strategy']
+
+  # 2. INJECTION DES ITERATORS
+  # Wir sagen dem Service explizit, was in $strategies rein soll
+  Tum\Installer\Service\InstallerService:
+    arguments:
+      $strategies: !tagged_iterator tum.installer.strategy

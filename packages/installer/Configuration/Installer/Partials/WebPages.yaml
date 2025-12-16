@@ -1,6 +1,7 @@
-
 pages:
-  # t3
+  # -----------------------------------------------------------------------------------
+  # ROOT PAGE (t3)
+  # -----------------------------------------------------------------------------------
   - pid: '{db::pages::title::{$domain -> strtolower()}::uid}'
     tstamp: Datetime::now
     crdate: Datetime::now
@@ -9,16 +10,16 @@ pages:
     doktype: 4
     is_siteroot: '1'
     shortcut_mode: first_subpage
-    slug: '/'
+    slug: '/{$navName -> strtolower()}'
     slug_locked: 1
-    tx_sluggi_sync: 1
+    tx_sluggi_sync: 0
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page", "new_pages" ]
     perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
-    TSconfig: >
-      # Pointer to direct uploads folder
 
-      options.defaultUploadFolder = 1:{$wid -> strtolower()}/{$navName -> strtolower()}/_my_direct_uploads/
+  # -----------------------------------------------------------------------------------
+  # HAUPTSEITEN (Level 1)
+  # -----------------------------------------------------------------------------------
 
   # Startseite
   -
@@ -73,20 +74,25 @@ pages:
     perms_group: [ "show_page", "edit_content", "edit_page", "delete_page", "new_pages" ]
     perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
 
-  # Aktuelles
+  # Aktuelles (Nur bei Condition news)
   -
     _condition: news
     pid: '{db::pages::title::{$navName -> strtolower()}::uid}'
     tstamp: Datetime::now
     sorting: Sorting::next
-    title: 'Aktuelles'
+    title: 'Aktuelles-{$navName}'
+    nav_title: 'Aktuelles'
     doktype: 1
     slug: '/aktuelles'
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page", "edit_content", "edit_page", "new_pages" ]
     perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
 
-  # intronav
+  # -----------------------------------------------------------------------------------
+  # INTRONAV (Ordner & Shortcuts)
+  # -----------------------------------------------------------------------------------
+
+  # Ordner: intronav
   -
     _condition: intropage
     pid: '{db::pages::title::{$navName -> strtolower()}::uid}'
@@ -98,7 +104,88 @@ pages:
     perms_group: [ "show_page", "edit_content" ]
     perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
 
-  # fp-t3
+  # Shortcut: Startseite (in intronav)
+  # Hier nutzen wir die verschachtelte Logik: pid -> folder -> siteRoot
+  -
+    _condition: intropage
+    pid: '{db::pages::title::intronav::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: 'Startseite'
+    doktype: 4
+    shortcut: '{db::pages::title::Startseite::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
+    shortcut_mode: 0
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "edit_content", "edit_page" ]
+    perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+
+  # Shortcut: Lehre (in intronav)
+  -
+    _condition: intropage
+    pid: '{db::pages::title::intronav::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: 'Lehre'
+    doktype: 4
+    shortcut: '{db::pages::title::Lehre::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
+    shortcut_mode: 0
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "edit_content", "edit_page" ]
+    perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+
+  # Shortcut: Forschung (in intronav)
+  -
+    _condition: intropage
+    pid: '{db::pages::title::intronav::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: 'Forschung'
+    doktype: 4
+    shortcut: '{db::pages::title::Forschung::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
+    shortcut_mode: 0
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "edit_content", "edit_page" ]
+    perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+
+  # Shortcut: Mitarbeiter (in intronav)
+  -
+    _condition: intropage
+    pid: '{db::pages::title::intronav::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: 'Mitarbeiter'
+    doktype: 4
+    shortcut: '{db::pages::title::Mitarbeiter::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
+    shortcut_mode: 0
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "edit_content", "edit_page" ]
+    perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+
+  # Shortcut: Aktuelles (in intronav) - Nur wenn News aktiv
+  -
+    _condition: news
+    pid: '{db::pages::title::intronav::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: 'Aktuelles'
+    doktype: 4
+    shortcut: '{db::pages::title::Aktuelles-{$navName}::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
+    shortcut_mode: 0
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "edit_content", "edit_page" ]
+    perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+
+
+  # -----------------------------------------------------------------------------------
+  # FUNKTIONSEITEN & FOOTER (fp-...)
+  # -----------------------------------------------------------------------------------
+
+  # fp-Ordner
   -
     pid: '{db::pages::title::{$navName -> strtolower()}::uid}'
     tstamp: Datetime::now
@@ -172,7 +259,7 @@ pages:
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_groupid: '{db::be_groups::title::func-{$wid -> strtoupper()}-fp-{$navName -> strtolower()}::uid}'
 
-  # 404-notfound-tum8
+  # 404-notfound
   -
     pid: '{db::pages::title::fp-{$navName -> strtolower()}::uid}'
     tstamp: Datetime::now
@@ -199,8 +286,10 @@ pages:
     perms_groupid: '{db::be_groups::title::func-{$wid -> strtoupper()}-news-{$navName -> strtolower()}::uid}'
     module: 'news'
 
+# -----------------------------------------------------------------------------------
+# SYSTEM TEMPLATES (TypoScript)
+# -----------------------------------------------------------------------------------
 sys_template:
-  # tum root template
   -
     pid: '{db::pages::title::{$navName -> strtolower()}::uid}'
     tstamp: Datetime::now
@@ -208,51 +297,34 @@ sys_template:
     sorting: Sorting::next
     title: '+ext-{$navName -> strtolower()}'
     root: 1
-    #clear: []
-    #include_static_file: []
 
+    # WICHTIG: Hier nutzen wir jetzt auch die verschachtelte Syntax,
+    # damit wir exakt die Seiten DIESES Imports finden.
     constants: >
 
       ### Common
 
-      # ID of start page
-
       HOMEPID = {db::pages::title::Startseite::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}
-
-      # ID of "FP/Impressum"
 
       IMPRESSUMPID = {db::pages::title::Impressum::uid::pid::{db::pages::title::fp-{$navName -> strtolower()}::uid}}
 
-      # ID of "audiencenav" folder (optional)
-
-      #AUDIENCEPID = 31
-
-      # Local privacy page ID
+      # AUDIENCEPID = 31
 
       PRIVACY_URL = {db::pages::title::Datenschutz::uid::pid::{db::pages::title::fp-{$navName -> strtolower()}::uid}}
 
-      # ID of "FP/Kontakt-rechts"
-
       CONTACTPID = {db::pages::title::Kontakt-rechts::uid::pid::{db::pages::title::fp-{$navName -> strtolower()}::uid}}
-
-      # ID of search result page
 
       SEARCHRESULTSPID = {db::pages::title::Suche::uid::pid::{db::pages::title::fp-{$navName -> strtolower()}::uid}}
 
-      # ID of "FP/Barrierefreiheit"
-
       ACCESSPID = {db::pages::title::Barrierefreiheit::uid::pid::{db::pages::title::fp-{$navName -> strtolower()}::uid}}
-
-      # Replace language switcher with this text
 
       # LANGUAGE_NAV = 0
 
-      ### tracking verhindern
-
       MATOMO_ID =
 
-      #SEARCH_BOX = 0
-
+# -----------------------------------------------------------------------------------
+# CONTENT ELEMENTE (tt_content)
+# -----------------------------------------------------------------------------------
 tt_content:
   # Impressum content
   -
@@ -265,6 +337,8 @@ tt_content:
     bodytext: '<p>{$imprint -> formatImprint()}</p>'
     header_layout: 100
     imagecols: 1
+    imagewidth: 0
+    imageheight: 0
 
   # Kontakt-rechts content
   -
@@ -277,6 +351,8 @@ tt_content:
     bodytext: '<p>{$imprint -> formatImprint()}</p>'
     header_layout: 2
     imagecols: 1
+    imagewidth: 0
+    imageheight: 0
 
   # Barrierefreiheit content
   -
@@ -289,6 +365,8 @@ tt_content:
     bodytext: '<p>{$accessibility -> formatAccessibility()}</p>'
     header_layout: 100
     imagecols: 1
+    imagewidth: 0
+    imageheight: 0
 
   # 404 not found content
   -
@@ -302,6 +380,8 @@ tt_content:
     bodytext: '<p>Bitte orientieren Sie sich über die unten stehende Sitemap unseres Webauftritts.</p><p>Alternativ können Sie auch direkt über die Suchfunktion der Webseite nach der gewünschten Information suchen.</p>'
     header_layout: 1
     imagecols: 1
+    imagewidth: 0
+    imageheight: 0
 
   # 404 not found show subpages
   -
@@ -317,7 +397,7 @@ tt_content:
 
   # News Plugin
   - _condition: news
-    pid: '{db::pages::title::Aktuelles::uid}'
+    pid: '{db::pages::title::Aktuelles-{$navName}::uid}'
     CType: list
     list_type: news_pi1
     header: 'News'
@@ -331,10 +411,10 @@ tt_content:
                           <value index="vDEF">{db::pages::title::news-system-{$navName -> strtolower()}::uid}</value>
                       </field>
                       <field index="settings.detailPid">
-                          <value index="vDEF">{db::pages::title::Aktuelles::uid}</value>
+                          <value index="vDEF">{db::pages::title::Aktuelles-{$navName}::uid}</value>
                       </field>
                       <field index="settings.backPid">
-                          <value index="vDEF">{db::pages::title::Aktuelles::uid}</value>
+                          <value index="vDEF">{db::pages::title::Aktuelles-{$navName}::uid}</value>
                       </field>
                       <field index="settings.topNewsFirst">
                           <value index="vDEF">1</value>
