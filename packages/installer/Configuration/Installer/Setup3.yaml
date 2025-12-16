@@ -3,6 +3,6 @@
 #
 imports:
   - { resource: Partials/SysFilemounts.yaml }
-  - { resource: Partials/SysCategory.yaml }
   - { resource: Partials/BeGroups.yaml }
   - { resource: Partials/WebPages.yaml }
+  - { resource: Partials/SysCategory.yaml }

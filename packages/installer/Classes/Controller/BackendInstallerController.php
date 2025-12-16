@@ -32,7 +32,6 @@ class BackendInstallerController extends ActionController
         string $navName = '',
         string $domain = '',
         string $wid = '',
-        // Text Fields
         string $parentOu = '',
         string $department = '',
         string $siteNameDe = '',
@@ -43,6 +42,8 @@ class BackendInstallerController extends ActionController
         string $parentOuUrlEn = '',
         string $imprint = '',
         string $accessibility = '',
+        string $matomoId = '',
+
         // Checkboxes (int 0/1 vom Fluid Form)
         int $news = 0,
         int $intropage = 0,
@@ -79,6 +80,8 @@ class BackendInstallerController extends ActionController
                 parentOuUrlEn: $parentOuUrlEn,
                 imprint: $imprint,
                 accessibility: $accessibility,
+                matomoId: $matomoId,
+
                 hasNews: (bool)$news,
                 hasIntropage: (bool)$intropage,
                 hasCurlContent: (bool)$curlContent,

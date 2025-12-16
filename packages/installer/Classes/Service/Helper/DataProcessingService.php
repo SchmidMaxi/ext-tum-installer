@@ -68,13 +68,10 @@ class DataProcessingService
             return self::TYPE_SORTING;
         }
 
-        // FIX: Regex erlaubt keine geschweiften Klammern im Inneren mehr ([^{}]+).
-        // Das erzwingt, dass verschachtelte {db::{db::...}} erst als MIXED_STRING erkannt werden.
         if (preg_match('/^{db::[^{}]+}$/', $val)) {
             return self::TYPE_DATABASE;
         }
 
-        // Config lassen wir etwas toleranter, aber im Zweifel auch hier strikter, falls nötig.
         if (preg_match('/^{\$[a-zA-Z0-9_]+( -> .*)?}$/', $val)) {
             return self::TYPE_CONFIG;
         }
@@ -175,7 +172,6 @@ class DataProcessingService
     }
 
     private function resolveMixedString(string $property, string $value, array $processedRow, array $config, string $tableName): mixed {
-        // Findet innerste Klammerpaare zuerst
         preg_match_all('/{([^{]*?)}/', $value, $matches);
         $hasChanges = false;
         if (!empty($matches[0])) {
@@ -193,10 +189,6 @@ class DataProcessingService
             }
         }
 
-        // FIX: Wir prüfen nicht mehr auf TYPE_MIXED_STRING.
-        // Wenn sich etwas geändert hat (z.B. innere Klammer aufgelöst),
-        // werfen wir es erneut in den process(), damit das neue Ergebnis
-        // (z.B. jetzt ein valider {db::...} String) aufgelöst werden kann.
         if ($hasChanges) {
             return $this->process($property, $value, $processedRow, $config, $tableName);
         }

@@ -139,6 +139,16 @@ typo3@tum.de" />
             </div>
         </div>
 
+        <h3>5. Tracking</h3>
+        <div class="mb-4">
+            <div class="row">
+                <div class="col-md-6 mb-3" data-show-for="Setup1 Setup3 Standalone">
+                    <label class="form-label">Matomo ID</label>
+                    <f:form.textfield name="matomoId" class="form-control" placeholder="z.B. 17" />
+                </div>
+            </div>
+        </div>
+
         <f:form.submit value="{f:translate(key:'btn.start', extensionName:'installer')}" class="btn btn-primary" />
     </f:form>
 

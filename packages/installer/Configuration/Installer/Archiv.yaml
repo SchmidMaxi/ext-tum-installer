@@ -3,16 +3,6 @@
 #
 imports:
   - { resource: Partials/SysFilemounts.yaml }
-  - { resource: Partials/SysCategory.yaml }
   - { resource: Partials/BeGroups.yaml }
   - { resource: Partials/WebPages.yaml }
-
--
-  _condition: ''
-  # WICHTIG: Hier den Platzhalter nutzen!
-  pid: '{$targetPid}'
-  tstamp: Datetime::now
-  crdate: Datetime::now
-  title: '{$navName}'
-  doktype: 1
-  slug: '{$slugName}' # Falls wir den Slug anders wollen als den Titel
+  - { resource: Partials/SysCategory.yaml }

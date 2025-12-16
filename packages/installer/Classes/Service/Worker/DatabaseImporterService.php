@@ -7,7 +7,7 @@ use Tum\Installer\Domain\Model\InstallationConfig;
 use Tum\Installer\Service\Helper\DataProcessingService;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility; // Wichtig für trimExplode
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class DatabaseImporterService
 {
@@ -37,19 +37,12 @@ class DatabaseImporterService
 
             $queryBuilder = $connection->createQueryBuilder();
             foreach ($rows as $row) {
-
-                // ---------------------------------------------------------
-                // UPDATE: Conditions mit AND (&&) Support prüfen
-                // ---------------------------------------------------------
                 if (isset($row['_condition'])) {
                     $conditionString = (string)$row['_condition'];
-
-                    // Zerlege String wie "news && intropage" in Einzelteile
                     $conditions = GeneralUtility::trimExplode('&&', $conditionString, true);
 
                     $skipRow = false;
                     foreach ($conditions as $cond) {
-                        // Wenn AUCH NUR EINE Bedingung nicht im Config-Array ist (oder false ist) -> Überspringen
                         if (empty($configArray[$cond])) {
                             $skipRow = true;
                             break;
@@ -59,7 +52,6 @@ class DatabaseImporterService
                     if ($skipRow) continue;
                     unset($row['_condition']);
                 }
-                // ---------------------------------------------------------
 
                 $validRowData = [];
                 $processedRow = [];

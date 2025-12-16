@@ -5,6 +5,8 @@ namespace Tum\Installer\Domain\Model;
 
 readonly class InstallationConfig
 {
+    public string $widUpper;
+
     public function __construct(
         public SetupType $type,
         public string $navName,
@@ -21,6 +23,7 @@ readonly class InstallationConfig
         public string $parentOuUrlEn = '',
         public string $imprint = '',
         public string $accessibility = '',
+        public string $matomoId = '',
 
         // Features (Booleans)
         public bool $hasNews = false,
@@ -30,11 +33,13 @@ readonly class InstallationConfig
         public bool $hasCourses = false,
         public bool $hasVcard = false,
 
-        // Runtime Values (werden von Strategie berechnet)
+        // Runtime Values
         public ?int $targetPid = null,
         public ?string $uploadPath = null,
         public ?string $slugName = null
-    ) {}
+    ) {
+        $this->widUpper = strtoupper($this->wid);
+    }
 
     public function withUpdates(array $updates): self
     {
@@ -47,14 +52,15 @@ readonly class InstallationConfig
 
     public function toArray(): array
     {
-        // Mapping für YAML Conditions (z.B. _condition: news -> schaut auf hasNews)
         $arr = get_object_vars($this);
+
         $arr['news'] = $this->hasNews;
         $arr['intropage'] = $this->hasIntropage;
         $arr['curlContent'] = $this->hasCurlContent;
         $arr['memberList'] = $this->hasMemberList;
         $arr['courses'] = $this->hasCourses;
         $arr['vcard'] = $this->hasVcard;
+
         return $arr;
     }
 }

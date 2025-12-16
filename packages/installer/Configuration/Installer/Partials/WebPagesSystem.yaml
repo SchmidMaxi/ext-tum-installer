@@ -34,7 +34,7 @@ pages:
     pid: '0'
     tstamp: Datetime::now
     crdate: Datetime::now
-    title: '{$wid -> strtoupper()}'
+    title: '{$widUpper}'
     doktype: 254
     sorting: Sorting::next
     perms_userid: '{db::be_users::username::tumin::uid}'
@@ -80,7 +80,7 @@ sys_template:
 
       # Search box
 
-      SEARCH_BOX = 0
+      SEARCH_BOX = 1
 
 
       # FOOTER-Links from www.tum.de:

@@ -37,7 +37,8 @@
         "typo3/cms-webhooks": "^14.0",
         "typo3/cms-workspaces": "^14.0",
         "typo3/minimal": "^14",
-        "tum/installer": "@dev"
+        "tum/installer": "@dev",
+        "georgringer/news": "^14.0"
     },
     "config": {
         "allow-plugins": {

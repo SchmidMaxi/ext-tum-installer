@@ -12,7 +12,6 @@ pages:
     shortcut_mode: first_subpage
     slug: '/{$navName -> strtolower()}'
     slug_locked: 1
-    tx_sluggi_sync: 0
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page", "new_pages" ]
     perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
@@ -80,8 +79,7 @@ pages:
     pid: '{db::pages::title::{$navName -> strtolower()}::uid}'
     tstamp: Datetime::now
     sorting: Sorting::next
-    title: 'Aktuelles-{$navName}'
-    nav_title: 'Aktuelles'
+    title: 'Aktuelles'
     doktype: 1
     slug: '/aktuelles'
     perms_userid: '{db::be_users::username::tumin::uid}'
@@ -100,6 +98,7 @@ pages:
     sorting: Sorting::next
     title: 'intronav'
     doktype: 254
+    slug: '/intronav'
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page", "edit_content" ]
     perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
@@ -114,6 +113,7 @@ pages:
     sorting: Sorting::next
     title: 'Startseite'
     doktype: 4
+    slug: '/intro-startseite'
     shortcut: '{db::pages::title::Startseite::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
     shortcut_mode: 0
     perms_userid: '{db::be_users::username::tumin::uid}'
@@ -129,6 +129,7 @@ pages:
     sorting: Sorting::next
     title: 'Lehre'
     doktype: 4
+    slug: '/intro-lehre'
     shortcut: '{db::pages::title::Lehre::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
     shortcut_mode: 0
     perms_userid: '{db::be_users::username::tumin::uid}'
@@ -143,6 +144,7 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::next
     title: 'Forschung'
+    slug: '/intro-forschung'
     doktype: 4
     shortcut: '{db::pages::title::Forschung::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
     shortcut_mode: 0
@@ -158,6 +160,7 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::next
     title: 'Mitarbeiter'
+    slug: '/intro-mitarbeiter'
     doktype: 4
     shortcut: '{db::pages::title::Mitarbeiter::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
     shortcut_mode: 0
@@ -174,8 +177,9 @@ pages:
     crdate: Datetime::now
     sorting: Sorting::next
     title: 'Aktuelles'
+    slug: '/intro-aktuelles'
     doktype: 4
-    shortcut: '{db::pages::title::Aktuelles-{$navName}::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
+    shortcut: '{db::pages::title::Aktuelles::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
     shortcut_mode: 0
     perms_userid: '{db::be_users::username::tumin::uid}'
     perms_group: [ "show_page", "edit_content", "edit_page" ]
@@ -321,7 +325,7 @@ sys_template:
 
       # LANGUAGE_NAV = 0
 
-      MATOMO_ID =
+      MATOMO_ID = {$matomoId}
 
 # -----------------------------------------------------------------------------------
 # CONTENT ELEMENTE (tt_content)
@@ -376,8 +380,7 @@ tt_content:
     crdate: Datetime::now
     sorting: Sorting::next
     CType: 'textmedia'
-    header: 'Leider gibt es diese Seite nicht (mehr)!'
-    subheader: '(Fehlercode: 404)'
+    header: 'Leider gibt es diese Seite nicht (mehr)'
     bodytext: '<p>Bitte orientieren Sie sich über die unten stehende Sitemap unseres Webauftritts.</p><p>Alternativ können Sie auch direkt über die Suchfunktion der Webseite nach der gewünschten Information suchen.</p>'
     header_layout: 1
     imagecols: 1
@@ -390,15 +393,17 @@ tt_content:
     tstamp: Datetime::now
     crdate: Datetime::now
     sorting: Sorting::next
-    CType: 'menu_subpages'
+    CType: 'menu_sitemap_pages'
     header: '(subpages)'
     pages: '{db::pages::title::{$navName -> strtolower()}::uid}'
     header_layout: 100
     imagecols: 1
 
   # News Plugin
-  - _condition: news
-    pid: '{db::pages::title::Aktuelles-{$navName}::uid}'
+  -
+    _condition: news
+    # Zielseite: Aktuelles (im aktuellen Tree)
+    pid: '{db::pages::title::Aktuelles::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}'
     CType: list
     list_type: news_pi1
     header: 'News'
@@ -409,13 +414,13 @@ tt_content:
               <sheet index="sDEF">
                   <language index="lDEF">
                       <field index="settings.startingpoint">
-                          <value index="vDEF">{db::pages::title::news-system-{$navName -> strtolower()}::uid}</value>
+                          <value index="vDEF">{db::pages::title::news-system-{$navName -> strtolower()}::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}</value>
                       </field>
                       <field index="settings.detailPid">
-                          <value index="vDEF">{db::pages::title::Aktuelles-{$navName}::uid}</value>
+                          <value index="vDEF">{db::pages::title::Aktuelles::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}</value>
                       </field>
                       <field index="settings.backPid">
-                          <value index="vDEF">{db::pages::title::Aktuelles-{$navName}::uid}</value>
+                          <value index="vDEF">{db::pages::title::Aktuelles::uid::pid::{db::pages::title::{$navName -> strtolower()}::uid}}</value>
                       </field>
                       <field index="settings.topNewsFirst">
                           <value index="vDEF">1</value>

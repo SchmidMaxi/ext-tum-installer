@@ -53,6 +53,7 @@ class RunSetupCommand extends Command
             ->addOption('parent-ou-url-en', null, InputOption::VALUE_REQUIRED, 'Parent URL EN', '')
             ->addOption('imprint', null, InputOption::VALUE_REQUIRED, 'Impressum Text', '')
             ->addOption('accessibility', null, InputOption::VALUE_REQUIRED, 'Barrierefreiheit Text', '')
+            ->addOption('matomo-id', null, InputOption::VALUE_REQUIRED, 'Matomo ID', '')
 
             // Features (Flags)
             ->addOption('news', null, InputOption::VALUE_NONE, 'Installiert News System')
@@ -77,22 +78,17 @@ class RunSetupCommand extends Command
 
         $io->title("Starte TUM Installer: " . $type->value);
 
-        // Werte aus CLI holen
         $navName = (string)$input->getOption('nav-name');
         $domain = (string)$input->getOption('domain');
         $wid = (string)$input->getOption('wid');
 
-        // Archiv Defaults prüfen (falls via CLI leer gelassen)
         if ($type === SetupType::ARCHIV) {
             try {
                 $extConf = $this->extensionConfiguration->get('installer');
                 if (empty($domain)) $domain = $extConf['archivDomain'] ?? '';
-                // WID wird in der ArchivStrategy hardcoded auf w00archiv gesetzt
-            } catch (Exception $e) {
-            }
+            } catch (Exception $e) {}
         }
 
-        // DTO bauen
         $config = new InstallationConfig(
             type: $type,
             navName: $navName,
@@ -106,8 +102,9 @@ class RunSetupCommand extends Command
             parentOuNameEn: (string)$input->getOption('parent-ou-name-en'),
             parentOuUrlDe: (string)$input->getOption('parent-ou-url-de'),
             parentOuUrlEn: (string)$input->getOption('parent-ou-url-en'),
-            imprint: str_replace('\n', "\n", (string)$input->getOption('imprint')), // Zeilenumbrüche fixen
+            imprint: str_replace('\n', "\n", (string)$input->getOption('imprint')),
             accessibility: str_replace('\n', "\n", (string)$input->getOption('accessibility')),
+            matomoId: (string)$input->getOption('matomo-id'),
 
             // Features
             hasNews: (bool)$input->getOption('news'),
