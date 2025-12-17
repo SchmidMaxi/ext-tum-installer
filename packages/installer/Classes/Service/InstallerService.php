@@ -23,18 +23,11 @@ class InstallerService
         private readonly DatabaseImporterService $dbImporter,
         private readonly SiteConfigurationService $siteConfigService,
         private readonly FolderStructureService $folderService,
-        private readonly ConnectionPool $connectionPool // WICHTIG: Für den DB-Check
+        private readonly ConnectionPool $connectionPool
     ) {}
 
-    /**
-     * Prüft, ob Setup1 oder Standalone installiert werden dürfen.
-     * Gibt FALSE zurück, wenn bereits eine Haupt-Installation existiert.
-     */
     public function isSetupAllowed(SetupType $type): bool
     {
-        // Wir prüfen nur bei Setup1 und Standalone.
-        // Setup3 oder Archiv Installationen könnten theoretisch parallel laufen (je nach Logik),
-        // hier blockieren wir aber primär das Überschreiben der Root-Struktur.
         if ($type !== SetupType::SETUP1 && $type !== SetupType::STANDALONE) {
             return true;
         }
@@ -54,12 +47,10 @@ class InstallerService
             $title = $page['title'] ?? '';
             $isSiteRoot = (bool)($page['is_siteroot'] ?? false);
 
-            // 1. Check auf Setup1: Ordner "sRoot" existiert
             if ($title === 'sRoot') {
                 return false;
             }
 
-            // 2. Check auf Standalone: Eine Root-Seite existiert (die nicht Archiv heißt)
             if ($isSiteRoot && !str_starts_with($title, 'Archiv')) {
                 return false;
             }
@@ -70,13 +61,9 @@ class InstallerService
 
     public function install(InstallationConfig $initialConfig): void
     {
-        // Sicherheitscheck: Darf überhaupt installiert werden?
         if (!$this->isSetupAllowed($initialConfig->type)) {
             throw new \RuntimeException(
-                sprintf(
-                    'Installation blockiert: Es existiert bereits eine Installation (Setup1 oder Standalone). Der Typ "%s" kann nicht zusätzlich installiert werden.',
-                    $initialConfig->type->value
-                )
+                sprintf('Installation blockiert: Typ "%s" kann nicht zusätzlich installiert werden.', $initialConfig->type->value)
             );
         }
 

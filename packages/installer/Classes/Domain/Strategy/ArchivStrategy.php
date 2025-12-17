@@ -5,7 +5,6 @@ namespace Tum\Installer\Domain\Strategy;
 
 use Tum\Installer\Domain\Model\InstallationConfig;
 use Tum\Installer\Domain\Model\SetupType;
-// FIX: Wir nutzen den SiteWriter zum Schreiben
 use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -18,7 +17,6 @@ class ArchivStrategy extends AbstractStrategy
 
     public function prepare(InstallationConfig $config): InstallationConfig
     {
-        // 1. Pfad aus dem Feld 'department' lesen (z.B. "ls/lss")
         $pathInput = trim((string)$config->department);
         $pathInput = trim($pathInput, "/ \t\n\r\0\x0B");
 
@@ -26,23 +24,25 @@ class ArchivStrategy extends AbstractStrategy
             throw new \RuntimeException("Bitte geben Sie im Feld 'Department' den Zielpfad an (z.B. 'ls/lss').");
         }
 
-        // 2. Pfad auflösen
-        [$targetPid, $targetParentSlug] = $this->resolvePathByWalking($pathInput);
+        // HIER: Exakte Hierarchie-Suche: W00 -> Domain -> Kürzel -> Input-Pfad (Slug-basiert)
+        [$targetPid, $targetParentSlug] = $this->resolvePathInKuerzelLevel($pathInput);
 
-        // 3. Projekt-Daten
+        if ($targetPid === 0) {
+            throw new \RuntimeException("Konnte den Zielordner in der Struktur 'W00 -> Domain -> Kürzel -> Pfad' nicht finden oder erstellen.");
+        }
+
         $projInput = trim((string)$config->navName);
         $shortTitle = $projInput;
 
-        // 4. System-Name (navName) generieren
+        // NavName generieren
         $cleanPath = str_replace('/', '-', strtolower($pathInput));
         $cleanProj = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $projInput));
         $longNavName = $cleanPath . '-' . $cleanProj;
 
-        // 5. Absoluter Slug
+        // Slug: Parent-Slug (z.B. /domain/ed/ls/lss) + Projekt-Slug
         $projSlugPart = strtolower(preg_replace('/[^a-zA-Z0-9\-]/', '', $projInput));
         $fullSlug = rtrim($targetParentSlug, '/') . '/' . $projSlugPart;
 
-        // 6. Config Updates
         $centralArchivWid = 'w00archiv';
         $uploadPath = "1:{$centralArchivWid}/{$longNavName}/_my_direct_uploads/";
 
@@ -50,7 +50,7 @@ class ArchivStrategy extends AbstractStrategy
             'navName'    => $longNavName,
             'siteNameDe' => $shortTitle,
             'slugName'   => $fullSlug,
-            'targetPid'  => $targetPid,
+            'targetPid'  => $targetPid, // Hier wird das Archiv eingehängt
             'wid'        => $centralArchivWid,
             'uploadPath' => $uploadPath,
         ]);
@@ -63,37 +63,26 @@ class ArchivStrategy extends AbstractStrategy
 
     public function postProcess(InstallationConfig $config): void
     {
-        // 1. Root Page ID finden
         $rootPageId = $this->findPageIdBySlug($config->slugName);
 
         if ($rootPageId > 0) {
-            // 2. TypoScript schreiben
             $tsConfig = $this->generateStandardTsConfig($config, $rootPageId);
             $this->updateTsConfig($rootPageId, $tsConfig);
             $this->injectSetup1Constants($rootPageId);
-
-            // 3. SITE CONFIGURATION SCHREIBEN
             $this->createSiteConfiguration($config, $rootPageId);
         }
     }
 
-    /**
-     * Erstellt den Ordner in config/sites und die config.yaml mittels SiteWriter
-     */
     private function createSiteConfiguration(InstallationConfig $config, int $rootPageId): void
     {
-        // FIX: SiteWriter Instanz holen
         $siteWriter = GeneralUtility::makeInstance(SiteWriter::class);
+        $identifier = $config->navName;
 
-        $identifier = $config->navName; // z.B. ls-lss-geomorphologie
-
-        // Base Pfad berechnen
         $base = $config->slugName;
         if (!empty($config->domain)) {
             $base = rtrim($config->domain, '/') . $base;
         }
 
-        // Konfiguration array
         $newConfig = [
             'rootPageId' => $rootPageId,
             'base' => $base,
@@ -131,74 +120,151 @@ class ArchivStrategy extends AbstractStrategy
             'imports' => [],
         ];
 
-        // Schreibt config/sites/<identifier>/config.yaml
         try {
             $siteWriter->write($identifier, $newConfig);
         } catch (\Exception $e) {
-            // Falls Schreiben fehlschlägt (z.B. Rechte), loggen wir es nur,
-            // damit der Installer nicht hart abbricht.
-            // (In einer idealen Welt Logger nutzen, hier lassen wir es durchlaufen)
+            // Logging
         }
     }
 
-    // --- Path Walker (unverändert) ---
-    private function resolvePathByWalking(string $path): array
+    // --- Core Logic: Setup1 Path Walker ---
+
+    /**
+     * Findet die Hierarchie: W00 -> Domain Root -> [Kürzel] -> [Input Path]
+     */
+    private function resolvePathInKuerzelLevel(string $path): array
     {
+        $qb = $this->connectionPool->getQueryBuilderForTable('pages');
+
+        // 1. Suche 'W00' (oder 'w00') auf Root-Ebene (PID 0)
+        // FIX: 'or()' statt 'orX()' verwenden
+        $w00Rows = $qb->select('uid', 'title')
+            ->from('pages')
+            ->where(
+                $qb->expr()->eq('pid', 0),
+                $qb->expr()->or(
+                    $qb->expr()->eq('title', $qb->createNamedParameter('W00')),
+                    $qb->expr()->eq('title', $qb->createNamedParameter('w00')),
+                    $qb->expr()->like('title', $qb->createNamedParameter('W00%')),
+                    $qb->expr()->like('title', $qb->createNamedParameter('w00%'))
+                ),
+                $qb->expr()->eq('deleted', 0)
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        $w00Uid = 0;
+
+        if (!empty($w00Rows)) {
+            $w00Uid = (int)$w00Rows[0]['uid'];
+        }
+
+        if ($w00Uid === 0) {
+            throw new \RuntimeException("Fehler: Kein Ordner 'W00' oder 'w00' auf Root-Ebene gefunden.");
+        }
+
+        // 2. Suche die Domain-Ebene (Site Root) INNERHALB von W00
+        $domainRoot = $qb->select('uid', 'slug')
+            ->from('pages')
+            ->where(
+                $qb->expr()->eq('pid', $w00Uid),
+                $qb->expr()->eq('is_siteroot', 1),
+                $qb->expr()->eq('deleted', 0)
+            )
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        if (!$domainRoot) {
+            throw new \RuntimeException("Fehler: Keine Domain-Seite (Site Root) innerhalb von 'W00' (UID: $w00Uid) gefunden.");
+        }
+
+        // 3. Suche die KÜRZEL-EBENE (Das erste Kind der Domain Root)
+        // Wir nehmen das erste verfügbare Element (Seite/Ordner/Shortcut)
+        $kuerzelRoot = $qb->select('uid', 'slug')
+            ->from('pages')
+            ->where(
+                $qb->expr()->eq('pid', $domainRoot['uid']),
+                $qb->expr()->eq('deleted', 0)
+            )
+            ->orderBy('sorting', 'ASC') // Den ersten in der Liste nehmen
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        if (!$kuerzelRoot) {
+            throw new \RuntimeException("Fehler: Es wurde kein Unterordner (Kürzel-Ebene) unterhalb der Domain-Root (UID: {$domainRoot['uid']}) gefunden.");
+        }
+
+        // STARTPUNKT: Innerhalb des Kürzel-Ordners
+        $currentPid = (int)$kuerzelRoot['uid'];
+        $currentSlug = (string)$kuerzelRoot['slug'];
+
+        // 4. Input Pfad (z.B. "ls/lss") ablaufen und fehlende Ordner erstellen
         $segments = explode('/', $path);
-        $currentPid = 0;
-        $currentSlug = '';
-        $firstSegment = true;
 
         foreach ($segments as $segment) {
+            $segment = trim($segment);
             if (empty($segment)) continue;
-            $child = null;
 
-            if ($firstSegment && $currentPid === 0) {
-                $child = $this->findNodeGlobal($segment);
-                $firstSegment = false;
-            } else {
-                $child = $this->findChildInPid($currentPid, $segment);
-            }
+            // Suche primär nach SLUG Segment
+            $child = $this->findChildInPid($currentPid, $segment);
 
             if (!$child) {
+                // Nicht gefunden -> Anlegen
                 $child = $this->createStandardPage($currentPid, $segment, $currentSlug);
             }
+
+            // Abstieg in die nächste Ebene
             $currentPid = (int)$child['uid'];
             $currentSlug = (string)$child['slug'];
         }
-        return [$currentPid, $currentSlug];
-    }
 
-    private function findNodeGlobal(string $name): ?array
-    {
-        $node = $this->findPageByTitleGlobal($name);
-        if ($node) return $node;
-        return $this->findPageBySlugSuffixGlobal('/' . strtolower($name));
+        // Rückgabe: ID des letzten Ordners (z.B. 'lss')
+        return [$currentPid, $currentSlug];
     }
 
     private function findChildInPid(int $pid, string $segment): ?array
     {
         $qb = $this->connectionPool->getQueryBuilderForTable('pages');
-        $children = $qb->select('uid', 'title', 'slug')->from('pages')
-            ->where($qb->expr()->eq('pid', $qb->createNamedParameter($pid)), $qb->expr()->eq('deleted', 0))
-            ->executeQuery()->fetchAllAssociative();
 
-        $search = strtolower($segment);
+        // Wir laden alle Kinder und prüfen PHP-seitig, um komplexe SQL-Operationen zu vermeiden
+        $children = $qb->select('uid', 'title', 'slug')->from('pages')
+            ->where(
+                $qb->expr()->eq('pid', $qb->createNamedParameter($pid)),
+                $qb->expr()->eq('deleted', 0)
+            )
+            ->executeQuery()
+            ->fetchAllAssociative();
+
         $searchSlugPart = strtolower(preg_replace('/[^a-zA-Z0-9\-]/', '', $segment));
+        $searchTitle = strtolower($segment);
 
         foreach ($children as $child) {
-            if (strtolower((string)($child['title'] ?? '')) === $search) return $child;
             $slug = strtolower((string)($child['slug'] ?? ''));
-            if (str_ends_with($slug, '/' . $searchSlugPart)) return $child;
+
+            // Priorität 1: Slug Match (Endet auf /segment)
+            if (str_ends_with($slug, '/' . $searchSlugPart)) {
+                return $child;
+            }
         }
+
+        // Priorität 2: Fallback auf Titel (falls Slug noch nicht generiert oder abweichend)
+        foreach ($children as $child) {
+            if (strtolower((string)($child['title'] ?? '')) === $searchTitle) {
+                return $child;
+            }
+        }
+
         return null;
     }
 
     private function createStandardPage(int $pid, string $title, string $parentSlug): array
     {
         $slugSuffix = '/' . strtolower(preg_replace('/[^a-zA-Z0-9\-]/', '', $title));
-        $newSlug = ($pid === 0) ? $slugSuffix : rtrim($parentSlug, '/') . $slugSuffix;
+        $newSlug = rtrim($parentSlug, '/') . $slugSuffix;
 
+        // Collision Check
         if ($this->findPageIdBySlug($newSlug) > 0) {
             $newSlug .= '-' . substr(md5((string)time()), 0, 4);
         }
@@ -214,34 +280,12 @@ class ArchivStrategy extends AbstractStrategy
                 'tstamp' => time(),
                 'perms_userid' => 1,
                 'perms_group' => 1,
+                'hidden' => 0 // Sichtbar!
             ])
             ->executeStatement();
 
         $newUid = (int)$this->connectionPool->getConnectionForTable('pages')->lastInsertId();
         return ['uid' => $newUid, 'slug' => $newSlug, 'title' => $title];
-    }
-
-    // --- Helper ---
-    private function findPageByTitleGlobal(string $title): ?array
-    {
-        $qb = $this->connectionPool->getQueryBuilderForTable('pages');
-        $row = $qb->select('uid', 'slug')->from('pages')
-            ->where($qb->expr()->eq('title', $qb->createNamedParameter($title)), $qb->expr()->eq('deleted', 0))
-            ->setMaxResults(1)->executeQuery()->fetchAssociative();
-        return $row ?: null;
-    }
-
-    private function findPageBySlugSuffixGlobal(string $suffix): ?array
-    {
-        $qb = $this->connectionPool->getQueryBuilderForTable('pages');
-        $rows = $qb->select('uid', 'slug')->from('pages')
-            ->where($qb->expr()->like('slug', $qb->createNamedParameter('%' . $suffix)), $qb->expr()->eq('deleted', 0))
-            ->setMaxResults(10)->executeQuery()->fetchAllAssociative();
-        $search = strtolower($suffix);
-        foreach ($rows as $row) {
-            if (str_ends_with(strtolower((string)$row['slug']), $search)) return $row;
-        }
-        return null;
     }
 
     private function findPageIdBySlug(string $slug): int
