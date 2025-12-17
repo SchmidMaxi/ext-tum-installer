@@ -1,0 +1,206 @@
+pages:
+  # -----------------------------------------------------------------------------------
+  # ARCHIV ROOT PAGE
+  # -----------------------------------------------------------------------------------
+  - pid: '{$targetPid}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    title: '{$siteNameDe}'
+    slug: '{$slugName}'
+    sorting: Sorting::next
+    doktype: 4
+    is_siteroot: '1'
+    shortcut_mode: first_subpage
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "new_pages" ]
+    perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+
+  # -----------------------------------------------------------------------------------
+  # UNTERSEITEN (Lookup via SLUG)
+  # -----------------------------------------------------------------------------------
+
+  # Startseite
+  -
+    # NEU: Suche nach Slug ist präziser und schneller
+    pid: '{db::pages::slug::{$slugName}::uid}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: 'Startseite'
+    doktype: 1
+    slug: '/startseite'
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "edit_content", "edit_page", "new_pages" ]
+    perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+    tsconfig_includes: '{$introTsConfig}'
+
+  # Lehre
+  -
+    pid: '{db::pages::slug::{$slugName}::uid}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: 'Lehre'
+    doktype: 1
+    slug: '/lehre'
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "edit_content", "edit_page", "delete_page", "new_pages" ]
+    perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+
+  # Forschung
+  -
+    pid: '{db::pages::slug::{$slugName}::uid}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: 'Forschung'
+    doktype: 1
+    slug: '/forschung'
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "edit_content", "edit_page", "delete_page", "new_pages" ]
+    perms_groupid: '{db::be_groups::title::pgrp-{$wid -> strtoupper()}-{$navName -> strtolower()}::uid}'
+
+  # -----------------------------------------------------------------------------------
+  # FUNKTIONSEITEN & FOOTER (fp-...)
+  # -----------------------------------------------------------------------------------
+
+  # fp-Ordner
+  -
+    pid: '{db::pages::slug::{$slugName}::uid}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: 'fp-{$siteNameDe}'
+    doktype: 254
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page" ]
+    perms_groupid: '{db::be_groups::title::func-{$wid -> strtoupper()}-fp-{$navName -> strtolower()}::uid}'
+
+  # Impressum
+  -
+    # Suche IN fp-{$siteNameDe} (Titel-Suche hier okay, da Ordnername unique durch Variable ist)
+    # ABER wir müssen den Parent (fp-...) erst finden.
+    # Um sicher zu gehen: Wir nutzen verschachtelte Suche
+    pid: '{db::pages::title::fp-{$siteNameDe}::uid::pid::{db::pages::slug::{$slugName}::uid}}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: 'Impressum'
+    doktype: 1
+    slug: '/impressum'
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "edit_content" ]
+    perms_groupid: '{db::be_groups::title::func-{$wid -> strtoupper()}-fp-{$navName -> strtolower()}::uid}'
+
+  # Kontakt-rechts
+  -
+    pid: '{db::pages::title::fp-{$siteNameDe}::uid::pid::{db::pages::slug::{$slugName}::uid}}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: 'Kontakt-rechts'
+    doktype: 1
+    slug: '/kontakt-rechts'
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "edit_content", "edit_page", "new_pages" ]
+    perms_groupid: '{db::be_groups::title::func-{$wid -> strtoupper()}-fp-{$navName -> strtolower()}::uid}'
+
+  # Suche
+  -
+    pid: '{db::pages::title::fp-{$siteNameDe}::uid::pid::{db::pages::slug::{$slugName}::uid}}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: 'Suche'
+    doktype: 1
+    slug: '/suche'
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_groupid: '{db::be_groups::title::func-{$wid -> strtoupper()}-fp-{$navName -> strtolower()}::uid}'
+
+  # 404-notfound
+  -
+    pid: '{db::pages::title::fp-{$siteNameDe}::uid::pid::{db::pages::slug::{$slugName}::uid}}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: '404-notfound-{$siteNameDe}'
+    doktype: 1
+    slug: '/404-notfound-{$siteNameDe}'
+    perms_userid: '{db::be_users::username::tumin::uid}'
+    perms_group: [ "show_page", "edit_content" ]
+    perms_groupid: '{db::be_groups::title::func-{$wid -> strtoupper()}-fp-{$navName -> strtolower()}::uid}'
+
+# -----------------------------------------------------------------------------------
+# SYSTEM TEMPLATES (TypoScript)
+# -----------------------------------------------------------------------------------
+sys_template:
+  -
+    pid: '{db::pages::slug::{$slugName}::uid}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    title: '+ext-{$siteNameDe}'
+    root: 1
+    clear: 1
+
+    constants: >
+
+      ### Common
+      HOMEPID = {db::pages::title::Startseite::uid::pid::{db::pages::slug::{$slugName}::uid}}
+
+      IMPRESSUMPID = {db::pages::title::Impressum::uid::pid::{db::pages::title::fp-{$siteNameDe}::uid::pid::{db::pages::slug::{$slugName}::uid}}}
+
+      PRIVACY_URL = {db::pages::title::Datenschutz::uid::pid::{db::pages::title::fp-{$siteNameDe}::uid::pid::{db::pages::slug::{$slugName}::uid}}}
+
+      CONTACTPID = {db::pages::title::Kontakt-rechts::uid::pid::{db::pages::title::fp-{$siteNameDe}::uid::pid::{db::pages::slug::{$slugName}::uid}}}
+
+      SEARCHRESULTSPID = {db::pages::title::Suche::uid::pid::{db::pages::title::fp-{$siteNameDe}::uid::pid::{db::pages::slug::{$slugName}::uid}}}
+
+      ACCESSPID = {db::pages::title::Barrierefreiheit::uid::pid::{db::pages::title::fp-{$siteNameDe}::uid::pid::{db::pages::slug::{$slugName}::uid}}}
+
+      MATOMO_ID = {$matomoId}
+
+# -----------------------------------------------------------------------------------
+# CONTENT ELEMENTE (tt_content)
+# -----------------------------------------------------------------------------------
+tt_content:
+  # Impressum content
+  -
+    pid: '{db::pages::title::Impressum::uid::pid::{db::pages::title::fp-{$siteNameDe}::uid::pid::{db::pages::slug::{$slugName}::uid}}}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    CType: 'textmedia'
+    header: '(Inhaltlich verantwortlich)'
+    bodytext: '<p>{$imprint -> formatImprint()}</p>'
+    header_layout: 100
+    imagecols: 1
+    imagewidth: 0
+    imageheight: 0
+
+  # 404 not found content
+  -
+    pid: '{db::pages::title::404-notfound-{$siteNameDe}::uid::pid::{db::pages::title::fp-{$siteNameDe}::uid::pid::{db::pages::slug::{$slugName}::uid}}}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    CType: 'textmedia'
+    header: 'Leider gibt es diese Seite nicht (mehr)'
+    bodytext: '<p>Bitte orientieren Sie sich über die unten stehende Sitemap unseres Webauftritts.</p><p>Alternativ können Sie auch direkt über die Suchfunktion der Webseite nach der gewünschten Information suchen.</p>'
+    header_layout: 1
+    imagecols: 1
+    imagewidth: 0
+    imageheight: 0
+
+  # 404 not found show subpages
+  -
+    pid: '{db::pages::title::404-notfound-{$siteNameDe}::uid::pid::{db::pages::title::fp-{$siteNameDe}::uid::pid::{db::pages::slug::{$slugName}::uid}}}'
+    tstamp: Datetime::now
+    crdate: Datetime::now
+    sorting: Sorting::next
+    CType: 'menu_sitemap_pages'
+    header: '(subpages)'
+    # Zeigt auf Root Page
+    pages: '{db::pages::slug::{$slugName}::uid}'
+    header_layout: 100
+    imagecols: 1

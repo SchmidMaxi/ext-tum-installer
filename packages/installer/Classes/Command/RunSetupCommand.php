@@ -39,7 +39,7 @@ class RunSetupCommand extends Command
             ->addOption('wid', null, InputOption::VALUE_REQUIRED, 'WID', '')
             ->addOption('matomo-id', null, InputOption::VALUE_REQUIRED, 'Matomo ID', '')
             ->addOption('parent-ou', null, InputOption::VALUE_REQUIRED, 'Parent School/Einheit (z.B. CIT)', '')
-            ->addOption('department', null, InputOption::VALUE_REQUIRED, 'Department (nur für Archiv)', '')
+            ->addOption('installPath', null, InputOption::VALUE_REQUIRED, 'Installationspfad (nur für Archiv)', '')
             ->addOption('site-name-de', null, InputOption::VALUE_REQUIRED, 'Seitenname DE', '')
             ->addOption('site-name-en', null, InputOption::VALUE_REQUIRED, 'Seitenname EN', '')
             ->addOption('parent-ou-name-de', null, InputOption::VALUE_REQUIRED, 'Parent Name DE', '')
@@ -86,7 +86,7 @@ class RunSetupCommand extends Command
             domain: $domain,
             wid: $wid,
             parentOu: (string)$input->getOption('parent-ou'),
-            department: (string)$input->getOption('department'),
+            installPath: (string)$input->getOption('installPath'),
             siteNameDe: (string)$input->getOption('site-name-de'),
             siteNameEn: (string)$input->getOption('site-name-en'),
             parentOuNameDe: (string)$input->getOption('parent-ou-name-de'),

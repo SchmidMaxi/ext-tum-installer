@@ -12,9 +12,11 @@ readonly class InstallationConfig
         public string $navName,
         public string $domain,
         public string $wid,
-        // Optional Inputs
+
         public string $parentOu = '',
+        // ZURÜCK: Wir nutzen wieder department (enthält bei Archiv den Pfad "ls/lss")
         public string $department = '',
+
         public string $siteNameDe = '',
         public string $siteNameEn = '',
         public string $parentOuNameDe = '',
@@ -25,7 +27,7 @@ readonly class InstallationConfig
         public string $accessibility = '',
         public string $matomoId = '',
 
-        // Features (Booleans)
+        // Features
         public bool $hasNews = false,
         public bool $hasIntropage = false,
         public bool $hasCurlContent = false,
@@ -44,10 +46,7 @@ readonly class InstallationConfig
     public function withUpdates(array $updates): self
     {
         $args = get_object_vars($this);
-
-        if (isset($args['widUpper'])) {
-            unset($args['widUpper']);
-        }
+        if (isset($args['widUpper'])) unset($args['widUpper']);
 
         foreach ($updates as $key => $value) {
             $args[$key] = $value;
@@ -58,14 +57,12 @@ readonly class InstallationConfig
     public function toArray(): array
     {
         $arr = get_object_vars($this);
-
         $arr['news'] = $this->hasNews;
         $arr['intropage'] = $this->hasIntropage;
         $arr['curlContent'] = $this->hasCurlContent;
         $arr['memberList'] = $this->hasMemberList;
         $arr['courses'] = $this->hasCourses;
         $arr['vcard'] = $this->hasVcard;
-
         return $arr;
     }
 }

@@ -36,7 +36,7 @@
                 <label class="form-label">Domain</label>
                 <f:form.textfield name="domain" class="form-control" value="web.typo3.tum.de" required="1" />
             </div>
-            <div class="col-md-6 mb-3" data-show-for="Setup1 Setup3">
+            <div class="col-md-6 mb-3" data-show-for="Setup1 Setup3 Archiv">
                 <label class="form-label">Projekt Kürzel (navName)</label>
                 <f:form.textfield name="navName" class="form-control" value="t3" required="1" />
             </div>
@@ -60,8 +60,13 @@
                 <f:form.select name="parentOu" prependOptionLabel="" options="{'CIT':'CIT', 'ED':'ED', 'GS':'GS', 'HFP':'HFP', 'LS':'LS', 'MH':'MH', 'MGT':'MGT', 'NAT':'NAT', 'SOT':'SOT'}" class="form-select" />
             </div>
             <div class="col-md-6 mb-3" data-show-for="Archiv">
-                <label class="form-label">Department</label>
-                <f:form.textfield name="Department" class="form-control" placeholder="Z.B. lss" />
+                <label class="form-label">
+                    Installationspfad (Archiv) <span class="text-muted">(z.B. ls/lss)</span>
+                </label>
+                <f:form.textfield name="department" class="form-control" placeholder="ls/lss" />
+                <div class="form-text">
+                    Hier wird die Ordnerstruktur (Standard-Seiten) angelegt oder gesucht.
+                </div>
             </div>
         </div>
         <div class="row mb-4">
@@ -103,8 +108,8 @@ typo3@tum.de" />
             </div>
         </div>
 
-        <h3>4. Erweiterungen & Features</h3>
-        <div class="mb-4">
+        <h3 data-show-for="Setup1 Setup3 Standalone">4. Erweiterungen & Features</h3>
+        <div class="mb-4" data-show-for="Setup1 Setup3 Standalone">
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-check">
@@ -139,10 +144,10 @@ typo3@tum.de" />
             </div>
         </div>
 
-        <h3>5. Tracking</h3>
-        <div class="mb-4">
+        <h3 data-show-for="Setup1 Setup3 Standalone">5. Tracking</h3>
+        <div class="mb-4" data-show-for="Setup1 Setup3 Standalone">
             <div class="row">
-                <div class="col-md-6 mb-3" data-show-for="Setup1 Setup3 Standalone">
+                <div class="col-md-6 mb-3" >
                     <label class="form-label">Matomo ID</label>
                     <f:form.textfield name="matomoId" class="form-control" placeholder="z.B. 17" />
                 </div>

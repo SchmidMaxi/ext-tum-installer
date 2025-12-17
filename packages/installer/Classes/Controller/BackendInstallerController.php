@@ -33,7 +33,9 @@ class BackendInstallerController extends ActionController
         string $domain = '',
         string $wid = '',
         string $parentOu = '',
+        // ZURÜCK: department
         string $department = '',
+
         string $siteNameDe = '',
         string $siteNameEn = '',
         string $parentOuNameDe = '',
@@ -43,6 +45,7 @@ class BackendInstallerController extends ActionController
         string $imprint = '',
         string $accessibility = '',
         string $matomoId = '',
+
         int $news = 0,
         int $intropage = 0,
         int $curlContent = 0,
@@ -55,17 +58,11 @@ class BackendInstallerController extends ActionController
             $type = SetupType::tryFrom($setupName);
             if (!$type) throw new \InvalidArgumentException("Ungültiger Setup Typ: $setupName");
 
-            // NEU: Vorab-Check ob Installation erlaubt ist
             if (!$this->installerService->isSetupAllowed($type)) {
-                $this->addFlashMessage(
-                    'Es existiert bereits eine Haupt-Installation (Setup1 oder Standalone). Eine weitere Installation ist nicht möglich.',
-                    'Installation blockiert',
-                    ContextualFeedbackSeverity::WARNING
-                );
+                $this->addFlashMessage('Installation blockiert: Haupt-Installation existiert bereits.', 'Fehler', ContextualFeedbackSeverity::WARNING);
                 return $this->redirect('index');
             }
 
-            // Archiv Override
             if ($type === SetupType::ARCHIV) {
                 try {
                     $extConf = $this->extensionConfiguration->get('installer');
@@ -79,7 +76,8 @@ class BackendInstallerController extends ActionController
                 domain: $domain,
                 wid: $wid,
                 parentOu: $parentOu,
-                department: $department,
+                department: $department, // Hier wird der Pfad übergeben (bei Archiv)
+
                 siteNameDe: $siteNameDe ?: $navName,
                 siteNameEn: $siteNameEn ?: $navName . ' (EN)',
                 parentOuNameDe: $parentOuNameDe,
@@ -89,6 +87,7 @@ class BackendInstallerController extends ActionController
                 imprint: $imprint,
                 accessibility: $accessibility,
                 matomoId: $matomoId,
+
                 hasNews: (bool)$news,
                 hasIntropage: (bool)$intropage,
                 hasCurlContent: (bool)$curlContent,
@@ -99,11 +98,7 @@ class BackendInstallerController extends ActionController
 
             $this->installerService->install($config);
 
-            $this->addFlashMessage(
-                sprintf('Installation "%s" erfolgreich durchgeführt!', $setupName),
-                'Erfolg',
-                ContextualFeedbackSeverity::OK
-            );
+            $this->addFlashMessage(sprintf('Installation "%s" erfolgreich!', $setupName), 'Erfolg', ContextualFeedbackSeverity::OK);
 
         } catch (\Exception $e) {
             $this->addFlashMessage($e->getMessage(), 'Fehler', ContextualFeedbackSeverity::ERROR);
