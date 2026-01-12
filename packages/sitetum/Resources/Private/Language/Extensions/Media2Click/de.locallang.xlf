@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2023-08-01T10:18:00Z" target-language="de">
+        <body>
+            <trans-unit id="overlay.description">
+                <source>A video from an external provider is stored here. To protect your privacy, the video will only be loaded from there after you explicitly request it</source>
+                <target>Hier ist ein Video über einen externen Anbieter hinterlegt. Um Ihre Privatsphäre zu schützen, wird das Video erst nach expliziter Aufforderung von dort geladen.</target>
+            </trans-unit>
+            <trans-unit id="placeHolderVideo.youtube">
+                <source><![CDATA[By clicking, you agree to Google's <a href="https://policies.google.com/privacy?hl=de" target="_blank">privacy policy</a> and our privacy policy.]]></source>
+                <target><![CDATA[Durch Klicken erklären Sie sich mit der <a href="https://policies.google.com/privacy?hl=de" target="_blank">Datenschutzerklärung</a> von Google und unserer Datenschutzerklärung einverstanden.]]></target>
+            </trans-unit>
+            <trans-unit id="placeHolderVideo.vimeo">
+                <source><![CDATA[By clicking, you agree to the <a href="https://vimeo.com/cookie_policy" target="_blank">privacy policy</a> of Vimeo and our privacy policy.]]></source>
+                <target><![CDATA[Durch Klicken erklären Sie sich mit der <a href="https://vimeo.com/cookie_policy" target="_blank">Datenschutzerklärung</a> von Vimeo und und unserer Datenschutzerklärung einverstanden.]]></target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

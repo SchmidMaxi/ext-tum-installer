@@ -1,0 +1,34 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:tum="http://typo3.org/ns/ElementareTeilchen/Sitetum/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<f:layout name="Default"/>
+
+<f:section name="secMain">
+    <main id="page-body">
+        <div class="container  c-content-area">
+
+            <div class="row">
+
+                <div class="col-md-3 col-xl-2  c-content-area__sitenav">
+                    <f:render partial="Menu" arguments="{_all}"/>
+                </div>
+
+                <div class="col-md-6 col-xl-8  c-content-area__main js-link-checker">
+                    <f:render partial="MenuBreadcrumb" arguments="{_all}"/>
+                    {tum:variableSet(name: 'pageLayout', value: 'Layout3ColMain')}
+                    <f:render partial="ContentMain" arguments="{_all}"/>
+                </div>
+
+                <div class="col-md-3 col-xl-2  c-content-area__aside js-link-checker">
+                    {tum:variableSet(name: 'pageLayout', value: 'Layout3ColAside')}
+                    <f:render partial="Sidebar" arguments="{_all}"/>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+</f:section>
+
+</html>

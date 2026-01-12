@@ -1,0 +1,71 @@
+routeEnhancers:
+  News:
+    type: Extbase
+    extension: News
+    plugin: Pi1
+    defaultController: 'News::list'
+    routes:
+      - routePath: '/'
+        _controller: 'News::list'
+      - routePath: '/browse/{page}'
+        _controller: 'News::list'
+        _arguments:
+          page: 'currentPage'
+        requirements:
+          page: '\d+'
+      - routePath: '/article/{news-title}'
+        _controller: 'News::detail'
+        _arguments:
+          news-title: news
+      - routePath: '/select/{category-name}'
+        _controller: 'News::list'
+        _arguments:
+          category-name: 'overwriteDemand/categories'
+      - routePath: '/{tag-name}'
+        _controller: 'News::list'
+        _arguments:
+          tag-name: 'overwriteDemand/tags'
+      - routePath: '/archive/{date-year}/{date-month}'
+        _controller: 'News::list'
+        _arguments:
+          date-year: 'overwriteDemand/year'
+          date-month: 'overwriteDemand/month'
+          page: 'currentPage'
+        requirements:
+          date-year: '\d+'
+    aspects:
+      news-title:
+        type: PersistedAliasMapper
+        tableName: tx_news_domain_model_news
+        routeFieldName: path_segment
+      page:
+        type: StaticRangeMapper
+        start: '1'
+        end: '1000'
+      category-name:
+        type: PersistedAliasMapper
+        tableName: sys_category
+        routeFieldName: slug
+      tag-name:
+        type: PersistedAliasMapper
+        tableName: tx_news_domain_model_tag
+        routeFieldName: slug
+      date-month:
+        type: StaticValueMapper
+        map:
+          january: '01'
+          february: '02'
+          march: '03'
+          april: '04'
+          may: '05'
+          june: '06'
+          july: '07'
+          august: '08'
+          september: '09'
+          october: '10'
+          november: '11'
+          december: '12'
+      date-year:
+        type: StaticRangeMapper
+        start: '2000'
+        end: '2035'

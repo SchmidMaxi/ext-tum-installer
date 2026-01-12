@@ -1,0 +1,9 @@
+# Load default processing options
+imports:
+  - { resource: "EXT:sitetum/Configuration/RTE/Editor/sitetum.yaml" }
+
+editor:
+  config:
+    toolbar:
+      items:
+        - { name: 'source', items: ['Source'] }

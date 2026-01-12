@@ -1,0 +1,119 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+	<f:section name="secImpressum">
+		<f:if condition="{settings.IMPRESSUM_LANGUAGE} == 'multi'">
+			<f:then>
+				<f:render section="de" arguments="{_all}" />
+				<hr />
+				<f:render section="en" arguments="{_all}" />
+			</f:then>
+			<f:else>
+				<f:if condition="{SITE_LANGUAGE} == 'en'">
+					<f:then>
+						<f:render section="en" arguments="{_all}" />
+					</f:then>
+					<f:else>
+						<f:render section="de" arguments="{_all}" />
+					</f:else>
+				</f:if>
+			</f:else>
+		</f:if>
+	</f:section>
+
+	<f:section name="de">
+		<div lang="de">
+			<h1>Impressum</h1>
+			<h2>Herausgeber</h2>
+			<p>Technische Universität München<br /> Arcisstraße 21<br /> 80333 München<br /> Telefon: +4989289-01<br /> poststelle@tum.de</p>
+
+			<h2>Rechtsform und Vertretung</h2>
+			<p>Die Technische Universität München ist eine Körperschaft des Öffentlichen Rechts und staatliche Einrichtung (Art 4 Abs 1 BayHIG). Sie wird gesetzlich vertreten durch den Präsidenten Prof. Dr. Thomas F. Hofmann.</p>
+
+			<h2>Zuständige Aufsichtsbehörde</h2>
+			<p>Bayerisches Staatsministerium für Wissenschaft und Kunst</p>
+
+			<h2>Umsatzsteuer&shy;identifikations&shy;nummer</h2>
+			<p>DE811193231 (gemäß § 27a Umsatzsteuergesetz )</p>
+
+			<h2>Inhaltlich verantwortlich</h2>
+			{f:cObject(typoscriptObjectPath: 'lib.content.iv')}
+			<p>Namentlich gekennzeichnete Internetseiten geben die Auffassungen und Erkenntnisse der genannten Personen wieder.</p>
+
+			<h2>Technische Umsetzung</h2>
+			<p>Dieser Webauftritt ist mit dem Web Content Management System
+				<a href="https://typo3.org/">TYPO3</a> umgesetzt und ist ein Angebot der Zentrale Informationstechnik (ZIT) der TUM.
+			</p>
+			<p>
+				<em><strong>Technischer</strong></em> Ansprechpartner für dieses TYPO3-Angebot ist das TYPO3-Team der ZIT – erreichbar unter
+				<a href="mailto:typo3@tum.de" title="per E-Mail">typo3@tum.de</a>. Für Einbau und Verwaltung der
+				<em><strong>Inhalte</strong></em> sind die jeweiligen Inhaber des Webauftritts zuständig.
+			</p>
+
+			<h2>Nutzungsbedingungen</h2>
+			<p>Texte, Bilder, Grafiken sowie die Gestaltung dieses Webauftritts können dem Urheberrecht unterliegen. Nicht urheberrechtlich geschützt sind nach § 5 des Urheberrechtsgesetz (UrhG)</p>
+			<ul>
+				<li>Gesetze, Verordnungen, amtliche Erlasse und Bekanntmachungen sowie Entscheidungen und amtlich verfasste Leitsätze zu Entscheidungen und</li>
+				<li>andere amtliche Werke, die im amtlichen Interesse zur allgemeinen Kenntnisnahme veröffentlicht worden sind, mit der Einschränkung, dass die Bestimmungen über Änderungsverbot und Quellenangabe in § 62 Abs. 1 bis 3 und § 63 Abs. 1 und 2 UrhG entsprechend anzuwenden sind.</li>
+			</ul>
+			<p>Als Privatperson dürfen Sie urheberrechtlich geschütztes Material zum privaten und sonstigen eigenen Gebrauch im Rahmen des § 53 UrhG verwenden. Eine Vervielfältigung oder Verwendung urheberrechtlich geschützten Materials dieser Seiten oder Teilen davon in anderen elektronischen oder gedruckten Publikationen und deren Veröffentlichung ist nur mit unserer Einwilligung gestattet. Diese Einwilligung erteilen auf Anfrage die für den Inhalt Verantwortlichen. Der Nachdruck und die Auswertung von Pressemitteilungen und Reden sind mit Quellenangabe allgemein gestattet.</p>
+			<p>Weiterhin können Texte, Bilder, Grafiken und sonstige Dateien ganz oder teilweise dem Urheberrecht Dritter unterliegen. Auch über das Bestehen möglicher Rechte Dritter geben Ihnen die für den Inhalt Verantwortlichen nähere Auskünfte.</p>
+
+			<h2>Haftungsausschluss</h2>
+			<p>Alle in diesem Webauftritt bereitgestellten Informationen haben wir nach bestem Wissen und Gewissen erarbeitet und geprüft. Eine Gewähr für die jederzeitige Aktualität, Richtigkeit, Vollständigkeit und Verfügbarkeit der bereit gestellten Informationen können wir allerdings nicht übernehmen. Ein Vertragsverhältnis mit den Nutzern des Webauftritts kommt nicht zustande.</p>
+			<p>Wir haften nicht für Schäden, die durch die Nutzung dieses Webauftritts entstehen. Dieser Haftungsausschluss gilt nicht, soweit die Vorschriften des § 839 BGB (Haftung bei Amtspflichtverletzung) einschlägig sind. Für etwaige Schäden, die beim Aufrufen oder Herunterladen von Daten durch Schadsoftware oder der Installation oder Nutzung von Software verursacht werden, übernehmen wir keine Haftung.</p>
+
+			<h2>Links</h2>
+			<p>Von unseren eigenen Inhalten sind Querverweise („Links“) auf die Webseiten anderer Anbieter zu unterscheiden. Durch diese Links ermöglichen wir lediglich den Zugang zur Nutzung fremder Inhalte nach § 7 Digitale Dienste Gesetz. Bei der erstmaligen Verknüpfung mit diesen Internetangeboten haben wir diese fremden Inhalte daraufhin überprüft, ob durch sie eine mögliche zivilrechtliche oder strafrechtliche Verantwortlichkeit ausgelöst wird. Wir können diese fremden Inhalte aber nicht ständig auf Veränderungen überprüfen und daher auch keine Verantwortung dafür übernehmen. Für illegale, fehlerhafte oder unvollständige Inhalte und insbesondere für Schäden, die aus der Nutzung oder Nichtnutzung von Informationen Dritter entstehen, haftet allein der jeweilige Anbieter der Seite.</p>
+
+		</div>
+	</f:section>
+
+	<f:section name="en">
+		<!--	currently only use DE-Version of Impressum; EN-Imprint coming soon	-->
+		<div lang="en">
+			<h1>Impressum</h1>
+			<h2>Herausgeber</h2>
+			<p>Technische Universität München<br /> Arcisstraße 21<br /> 80333 München<br /> Telefon: +4989289-01<br /> poststelle@tum.de</p>
+
+			<h2>Rechtsform und Vertretung</h2>
+			<p>Die Technische Universität München ist eine Körperschaft des Öffentlichen Rechts und staatliche Einrichtung (Art. 11 Abs. 1 BayHSchG). Sie wird gesetzlich vertreten durch den Präsidenten Prof. Dr. Thomas F. Hofmann.</p>
+
+			<h2>Zuständige Aufsichtsbehörde</h2>
+			<p>Bayerisches Staatsministerium für Wissenschaft und Kunst</p>
+
+			<h2>Umsatzsteuer&shy;identifikations&shy;nummer</h2>
+			<p>DE811193231 (gemäß § 27a Umsatzsteuergesetz )</p>
+
+			<h2>Inhaltlich verantwortlich</h2>
+			{f:cObject(typoscriptObjectPath: 'lib.content.iv')}
+			<p>Namentlich gekennzeichnete Internetseiten geben die Auffassungen und Erkenntnisse der genannten Personen wieder.</p>
+
+			<h2>Technische Umsetzung</h2>
+			<p>Dieser Webauftritt ist mit dem Web Content Management System
+				<a href="https://typo3.org/">TYPO3</a> umgesetzt und ist ein Angebot der Zentrale Informationstechnik (ZIT) der TUM.
+			</p>
+			<p>
+				<em><strong>Technischer</strong></em> Ansprechpartner für dieses TYPO3-Angebot ist das TYPO3-Team der ZIT – erreichbar unter
+				<a href="mailto:typo3@tum.de" title="per E-Mail">typo3@tum.de</a>. Für Einbau und Verwaltung der
+				<em><strong>Inhalte</strong></em> sind die jeweiligen Inhaber des Webauftritts zuständig.
+			</p>
+
+			<h2>Nutzungsbedingungen</h2>
+			<p>Texte, Bilder, Grafiken sowie die Gestaltung dieses Webauftritts können dem Urheberrecht unterliegen. Nicht urheberrechtlich geschützt sind nach § 5 des Urheberrechtsgesetz (UrhG)</p>
+			<ul>
+				<li>Gesetze, Verordnungen, amtliche Erlasse und Bekanntmachungen sowie Entscheidungen und amtlich verfasste Leitsätze zu Entscheidungen und</li>
+				<li>andere amtliche Werke, die im amtlichen Interesse zur allgemeinen Kenntnisnahme veröffentlicht worden sind, mit der Einschränkung, dass die Bestimmungen über Änderungsverbot und Quellenangabe in § 62 Abs. 1 bis 3 und § 63 Abs. 1 und 2 UrhG entsprechend anzuwenden sind.</li>
+			</ul>
+			<p>Als Privatperson dürfen Sie urheberrechtlich geschütztes Material zum privaten und sonstigen eigenen Gebrauch im Rahmen des § 53 UrhG verwenden. Eine Vervielfältigung oder Verwendung urheberrechtlich geschützten Materials dieser Seiten oder Teilen davon in anderen elektronischen oder gedruckten Publikationen und deren Veröffentlichung ist nur mit unserer Einwilligung gestattet. Diese Einwilligung erteilen auf Anfrage die für den Inhalt Verantwortlichen. Der Nachdruck und die Auswertung von Pressemitteilungen und Reden sind mit Quellenangabe allgemein gestattet.</p>
+			<p>Weiterhin können Texte, Bilder, Grafiken und sonstige Dateien ganz oder teilweise dem Urheberrecht Dritter unterliegen. Auch über das Bestehen möglicher Rechte Dritter geben Ihnen die für den Inhalt Verantwortlichen nähere Auskünfte.</p>
+
+			<h2>Haftungsausschluss</h2>
+			<p>Alle in diesem Webauftritt bereitgestellten Informationen haben wir nach bestem Wissen und Gewissen erarbeitet und geprüft. Eine Gewähr für die jederzeitige Aktualität, Richtigkeit, Vollständigkeit und Verfügbarkeit der bereit gestellten Informationen können wir allerdings nicht übernehmen. Ein Vertragsverhältnis mit den Nutzern des Webauftritts kommt nicht zustande.</p>
+			<p>Wir haften nicht für Schäden, die durch die Nutzung dieses Webauftritts entstehen. Dieser Haftungsausschluss gilt nicht, soweit die Vorschriften des § 839 BGB (Haftung bei Amtspflichtverletzung) einschlägig sind. Für etwaige Schäden, die beim Aufrufen oder Herunterladen von Daten durch Schadsoftware oder der Installation oder Nutzung von Software verursacht werden, übernehmen wir keine Haftung.</p>
+
+			<h2>Links</h2>
+			<p>Von unseren eigenen Inhalten sind Querverweise („Links“) auf die Webseiten anderer Anbieter zu unterscheiden. Durch diese Links ermöglichen wir lediglich den Zugang zur Nutzung fremder Inhalte nach § 7 Digitale Dienste Gesetz. Bei der erstmaligen Verknüpfung mit diesen Internetangeboten haben wir diese fremden Inhalte daraufhin überprüft, ob durch sie eine mögliche zivilrechtliche oder strafrechtliche Verantwortlichkeit ausgelöst wird. Wir können diese fremden Inhalte aber nicht ständig auf Veränderungen überprüfen und daher auch keine Verantwortung dafür übernehmen. Für illegale, fehlerhafte oder unvollständige Inhalte und insbesondere für Schäden, die aus der Nutzung oder Nichtnutzung von Informationen Dritter entstehen, haftet allein der jeweilige Anbieter der Seite.</p>
+
+		</div>
+	</f:section>
+</html>

@@ -1,0 +1,11 @@
+### Contact area (Kontakt-rechts)
+lib.contact = CONTENT
+lib.contact {
+    table = tt_content
+    select {
+        pidInList = {$CONTACTPID}
+        where = colPos=0
+        orderBy = sorting
+        languageField = sys_language_uid
+    }
+}

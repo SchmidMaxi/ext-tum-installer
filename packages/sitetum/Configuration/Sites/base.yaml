@@ -1,0 +1,11 @@
+routeEnhancers:
+  PageTypeSuffix:
+    type: PageType
+    default: /
+    suffix: /
+    index: ''
+    map:
+      /: 0
+      rss.xml: 100
+      sitemap.xml: 1533906435
+      news_sitemap.xml: 1533906436

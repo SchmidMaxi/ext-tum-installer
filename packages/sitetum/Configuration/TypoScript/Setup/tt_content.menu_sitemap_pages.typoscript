@@ -1,0 +1,2 @@
+# Restrict Menu Pages to 2 levels only (Ticket #12249)
+tt_content.menu_sitemap_pages.dataProcessing.10.levels = 2

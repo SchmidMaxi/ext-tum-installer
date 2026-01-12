@@ -1,0 +1,8 @@
+// we aim to create a full JS-bundle with webpack and include only the final optimized file here
+// ET-SK todo: do not disable all includes here; better: disable specific includes from plugins AFTER adding them to typo3_encore
+page {
+  includeJSlibs >
+  includeJS >
+  includeJSFooter >
+  jsFooterInline >
+}

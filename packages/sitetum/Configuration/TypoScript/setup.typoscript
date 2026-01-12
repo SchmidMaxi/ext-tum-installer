@@ -1,0 +1,32 @@
+# this file is loaded by bolt
+
+# extensions which are loaded in all instances
+@import 'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:fluid_styled_content/Configuration/TypoScript/Styling/setup.typoscript'
+@import 'EXT:t3up_carousel/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:media2click/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:dp_cookieconsent/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:typo3_encore/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:seo/Configuration/TypoScript/XmlSitemap/setup.typoscript'
+
+# extensions which are optional - parser does not complain it files are just not there
+@import 'EXT:curlcontent/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:tummemberlist/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:tumcourses/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:news/Configuration/TypoScript/setup.typoscript'
+@import 'EXT:news/Configuration/TypoScript/SeoSitemap/setup.typoscript'
+@import 'EXT:tumextendnews/Configuration/TypoScript/setup.typoscript'
+
+# add every extension with modified setup here
+@import 'EXT:sitetum/Configuration/TypoScript/Extensions/lib.contentElement.typoscript'
+@import 'EXT:sitetum/Configuration/TypoScript/Extensions/Cookieconsent/setup.typoscript'
+@import 'EXT:sitetum/Configuration/TypoScript/Extensions/Media2Click/setup.typoscript'
+@import 'EXT:sitetum/Configuration/TypoScript/Extensions/Seo/setup.typoscript'
+
+# our site TS
+@import 'EXT:sitetum/Configuration/TypoScript/Setup/Lib/*.typoscript'
+@import 'EXT:sitetum/Configuration/TypoScript/Setup/*.typoscript'
+
+[applicationContext == 'Development']
+@import 'EXT:sitetum/Configuration/TypoScript/Setup/Development/*.typoscript'
+[global]

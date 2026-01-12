@@ -1,0 +1,87 @@
+<!--
+  ~ Copyright (c) 2021.
+  ~
+  ~ @category   TYPO3
+  ~
+  ~ @copyright  2021 Dirk Persky (https://github.com/DirkPersky)
+  ~ @author     Dirk Persky <info@dp-wired.de>
+  ~ @license    MIT
+  -->
+
+<html data-namespace-typo3-fluid="true"
+      xmlns:dp="http://typo3.org/ns/DirkPersky/DpCookieconsent/ViewHelpers"
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+<!-- Begin Cookie Consent plugin by Dirk Persky - https://github.com/DirkPersky/typo3-dp_cookieconsent -->
+<f:asset.script identifier="cookieInlineDesc" type="text/plain" nonce="{f:security.nonce()}" additionalAttributes="{data-ignore: '1', data-dp-cookieDesc: 'layout'}">
+    <f:render partial="CookieDescription" arguments="{_all}" />
+</f:asset.script>
+<f:asset.script identifier="cookieInlineSel" type="text/plain" nonce="{f:security.nonce()}" additionalAttributes="{data-ignore: '1', data-dp-cookieSelect: 'layout'}">
+    <f:render partial="CookieSelection" arguments="{_all}" />
+</f:asset.script>
+<f:asset.script identifier="cookieInlineRev" type="text/plain" nonce="{f:security.nonce()}" additionalAttributes="{data-ignore: '1', data-dp-cookieRevoke: 'layout'}">
+    <f:render partial="CookieRevoke" arguments="{_all}" />
+</f:asset.script>
+<f:asset.script identifier="cookieInlineOverlay" type="text/plain" nonce="{f:security.nonce()}" additionalAttributes="{data-ignore: '1', data-dp-cookieIframe: 'layout'}">
+    <f:render partial="IframeOverlay" arguments="{_all}" />
+</f:asset.script>
+<f:asset.script identifier="cookieInlineScript" type="text/javascript" nonce="{f:security.nonce()}" additionalAttributes="{data-ignore: '1'}">
+    window.cookieconsent_options = {
+        overlay: {
+            notice: <f:format.raw>{settings.overlay.notice}</f:format.raw>,
+            box: {
+                background: '<f:format.raw>{settings.overlay.box.background}</f:format.raw>',
+            text: '<f:format.raw>{settings.overlay.box.text}</f:format.raw>'
+            },
+            btn: {
+                background: '<f:format.raw>{settings.overlay.button.background}</f:format.raw>',
+            text: '<f:format.raw>{settings.overlay.button.text}</f:format.raw>'
+            }
+            },
+            content: {
+                message:'<f:if condition="{settings.MATOMO_ID} > 0"><f:then><f:format.raw><f:translate key="message.matomo" extensionName="dp_cookieconsent"/></f:format.raw></f:then><f:else><f:format.raw><f:translate key="message" extensionName="dp_cookieconsent"/></f:format.raw></f:else></f:if>',
+            dismiss:'<f:format.raw><f:translate key="dismiss" extensionName="dp_cookieconsent" /></f:format.raw>',
+            allow:'<f:format.raw><f:translate key="allow" extensionName="dp_cookieconsent" /></f:format.raw>',
+            deny: '<f:format.raw><f:translate key="deny" extensionName="dp_cookieconsent" /></f:format.raw>',
+            link:'<f:format.raw><f:translate key="link" extensionName="dp_cookieconsent" /></f:format.raw>',
+            href:'<f:uri.page pageUid="{settings.url}" />',
+            target:'<f:format.raw>{settings.target}</f:format.raw>',
+            'allow-all': '<f:format.raw><f:translate key="allowall" extensionName="dp_cookieconsent" /></f:format.raw>',
+            config: '<f:translate key="config" extensionName="dp_cookieconsent" />',
+            'config-header':  '<f:translate key="config.header" extensionName="dp_cookieconsent" />',
+
+
+            cookie: '<f:translate key="cookie.name" extensionName="dp_cookieconsent" />',
+            duration: '<f:translate key="cookie.duration" extensionName="dp_cookieconsent" />',
+            vendor: '<f:translate key="cookie.vendor" extensionName="dp_cookieconsent" />',
+
+            media: {
+                notice: '<f:format.raw><f:translate key="media.notice" extensionName="dp_cookieconsent" /></f:format.raw>',
+            desc: '<f:format.raw><f:translate key="media.desc" extensionName="dp_cookieconsent" /></f:format.raw>',
+            btn: '<f:format.raw><f:translate key="media.btn" extensionName="dp_cookieconsent" /></f:format.raw>',
+            },
+            },
+            theme: '<f:format.raw>{settings.theme}</f:format.raw>',
+            position: '<f:format.raw>{settings.position}</f:format.raw>',
+            type: '<f:format.raw>{settings.type}</f:format.raw>',
+            revokable: <f:format.raw>{settings.revokable}</f:format.raw>,
+            reloadOnRevoke: <f:format.raw>{settings.reloadOnRevoke}</f:format.raw>,
+            checkboxes: <f:format.raw><dp:Json>{settings.checkboxes}</dp:Json></f:format.raw>,
+            cookies: <f:format.raw><dp:cookies>{settings}</dp:cookies></f:format.raw>,
+            palette: {
+                popup: {
+                    background: '<f:format.raw>{settings.palette.popup.background}</f:format.raw>',
+            text: '<f:format.raw>{settings.palette.popup.text}</f:format.raw>'
+            },
+            button: {
+                background: '<f:format.raw>{settings.palette.button.background}</f:format.raw>',
+            text: '<f:format.raw>{settings.palette.button.text}</f:format.raw>',
+            }
+        }
+    };
+</f:asset.script>
+
+<!-- End Cookie Consent plugin -->
+<f:for as="script" each="{dp_cookie_scripts}" iteration="script_iteration">
+    <f:render arguments="{script:script, settings:settings}" partial="Script"/>
+</f:for>
+</html>

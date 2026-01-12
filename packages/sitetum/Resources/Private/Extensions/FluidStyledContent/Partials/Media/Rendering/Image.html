@@ -1,0 +1,739 @@
+<f:spaceless>
+<f:comment>
+    <!--
+        use Viewhelper {tum:variableSet(name: 'srcSet', '[srcSetName]') in Templates, Layouts & Partials
+        add a new <f:section name="[srcSetName]"></f:section> in this file
+    -->
+</f:comment>
+<picture>
+    <f:comment>
+        <!-- Only render source tags if image type is not svg! -->
+    </f:comment>
+    <f:if condition="{file.properties.extension} === 'svg' || {file.properties.extension} === 'gif'">
+        <f:then>
+            {tum:variableSet(name: 'vMaxWidth', value: '')}
+        </f:then>
+        <f:else>
+            <f:if condition="{tum:variableGet(name: 'srcSet')}">
+                <f:render section="{tum:variableGet(name: 'srcSet')}" arguments="{_all}"/>
+            </f:if>
+        </f:else>
+    </f:if>
+    <f:render section="image" arguments="{_all}" />
+</picture>
+
+<f:comment>
+    <!-- img tag -->
+</f:comment>
+<f:section name="image">
+    <f:image
+            class="image-embed-item"
+            image="{file}"
+            title="{file.title}"
+            alt="{file.alternative -> f:format.nl2br()}"
+            width="{dimensions.width}"
+            height="{dimensions.height}"
+            maxWidth="{tum:variableGet(name: 'vMaxWidth')}"
+            fileExtension="{f:if(condition: '{file.properties.extension} === \'svg\' || {file.properties.extension} === \'gif\'', then: '{file.properties.extension}', else: 'webp')}"
+            loading="lazy"
+    />
+</f:section>
+
+<f:comment>
+    <!-- Textmedia -->
+    <!-- namespace:
+         [pageLayout][area]Textmedia[imageColumns][gallerxPosition][frameClass]
+         // Layout3Cols Aside Textmedia ImageCols2 PositionVertical
+         // LayoutIntro1Col Main Textmedia Frame33
+     -->
+</f:comment>
+<f:comment>
+    <!-- Layout 2col -->
+</f:comment>
+    <f:comment>
+        <!-- Vertical -->
+    </f:comment>
+<f:section name="Layout2ColMainTextmediaImageCols1PositionVertical">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 1176', then: '1176', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 481">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '1176', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 1129', then: '{f:uri.image(image:file, maxWidth: 1129, fileExtension: \'webp\')} 1129w,')}
+                        {f:if(condition: '{dimensions.width} >= 864', then: '{f:uri.image(image:file, maxWidth: 864, fileExtension: \'webp\')} 864w,')}
+                        {f:if(condition: '{dimensions.width} >= 656', then: '{f:uri.image(image:file, maxWidth: 656, fileExtension: \'webp\')} 656w,')}
+                        {f:if(condition: '{dimensions.width} >= 481', then: '{f:uri.image(image:file, maxWidth: 481, fileExtension: \'webp\')} 481w')}
+                "
+                sizes="
+                    (min-width: 1200px) 1129px,
+                    (min-width: 768px) 864px,
+                    calc(100vw - 24px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="Layout2ColMainTextmediaImageCols2PositionVertical">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 582', then: '582', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} >= 236">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '582', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 560', then: '{f:uri.image(image:file, maxWidth: 560, fileExtension: \'webp\')} 560w,')}
+                        {f:if(condition: '{dimensions.width} >= 427', then: '{f:uri.image(image:file, maxWidth: 427, fileExtension: \'webp\')} 427w,')}
+                        {f:if(condition: '{dimensions.width} >= 323', then: '{f:uri.image(image:file, maxWidth: 323, fileExtension: \'webp\')} 323w,')}
+                        {f:if(condition: '{dimensions.width} >= 236', then: '{f:uri.image(image:file, maxWidth: 236, fileExtension: \'webp\')} 236w')}"
+                sizes="(min-width: 1200px) 560px,
+                    (min-width: 768px) 427px,
+                    calc((100vw / 2) - 24px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="Layout2ColMainTextmediaImageCols3PositionVertical">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 385', then: '385385', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} >= 153">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '385', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 370', then: '{f:uri.image(image:file, maxWidth: 370, fileExtension: \'webp\')} 370w,')}
+                        {f:if(condition: '{dimensions.width} >= 281', then: '{f:uri.image(image:file, maxWidth: 281, fileExtension: \'webp\')} 281w,')}
+                        {f:if(condition: '{dimensions.width} >= 212', then: '{f:uri.image(image:file, maxWidth: 212, fileExtension: \'webp\')} 212w,')}
+                        {f:if(condition: '{dimensions.width} >= 153', then: '{f:uri.image(image:file, maxWidth: 153, fileExtension: \'webp\')} 153w')}"
+                sizes="(min-width: 1200px) 370px,
+                    (min-width: 768px) 281px,
+                    calc((100vw / 3) - 24px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+
+    <f:comment>
+        <!-- Horizontal -->
+    </f:comment>
+<f:section name="Layout2ColMainTextmediaImageCols1PositionHorizontal">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 478', then: '478', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 240">
+        <source media="(min-width: 1200px)" srcset="{f:uri.image(image:file, maxWidth: '478', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 432', then: '{f:uri.image(image:file, maxWidth: 432, fileExtension: \'webp\')} 432w,')}
+                        {f:if(condition: '{dimensions.width} >= 328', then: '{f:uri.image(image:file, maxWidth: 328, fileExtension: \'webp\')} 328w,')}
+                        {f:if(condition: '{dimensions.width} >= 240', then: '{f:uri.image(image:file, maxWidth: 240, fileExtension: \'webp\')} 240w')}
+                "
+                sizes="
+                    (min-width: 768px) 432px,
+                    (min-width: 520px) 328x,
+                    240px"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="Layout2ColMainTextmediaImageCols2PositionHorizontal">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 289', then: '289', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 115">
+        <source media="(min-width: 1200px)" srcset="{f:uri.image(image:file, maxWidth: '289', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 211', then: '{f:uri.image(image:file, maxWidth: 211, fileExtension: \'webp\')} 211w,')}
+                        {f:if(condition: '{dimensions.width} >= 159', then: '{f:uri.image(image:file, maxWidth: 159, fileExtension: \'webp\')} 159w,')}
+                        {f:if(condition: '{dimensions.width} >= 115', then: '{f:uri.image(image:file, maxWidth: 115, fileExtension: \'webp\')} 115w')}
+                "
+                sizes="
+                    (min-width: 768px) 211px,
+                    (min-width: 520px) 159px,
+                    115px"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="Layout2ColMainTextmediaImageCols3PositionHorizontal">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 189', then: '189', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 74">
+        <source media="(min-width: 1200px)" srcset="{f:uri.image(image:file, maxWidth: '189', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 137', then: '{f:uri.image(image:file, maxWidth: 137, fileExtension: \'webp\')} 137w,')}
+                        {f:if(condition: '{dimensions.width} >= 103', then: '{f:uri.image(image:file, maxWidth: 103, fileExtension: \'webp\')} 103w,')}
+                        {f:if(condition: '{dimensions.width} >= 74', then: '{f:uri.image(image:file, maxWidth: 74, fileExtension: \'webp\')} 74w')}
+                "
+                sizes="
+                    (min-width: 768px) 137px,
+                    (min-width: 520px) 103px,
+                    74px"
+                type="image/webp">
+    </f:if>
+</f:section>
+
+<f:comment>
+    <!-- Page Layout 3col -->
+</f:comment>
+    <f:comment>
+        <!-- Vertical -->
+    </f:comment>
+<f:section name="Layout3ColMainTextmediaImageCols1PositionVertical">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 936', then: '936', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 481">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '936', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 869', then: '{f:uri.image(image:file, maxWidth: 869, fileExtension: \'webp\')} 869w,')}
+                        {f:if(condition: '{dimensions.width} >= 575', then: '{f:uri.image(image:file, maxWidth: 575, fileExtension: \'webp\')} 575w,')}
+                        {f:if(condition: '{dimensions.width} >= 656', then: '{f:uri.image(image:file, maxWidth: 656, fileExtension: \'webp\')} 656w,')}
+                        {f:if(condition: '{dimensions.width} >= 481', then: '{f:uri.image(image:file, maxWidth: 481, fileExtension: \'webp\')} 481w')}
+                "
+                sizes="
+                    (min-width: 1200px) 869px,
+                    (min-width: 768px) 575px,
+                    calc(100vw - 24px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="Layout3ColMainTextmediaImageCols2PositionVertical">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 463', then: '463', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} >= 236">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '463', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 449', then: '{f:uri.image(image:file, maxWidth: 449, fileExtension: \'webp\')} 449w,')}
+                        {f:if(condition: '{dimensions.width} >= 282', then: '{f:uri.image(image:file, maxWidth: 279, fileExtension: \'webp\')} 282w,')}
+                        {f:if(condition: '{dimensions.width} >= 323', then: '{f:uri.image(image:file, maxWidth: 323, fileExtension: \'webp\')} 323w,')}
+                        {f:if(condition: '{dimensions.width} >= 236', then: '{f:uri.image(image:file, maxWidth: 236, fileExtension: \'webp\')} 236w')}"
+                sizes="(min-width: 1200px) 449px,
+                    (min-width: 768px) 282px,
+                    calc((100vw / 2) - 24px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="Layout3ColMainTextmediaImageCols3PositionVertical">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 311', then: '311', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} >= 153">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '311', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 293', then: '{f:uri.image(image:file, maxWidth: 293, fileExtension: \'webp\')} 293w,')}
+                        {f:if(condition: '{dimensions.width} >= 183', then: '{f:uri.image(image:file, maxWidth: 183, fileExtension: \'webp\')} 183w,')}
+                        {f:if(condition: '{dimensions.width} >= 212', then: '{f:uri.image(image:file, maxWidth: 212, fileExtension: \'webp\')} 212w,')}
+                        {f:if(condition: '{dimensions.width} >= 153', then: '{f:uri.image(image:file, maxWidth: 153, fileExtension: \'webp\')} 153w')}"
+                sizes="(min-width: 1200px) 293px,
+                    (min-width: 768px) 183px,
+                    calc((100vw / 3) - 24px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+
+<f:section name="Layout3ColAsideTextmediaImageCols1PositionVertical">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 626', then: '626', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 177">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '186', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 177', then: '{f:uri.image(image:file, maxWidth: 177, fileExtension: \'webp\')} 177w,')}
+                        {f:if(condition: '{dimensions.width} >= 242', then: '{f:uri.image(image:file, maxWidth: 242, fileExtension: \'webp\')} 242w,')}
+                        {f:if(condition: '{dimensions.width} >= 626', then: '{f:uri.image(image:file, maxWidth: 626, fileExtension: \'webp\')} 626w,')}
+                        {f:if(condition: '{dimensions.width} >= 451', then: '{f:uri.image(image:file, maxWidth: 451, fileExtension: \'webp\')} 451w')}
+                "
+                sizes="
+                    (min-width: 1200px) 177px,
+                    (min-width: 768px) 242px,
+                    calc(100vw - 54px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="Layout3ColAsideTextmediaImageCols2PositionVertical">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 308', then: '308', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 83">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '88', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 83', then: '{f:uri.image(image:file, maxWidth: 83, fileExtension: \'webp\')} 83w,')}
+                        {f:if(condition: '{dimensions.width} >= 116', then: '{f:uri.image(image:file, maxWidth: 116, fileExtension: \'webp\')} 116w,')}
+                        {f:if(condition: '{dimensions.width} >= 308', then: '{f:uri.image(image:file, maxWidth: 308, fileExtension: \'webp\')} 308w,')}
+                        {f:if(condition: '{dimensions.width} >= 220', then: '{f:uri.image(image:file, maxWidth: 220, fileExtension: \'webp\')} 220w')}
+                "
+                sizes="
+                    (min-width: 1200px) 83px,
+                    (min-width: 768px) 116px,
+                    calc((100vw / 2) - (24px - 30px))"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="Layout3ColAsideTextmediaImageCols3PositionVertical">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 202', then: '202', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 42">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '55', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 52', then: '{f:uri.image(image:file, maxWidth: 52, fileExtension: \'webp\')} 52w,')}
+                        {f:if(condition: '{dimensions.width} >= 74', then: '{f:uri.image(image:file, maxWidth: 74, fileExtension: \'webp\')} 74w,')}
+                        {f:if(condition: '{dimensions.width} >= 202', then: '{f:uri.image(image:file, maxWidth: 202, fileExtension: \'webp\')} 202w,')}
+                        {f:if(condition: '{dimensions.width} >= 144', then: '{f:uri.image(image:file, maxWidth: 144, fileExtension: \'webp\')} 144w')}
+                "
+                sizes="
+                    (min-width: 1200px) 52px,
+                    (min-width: 768px) 74px,
+                    calc((100vw / 3) - 54px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+
+    <f:comment>
+        <!-- Horizontal -->
+    </f:comment>
+<f:section name="Layout3ColMainTextmediaImageCols1PositionHorizontal">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 468', then: '468', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 240">
+        <source media="(min-width: 1200px)" srcset="{f:uri.image(image:file, maxWidth: '468', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 284', then: '{f:uri.image(image:file, maxWidth: 284, fileExtension: \'webp\')} 284w,')}
+                        {f:if(condition: '{dimensions.width} >= 328', then: '{f:uri.image(image:file, maxWidth: 328, fileExtension: \'webp\')} 328w,')}
+                        {f:if(condition: '{dimensions.width} >= 240', then: '{f:uri.image(image:file, maxWidth: 240, fileExtension: \'webp\')} 240w')}
+                "
+                sizes="
+                    (min-width: 768px) 284px,
+                    (min-width: 520px) 328x,
+                    240px"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="Layout3ColMainTextmediaImageCols2PositionHorizontal">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 229', then: '229', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 115">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '229', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 220', then: '{f:uri.image(image:file, maxWidth: 220, fileExtension: \'webp\')} 220w,')}
+                        {f:if(condition: '{dimensions.width} >= 137', then: '{f:uri.image(image:file, maxWidth: 137, fileExtension: \'webp\')} 137w,')}
+                        {f:if(condition: '{dimensions.width} >= 159', then: '{f:uri.image(image:file, maxWidth: 159, fileExtension: \'webp\')} 159w,')}
+                        {f:if(condition: '{dimensions.width} >= 115', then: '{f:uri.image(image:file, maxWidth: 115, fileExtension: \'webp\')} 115w')}
+                "
+                sizes="
+                    (min-width: 1200px) 220px,
+                    (min-width: 768px) 137px,
+                    (min-width: 520px) 159px,
+                    115px"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="Layout3ColMainTextmediaImageCols3PositionHorizontal">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 149', then: '149', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 74">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '149', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 143', then: '{f:uri.image(image:file, maxWidth: 143, fileExtension: \'webp\')} 143w,')}
+                        {f:if(condition: '{dimensions.width} >= 88', then: '{f:uri.image(image:file, maxWidth: 88, fileExtension: \'webp\')} 88w,')}
+                        {f:if(condition: '{dimensions.width} >= 103', then: '{f:uri.image(image:file, maxWidth: 103, fileExtension: \'webp\')} 103w,')}
+                        {f:if(condition: '{dimensions.width} >= 74', then: '{f:uri.image(image:file, maxWidth: 74, fileExtension: \'webp\')} 74w')}
+                "
+                sizes="
+                    (min-width: 1200px) 143px,
+                    (min-width: 768px) 88px,
+                    (min-width: 520px) 103px,
+                    74px"
+                type="image/webp">
+    </f:if>
+</f:section>
+
+<f:section name="Layout3ColAsideTextmediaImageCols1PositionHorizontal">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 313', then: '313', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 93">
+        <source media="(min-width: 1200px)" srcset="{f:uri.image(image:file, maxWidth: '93', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 121', then: '{f:uri.image(image:file, maxWidth: 121, fileExtension: \'webp\')} 121w,')}
+                        {f:if(condition: '{dimensions.width} >= 313', then: '{f:uri.image(image:file, maxWidth: 313, fileExtension: \'webp\')} 313w,')}
+                        {f:if(condition: '{dimensions.width} >= 225', then: '{f:uri.image(image:file, maxWidth: 107, fileExtension: \'webp\')} 225w,')}"
+                sizes="
+                    (min-width: 768px) 121px,
+                    (min-width: 520px) 313px,
+                    225px"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="Layout3ColAsideTextmediaImageCols2PositionHorizontal">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 151', then: '151', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 42">
+        <source media="(min-width: 1200px)" srcset="{f:uri.image(image:file, maxWidth: '42', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 55', then: '{f:uri.image(image:file, maxWidth: 55, fileExtension: \'webp\')} 55w,')}
+                        {f:if(condition: '{dimensions.width} >= 151', then: '{f:uri.image(image:file, maxWidth: 123, fileExtension: \'webp\')} 151w,')}
+                        {f:if(condition: '{dimensions.width} >= 107', then: '{f:uri.image(image:file, maxWidth: 107, fileExtension: \'webp\')} 107w,')}"
+                sizes="
+                    (min-width: 768px) 55px,
+                    (min-width: 520px) 151px,
+                    107px"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="Layout3ColAsideTextmediaImageCols3PositionHorizontal">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 97', then: '97', else: '{dimensions.width}')}" />
+</f:section>
+
+
+<f:comment>
+    <!-- Layout intro1col -->
+</f:comment>
+    <f:comment>
+        <!-- Vertical -->
+    </f:comment>
+<f:section name="LayoutIntro1ColMainTextmediaImageCols1PositionVertical">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 1416', then: '1416', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 481">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '1416', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 1360', then: '{f:uri.image(image:file, maxWidth: 1360, fileExtension: \'webp\')} 1360w,')}
+                        {f:if(condition: '{dimensions.width} >= 656', then: '{f:uri.image(image:file, maxWidth: 656, fileExtension: \'webp\')} 656w,')}
+                        {f:if(condition: '{dimensions.width} >= 481', then: '{f:uri.image(image:file, maxWidth: 236, fileExtension: \'webp\')} 481w')}
+                "
+                sizes="
+                    (min-width: 1200px) 1360px,
+                    (min-width: 768px) 1160px,
+                    calc(100vw - 24px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="LayoutIntro1ColMainTextmediaImageCols2PositionVertical">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 703', then: '703', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 236">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '703', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 675', then: '{f:uri.image(image:file, maxWidth: 675, fileExtension: \'webp\')} 675w,')}
+                        {f:if(condition: '{dimensions.width} >= 575', then: '{f:uri.image(image:file, maxWidth: 575, fileExtension: \'webp\')} 575w,')}
+                        {f:if(condition: '{dimensions.width} >= 323', then: '{f:uri.image(image:file, maxWidth: 323, fileExtension: \'webp\')} 323w,')}
+                        {f:if(condition: '{dimensions.width} >= 236', then: '{f:uri.image(image:file, maxWidth: 236, fileExtension: \'webp\')} 236w')}
+                "
+                sizes="
+                    (min-width: 1200px) 675px,
+                    calc(50vw - 44px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="LayoutIntro1ColMainTextmediaImageCols3PositionVertical">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 465', then: '465', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 153">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '465', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 447', then: '{f:uri.image(image:file, maxWidth: 447, fileExtension: \'webp\')} 447w,')}
+                        {f:if(condition: '{dimensions.width} >= 380', then: '{f:uri.image(image:file, maxWidth: 380, fileExtension: \'webp\')} 380w,')}
+                        {f:if(condition: '{dimensions.width} >= 212', then: '{f:uri.image(image:file, maxWidth: 212, fileExtension: \'webp\')} 212w,')}
+                        {f:if(condition: '{dimensions.width} >= 153', then: '{f:uri.image(image:file, maxWidth: 153, fileExtension: \'webp\')} 153w')}
+                "
+                sizes="
+                    (min-width: 1200px) 447px,
+                    calc((100vw / 3) - 44px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+
+    <f:comment>
+        <!-- Horizontal -->
+    </f:comment>
+<f:section name="LayoutIntro1ColMainTextmediaImageCols1PositionHorizontal">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 478', then: '478', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 240">
+        <source media="(min-width: 768px)" srcset="{f:uri.image(image:file, maxWidth: '478', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 328', then: '{f:uri.image(image:file, maxWidth: 328, fileExtension: \'webp\')} 328w,')}
+                        {f:if(condition: '{dimensions.width} >= 240', then: '{f:uri.image(image:file, maxWidth: 240, fileExtension: \'webp\')} 240w')}"
+                sizes="(min-width: 520px) 328px,
+                       calc(50vw - 24px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="LayoutIntro1ColMainTextmediaImageCols2PositionHorizontal">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 349', then: '349', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 115">
+        <source media="(min-width: 1200px)" srcset="{f:uri.image(image:file, maxWidth: '349', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 285', then: '{f:uri.image(image:file, maxWidth: 285, fileExtension: \'webp\')} 285w,')}
+                        {f:if(condition: '{dimensions.width} >= 159', then: '{f:uri.image(image:file, maxWidth: 159, fileExtension: \'webp\')} 159w,')}
+                        {f:if(condition: '{dimensions.width} >= 115', then: '{f:uri.image(image:file, maxWidth: 115, fileExtension: \'webp\')} 115w')}"
+                sizes="(min-width: 768px) 285px
+                       (min-width: 520px) 159px,
+                       calc((50vw / 2) - 44px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="LayoutIntro1ColMainTextmediaImageCols3PositionHorizontal">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 229', then: '229', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 73">
+        <source media="(min-width: 768px)" srcset="{f:uri.image(image:file, maxWidth: '229', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 102', then: '{f:uri.image(image:file, maxWidth: 102, fileExtension: \'webp\')} 102w,')}
+                        {f:if(condition: '{dimensions.width} >= 73', then: '{f:uri.image(image:file, maxWidth: 73, fileExtension: \'webp\')} 73w')}"
+                sizes="(min-width: 520px) 102px,
+                       calc((50vw / 3) - 54px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+
+<f:section name="LayoutIntro1ColMainNewsList">
+
+</f:section>
+
+<f:comment>
+    <!-- Layout intro2col -->
+</f:comment>
+    <f:comment>
+        <!-- Vertical -->
+    </f:comment>
+<f:section name="LayoutIntro2ColMainTextmediaImageCols1PositionVertical">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 1176', then: '1176', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 481">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '1176', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 1129', then: '{f:uri.image(image:file, maxWidth: 1129, fileExtension: \'webp\')} 1129w,')}
+                        {f:if(condition: '{dimensions.width} >= 1160', then: '{f:uri.image(image:file, maxWidth: 1160, fileExtension: \'webp\')} 1160w,')}
+                        {f:if(condition: '{dimensions.width} >= 656', then: '{f:uri.image(image:file, maxWidth: 656, fileExtension: \'webp\')} 656w,')}
+                        {f:if(condition: '{dimensions.width} >= 481', then: '{f:uri.image(image:file, maxWidth: 481, fileExtension: \'webp\')} 481w')}
+                "
+                sizes="
+                    (min-width: 1201px) 1129px,
+                    calc(100vw - 24px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="LayoutIntro2ColMainTextmediaImageCols2PositionVertical">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 583', then: '583', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} >= 236">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '583', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 560', then: '{f:uri.image(image:file, maxWidth: 560, fileExtension: \'webp\')} 560w,')}
+                        {f:if(condition: '{dimensions.width} >= 575', then: '{f:uri.image(image:file, maxWidth: 575, fileExtension: \'webp\')} 575w,')}
+                        {f:if(condition: '{dimensions.width} >= 323', then: '{f:uri.image(image:file, maxWidth: 323, fileExtension: \'webp\')} 323w,')}
+                        {f:if(condition: '{dimensions.width} >= 236', then: '{f:uri.image(image:file, maxWidth: 236, fileExtension: \'webp\')} 236w')}"
+                sizes="(min-width: 1200px) 560px,
+                       calc(50vw - 34px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="LayoutIntro2ColMainTextmediaImageCols3PositionVertical">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 385', then: '385', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 153">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '385', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 370', then: '{f:uri.image(image:file, maxWidth: 370, fileExtension: \'webp\')} 370w,')}
+                        {f:if(condition: '{dimensions.width} >= 380', then: '{f:uri.image(image:file, maxWidth: 380, fileExtension: \'webp\')} 380w,')}
+                        {f:if(condition: '{dimensions.width} >= 212', then: '{f:uri.image(image:file, maxWidth: 212, fileExtension: \'webp\')} 212w,')}
+                        {f:if(condition: '{dimensions.width} >= 153', then: '{f:uri.image(image:file, maxWidth: 153, fileExtension: \'webp\')} 153w')}
+                "
+                sizes="
+                    (min-width: 1200px) 370px,
+                    calc((100vw / 3) - 44px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+
+<f:section name="LayoutIntro2ColAsideTextmediaImageCols1PositionVertical">
+    {f:render(section: 'Layout3ColAsideTextmediaImageCols1PositionVertical', arguments: '{_all}')}
+</f:section>
+<f:section name="LayoutIntro2ColAsideTextmediaImageCols2PositionVertical">
+    {f:render(section: 'Layout3ColAsideTextmediaImageCols2PositionVertical', arguments: '{_all}')}
+</f:section>
+<f:section name="LayoutIntro2ColAsideTextmediaImageCols3PositionVertical">
+    {f:render(section: 'Layout3ColAsideTextmediaImageCols3PositionVertical', arguments: '{_all}')}
+</f:section>
+
+    <f:comment>
+        <!-- Horizontal -->
+    </f:comment>
+<f:section name="LayoutIntro2ColMainTextmediaImageCols1PositionHorizontal">
+    {f:render(section: 'LayoutIntro1ColMainTextmediaImageCols1PositionHorizontal', arguments: '{_all}')}
+</f:section>
+<f:section name="LayoutIntro2ColMainTextmediaImageCols2PositionHorizontal">
+    {f:render(section: 'LayoutIntro1ColMainTextmediaImageCols2PositionHorizontal', arguments: '{_all}')}
+</f:section>
+<f:section name="LayoutIntro2ColMainTextmediaImageCols3PositionHorizontal">
+    {f:render(section: 'LayoutIntro1ColMainTextmediaImageCols3PositionHorizontal', arguments: '{_all}')}
+</f:section>
+
+<f:section name="LayoutIntro2ColAsideTextmediaImageCols1PositionHorizontal">
+    {f:render(section: 'Layout3ColAsideTextmediaImageCols1PositionHorizontal', arguments: '{_all}')}
+</f:section>
+<f:section name="LayoutIntro2ColAsideTextmediaImageCols2PositionHorizontal">
+    {f:render(section: 'Layout3ColAsideTextmediaImageCols2PositionHorizontal', arguments: '{_all}')}
+</f:section>
+<f:section name="LayoutIntro2ColAsideTextmediaImageCols3PositionHorizontal">
+    {f:render(section: 'Layout3ColAsideTextmediaImageCols3PositionHorizontal', arguments: '{_all}')}
+</f:section>
+
+<f:comment>
+    <!-- multicol 3 textmedia -->
+</f:comment>
+<f:section name="Layout2ColMainTextmediaFrame33">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 656', then: '656', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 234">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '376', fileExtension: 'webp')}">
+        <source srcset="
+                    {f:if(condition: '{dimensions.width} >= 361', then: '{f:uri.image(image:file, maxWidth: 361, fileExtension: \'webp\')} 361w,')}
+                    {f:if(condition: '{dimensions.width} >= 276', then: '{f:uri.image(image:file, maxWidth: 276, fileExtension: \'webp\')} 276w,')}
+                    {f:if(condition: '{dimensions.width} >= 234', then: '{f:uri.image(image:file, maxWidth: 234, fileExtension: \'webp\')} 234w,')}
+                    {f:if(condition: '{dimensions.width} >= 656', then: '{f:uri.image(image:file, maxWidth: 656, fileExtension: \'webp\')} 656w,')}
+                    {f:if(condition: '{dimensions.width} >= 536', then: '{f:uri.image(image:file, maxWidth: 536, fileExtension: \'webp\')} 536w,')}
+                    {f:if(condition: '{dimensions.width} >= 281', then: '{f:uri.image(image:file, maxWidth: 281, fileExtension: \'webp\')} 281w,')}
+                "
+                sizes="
+                    (min-width: 1200px) 361px,
+                    (min-width: 1024px) 276px,
+                    (min-width: 768px) 234px,
+                    calc(100vw - 24px)
+                "
+                type="image/webp"
+        >
+    </f:if>
+</f:section>
+<f:section name="Layout3ColMainTextmediaFrame33">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 656', then: '656', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 153">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '299', fileExtension: 'webp')}">
+        <source srcset="
+                    {f:if(condition: '{dimensions.width} >= 287', then: '{f:uri.image(image:file, maxWidth: 287, fileExtension: \'webp\')} 287w,')}
+                    {f:if(condition: '{dimensions.width} >= 181', then: '{f:uri.image(image:file, maxWidth: 181, fileExtension: \'webp\')} 181w,')}
+                    {f:if(condition: '{dimensions.width} >= 153', then: '{f:uri.image(image:file, maxWidth: 153, fileExtension: \'webp\')} 153w,')}
+                    {f:if(condition: '{dimensions.width} >= 656', then: '{f:uri.image(image:file, maxWidth: 656, fileExtension: \'webp\')} 656w,')}
+                    {f:if(condition: '{dimensions.width} >= 536', then: '{f:uri.image(image:file, maxWidth: 536, fileExtension: \'webp\')} 536w,')}
+                    {f:if(condition: '{dimensions.width} >= 281', then: '{f:uri.image(image:file, maxWidth: 281, fileExtension: \'webp\')} 281w,')}
+                "
+                sizes="
+                    (min-width: 1200px) 287px,
+                    (min-width: 1024px) 181px,
+                    (min-width: 768px) 153px,
+                    calc(100vw - 24px)
+                "
+                type="image/webp"
+        >
+    </f:if>
+</f:section>
+<f:section name="LayoutIntro1ColMainTextmediaFrame33">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 656', then: '656', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 376">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '453', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 435', then: '{f:uri.image(image:file, maxWidth: 435, fileExtension: \'webp\')} 435w,')}
+                        {f:if(condition: '{dimensions.width} >= 371', then: '{f:uri.image(image:file, maxWidth: 371, fileExtension: \'webp\')} 371w,')}
+                        {f:if(condition: '{dimensions.width} >= 656', then: '{f:uri.image(image:file, maxWidth: 656, fileExtension: \'webp\')} 656w,')}
+                        {f:if(condition: '{dimensions.width} >= 481', then: '{f:uri.image(image:file, maxWidth: 481, fileExtension: \'webp\')} 481w')}
+                "
+                sizes="
+                    (min-width: 1200px) 435px,
+                    (min-width: 768px) 435px,
+                    calc(100vw - 24px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="LayoutIntro2ColMainTextmediaFrame33">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 656', then: '656', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 361">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '376', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 361', then: '{f:uri.image(image:file, maxWidth: 361, fileExtension: \'webp\')} 361w,')}
+                        {f:if(condition: '{dimensions.width} >= 371', then: '{f:uri.image(image:file, maxWidth: 371, fileExtension: \'webp\')} 371w,')}
+                        {f:if(condition: '{dimensions.width} >= 656', then: '{f:uri.image(image:file, maxWidth: 656, fileExtension: \'webp\')} 656w,')}
+                        {f:if(condition: '{dimensions.width} >= 481', then: '{f:uri.image(image:file, maxWidth: 481, fileExtension: \'webp\')} 481w')}
+                "
+                sizes="
+                    (min-width: 1200px) 361px,
+                    (min-width: 768px) calc(100vw / 3 - 24px),
+                    calc(100vw - 24px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+
+<f:comment>
+    <!-- multicol 2 textmedia -->
+</f:comment>
+<f:section name="Layout2ColMainTextmediaFrame50">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 656', then: '656', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 281">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '576', fileExtension: 'webp')}">
+        <source srcset="
+                    {f:if(condition: '{dimensions.width} >= 553', then: '{f:uri.image(image:file, maxWidth: 553, fileExtension: \'webp\')} 553w,')}
+                    {f:if(condition: '{dimensions.width} >= 423', then: '{f:uri.image(image:file, maxWidth: 423, fileExtension: \'webp\')} 423w,')}
+                    {f:if(condition: '{dimensions.width} >= 358', then: '{f:uri.image(image:file, maxWidth: 358, fileExtension: \'webp\')} 358w,')}
+                    {f:if(condition: '{dimensions.width} >= 656', then: '{f:uri.image(image:file, maxWidth: 656, fileExtension: \'webp\')} 656w,')}
+                    {f:if(condition: '{dimensions.width} >= 536', then: '{f:uri.image(image:file, maxWidth: 536, fileExtension: \'webp\')} 536w,')}
+                    {f:if(condition: '{dimensions.width} >= 281', then: '{f:uri.image(image:file, maxWidth: 281, fileExtension: \'webp\')} 281w,')}
+                "
+                sizes="
+                    (min-width: 1200px) 553px,
+                    (min-width: 1024px) 423px,
+                    (min-width: 768px) 358px,
+                    calc(100vw - 24px)
+                "
+                type="image/webp"
+        >
+    </f:if>
+</f:section>
+<f:section name="Layout3ColMainTextmediaFrame50">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 656', then: '656', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 281">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '458', fileExtension: 'webp')}">
+        <source srcset="
+                    {f:if(condition: '{dimensions.width} >= 440', then: '{f:uri.image(image:file, maxWidth: 440, fileExtension: \'webp\')} 440w,')}
+                    {f:if(condition: '{dimensions.width} >= 278', then: '{f:uri.image(image:file, maxWidth: 278, fileExtension: \'webp\')} 278w,')}
+                    {f:if(condition: '{dimensions.width} >= 235', then: '{f:uri.image(image:file, maxWidth: 235, fileExtension: \'webp\')} 235w,')}
+                    {f:if(condition: '{dimensions.width} >= 656', then: '{f:uri.image(image:file, maxWidth: 656, fileExtension: \'webp\')} 656w,')}
+                    {f:if(condition: '{dimensions.width} >= 536', then: '{f:uri.image(image:file, maxWidth: 536, fileExtension: \'webp\')} 536w,')}
+                    {f:if(condition: '{dimensions.width} >= 281', then: '{f:uri.image(image:file, maxWidth: 281, fileExtension: \'webp\')} 281w,')}
+                "
+                sizes="
+                    (min-width: 1200px) 440px,
+                    (min-width: 1024px) 278px,
+                    (min-width: 768px) 235px,
+                    calc(100vw - 24px)
+                "
+                type="image/webp"
+        >
+    </f:if>
+</f:section>
+<f:section name="LayoutIntro1ColMainTextmediaFrame50">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 694', then: '694', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 481">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '694', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 666', then: '{f:uri.image(image:file, maxWidth: 666, fileExtension: \'webp\')} 666w,')}
+                        {f:if(condition: '{dimensions.width} >= 656', then: '{f:uri.image(image:file, maxWidth: 656, fileExtension: \'webp\')} 656w,')}
+                        {f:if(condition: '{dimensions.width} >= 568', then: '{f:uri.image(image:file, maxWidth: 568, fileExtension: \'webp\')} 568w,')}
+                        {f:if(condition: '{dimensions.width} >= 481', then: '{f:uri.image(image:file, maxWidth: 481, fileExtension: \'webp\')} 481w')}
+                "
+                sizes="
+                    (min-width: 1200px) calc(100vw / 2 - 32px),
+                    (min-width: 768px) calc(100vw / 3 - 24px),
+                    calc(100vw - 24px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+<f:section name="LayoutIntro2ColMainTextmediaFrame50">
+    <tum:variableSet name="vMaxWidth" value="{f:if(condition: '{dimensions.width} > 656', then: '656', else: '{dimensions.width}')}" />
+    <f:if condition="{dimensions.width} > 481">
+        <source media="(min-width: 1400px)" srcset="{f:uri.image(image:file, maxWidth: '576', fileExtension: 'webp')}" type="image/webp">
+        <source srcset="{f:if(condition: '{dimensions.width} >= 553', then: '{f:uri.image(image:file, maxWidth: 553, fileExtension: \'webp\')} 553w,')}
+                        {f:if(condition: '{dimensions.width} >= 568', then: '{f:uri.image(image:file, maxWidth: 656, fileExtension: \'webp\')} 568w,')}
+                        {f:if(condition: '{dimensions.width} >= 656', then: '{f:uri.image(image:file, maxWidth: 656, fileExtension: \'webp\')} 656w,')}
+                        {f:if(condition: '{dimensions.width} >= 481', then: '{f:uri.image(image:file, maxWidth: 481, fileExtension: \'webp\')} 481w')}
+                "
+                sizes="
+                    (min-width: 1200px) 553px,
+                    (min-width: 768px) calc(100vw / 2 - 32px),
+                    calc(100vw - 24px)"
+                type="image/webp">
+    </f:if>
+</f:section>
+
+<f:comment>
+    <!-- Media 2 Click -->
+    <!-- Uses Textmedia sections -->
+</f:comment>
+    <f:comment>
+        <!-- page layout intro 1 col media 2 click -->
+    </f:comment>
+<f:section name="LayoutIntro1ColMainMedia2Click">
+    {f:render(section: 'LayoutIntro1ColMainTextmediaImageCols1PositionVertical', arguments: '{_all}')}
+</f:section>
+<f:section name="LayoutIntro1ColMainMedia2ClickFrame50">
+    {f:render(section: 'LayoutIntro1ColMainTextmediaFrame50', arguments: '{_all}')}
+</f:section>
+<f:section name="LayoutIntro1ColMainMedia2ClickFrame33">
+    {f:render(section: 'LayoutIntro1ColMainTextmediaFrame33', arguments: '{_all}')}
+</f:section>
+
+    <f:comment>
+        <!-- page layout intro 2 col media 2 click -->
+    </f:comment>
+<f:section name="LayoutIntro2ColMainMedia2Click">
+    {f:render(section: 'LayoutIntro2ColMainTextmediaImageCols1PositionVertical', arguments: '{_all}')}
+</f:section>
+<f:section name="LayoutIntro2ColMainMedia2ClickFrame33">
+    {f:render(section: 'LayoutIntro2ColMainTextmediaFrame33', arguments: '{_all}')}
+</f:section>
+<f:section name="LayoutIntro2ColMainMedia2ClickFrame50">
+    {f:render(section: 'LayoutIntro2ColMainTextmediaFrame50', arguments: '{_all}')}
+</f:section>
+
+<f:section name="LayoutIntro2ColAsideMedia2Click">
+    {f:render(section: 'LayoutIntro2ColAsideTextmediaImageCols1PositionVertical', arguments: '{_all}')}
+</f:section>
+
+    <f:comment>
+        <!-- page layout 3col media 2 click -->
+    </f:comment>
+<f:section name="Layout3ColMainMedia2Click">
+    {f:render(section: 'Layout3ColMainTextmediaImageCols1PositionVertical', arguments: '{_all}')}
+</f:section>
+<f:section name="Layout3ColMainMedia2ClickFrame33">
+        {f:render(section: 'Layout3ColMainTextmediaFrame33', arguments: '{_all}')}
+    </f:section>
+<f:section name="Layout3ColMainMedia2ClickFrame50">
+    {f:render(section: 'Layout3ColMainTextmediaFrame50', arguments: '{_all}')}
+</f:section>
+
+<f:section name="Layout3ColAsideMedia2Click">
+    {f:render(section: 'Layout3ColAsideTextmediaImageCols1PositionVertical', arguments: '{_all}')}
+</f:section>
+
+    <f:comment>
+        <!-- page layout 2col media 2 click -->
+    </f:comment>
+<f:section name="Layout2ColMainMedia2Click">
+    {f:render(section: 'Layout2ColMainTextmediaImageCols1PositionVertical', arguments: '{_all}')}
+</f:section>
+<f:section name="Layout2ColMainMedia2ClickFrame33">
+    {f:render(section: 'Layout2ColMainTextmediaFrame33', arguments: '{_all}')}
+</f:section>
+<f:section name="Layout2ColMainMedia2ClickFrame50">
+    {f:render(section: 'Layout2ColMainTextmediaFrame50', arguments: '{_all}')}
+</f:section>
+
+
+</f:spaceless>

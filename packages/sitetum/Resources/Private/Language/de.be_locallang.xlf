@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2018-01-01T14:38:32+01:00" target-language="de">
+        <header/>
+        <body>
+            <trans-unit id="tt_content.palette.mediaAdjustments.imageheight" resname="tt_content.palette.mediaAdjustments.imageheight">
+                <source>Height of each element (px). Height always overwrites width. Ratio of media element remains.</source>
+                <target>Höhe jedes Elements (px). Höhe überschreibt immer die Breite. Seitenverhältnis bleibt erhalten.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,0 +1,25 @@
+{
+	"name": "elementareteilchen/siteloader",
+	"type": "typo3-cms-extension",
+	"description": "ET site TypoScript / PageTs loader - inspired by b13/bolt",
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"typo3/cms-core": "^10.4 || ^11.5 || ^12.4 || ^13.4 || ^14.0 || dev-main"
+	},
+	"replace": {
+		"b13/bolt": "*"
+	},
+	"conflict": {
+		"b13/bolt": "*"
+	},
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "siteloader"
+		}
+	},
+	"autoload": {
+		"psr-4": {
+			"ElementareTeilchen\\Siteloader\\": "Classes"
+		}
+	}
+}

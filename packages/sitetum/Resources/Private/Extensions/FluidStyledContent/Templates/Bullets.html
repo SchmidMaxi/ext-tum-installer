@@ -1,0 +1,16 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:layout name="Default" />
+<f:section name="Main">
+
+	<f:if condition="{data.frame_class}">
+		<f:then>
+			<div id="sec{data.uid}" role="region" aria-labelledby="accordion{data.uid}id">
+				<f:render partial="Bullets/Type-{data.bullets_type}" arguments="{_all}" />
+			</div>
+		</f:then>
+		<f:else>
+			<f:render partial="Bullets/Type-{data.bullets_type}" arguments="{_all}" />
+		</f:else>
+	</f:if>
+</f:section>
+</html>

@@ -1,0 +1,144 @@
+/* feed url should be available by ?type=100 or /index.php?id=123&type=100 */
+
+feed {
+	display: block;
+	font-family: "Open Sans", Arial, Helvetica, sans-serif;
+	margin: 2%;
+	/*font-size: 90%;*/
+	color: #072140;
+	background: #ffffff;
+}
+
+title {
+	display: block;
+
+	font-size: 1.75rem;
+	background: inherit;
+	font-weight: bold;
+	color: #072140;
+	text-align: left;
+	margin-bottom: 10px;
+	line-height: 1.5;
+}
+
+subtitle {
+	display: block;
+	font-size: 0.9em;
+	text-align: center;
+}
+
+published {
+	display: block;
+}
+
+updated, published {
+	display: none;
+	font-size: 0.9em;
+	margin-left: 1em;
+}
+
+generator {
+	display: block;
+	font-size: 0.9em;
+}
+
+entry {
+	display: block;
+	color: inherit;
+	background: inherit;
+	padding: 1em 0 0 0;
+	margin: 1em 1em 2em 1em;
+	border-top: 1px solid #333;
+}
+
+entry modified, entry name {
+	display: inline;
+	color: #333333;
+	background: inherit;
+	font-size: 0.8em;
+}
+
+entry title {
+	display: block;
+	font-size: 1em;
+	font-weight: bold;
+	color: inherit;
+	background: inherit;
+	padding: 1em 1em 0em 1em;
+	margin: 0;
+	border-top: solid 1px #333333;
+	text-decoration: none;
+}
+
+img.floatright {
+	padding-left: 1em;
+	float: right;
+}
+
+img.floatleft {
+	float: left;
+	padding-right: 1em;
+	padding-bottom: 0.2em;
+}
+
+summary {
+	display: block;
+	background: #f7f7f7;
+	font-size: 0.9em;
+	color: inherit;
+	margin: 1em;
+	line-height: 1.5em;
+	padding: 0.2em 0.5em;
+}
+
+content {
+	display: block;
+	font-size: 0.875em;
+	color: inherit;
+	background: inherit;
+	margin: 1em;
+	line-height: 1.5em;
+}
+
+h2 {
+	font-size: 1.5rem;
+}
+h3 {
+	font-size: 1.25rem;
+}
+h4 {
+	font-size: 1.15rem;
+}
+
+h2, h3, h4 {
+	color: #072140;
+}
+
+a {
+	color: #3070b3;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+	text-decoration-thickness: 1px;
+}
+
+author {
+	margin: 1em;
+}
+
+/* disable Frontend view for following elements */
+entry id, entry title, entry author, entry published, entry updated, entry summary, entry created, entry issued {
+	display: none;
+}
+
+logo {
+	display: none;
+}
+
+id, name, email, uri {
+	display: none;
+}

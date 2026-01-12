@@ -1,0 +1,58 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+	<f:section name="secAccessibility">
+		<f:if condition="{SITE_LANGUAGE} == 'en'">
+			<f:then>
+				<f:comment>Bisher nur deutsch; hier ist der Platz für die englische Version</f:comment>
+				<f:render section="accessibility-de" arguments="{_all}" />
+			</f:then>
+			<f:else>
+				<f:render section="accessibility-de" arguments="{_all}" />
+			</f:else>
+		</f:if>
+	</f:section>
+	<f:section name="accessibility-de">
+		<div class="csc-default pos-1">
+			<h1>Erklärung zur Barrierefreiheit</h1>
+			<p class="intro">Die Zentrale IT der Technischen Universität München hat sich zum Ziel gesetzt, ihre Webauftritte – auch in den mobilen Ansichten – im Einklang mit der Bayerischen E-Government-Verordnung (BayEGovV) barrierefrei zugänglich zu machen.</p>
+			<p>Diese Erklärung zur Barrierefreiheit gilt für die Webseiten, die mit dem Content Management System TYPO3 umgesetzt und unter <a href="https://web.typo3.tum.de/t3/webauftritte/" class="external-link">web.typo3.tum.de/t3/webauftritte/</a> gelistet sind.</p>
+
+			<h2>Stand der Vereinbarkeit mit den Anforderungen</h2>
+			<p>Diese Webseiten stimmen teilweise mit den Vorgaben aus §1 BayBITV überein. Die Unvereinbarkeiten und Ausnahmen sind nachstehend aufgeführt.</p>
+
+			<h3>Nicht barrierefreie Inhalte</h3>
+			<ul>
+				<li>Auf den Startseiten fehlen teilweise Informationen in Leichter Sprache und Gebärdensprache.</li>
+				<li>Auf den Seiten fehlen teilweise alternative Textinhalte für Bilder und Tabellen.</li>
+				<li>Es können Fehler in der Überschriftenhierarchie vorliegen oder Links unverständlich sein.</li>
+				<li>Nicht alle Dokumente liegen in einer barrierefreien Fassung vor.</li>
+				<li>Zu eingebundenen Videos stehen derzeit in den meisten Fällen keine Untertitel zur Verfügung.</li>
+				<li>Anderssprachige Wörter und Abschnitte sind nicht ausgezeichnet.</li>
+				<li>Karten, die der Anfahrtsbeschreibung dienen, müssen um eine Anfahrtsbeschreibung in Textform ergänzt werden.</li>
+				<li>Bei automatisch generiertem Inhalt wird auf gleichlautende Links verwiesen, die aber unterschiedliche Informationen beinhalten.</li>
+			</ul>
+
+			<h3>Begründung für nicht zugängliche Inhalte:</h3>
+			<p>Als Universität verfügen wir über sehr umfangreiche und vielfältige Webauftritte, daher sind Fehler nicht gänzlich vermeidbar. Der Großteil dieser Webauftritte wurde vor dem 23. September 2018 veröffentlicht und entspricht daher nicht dem aktuellen Stand der Barrierefreiheit. Verschiedene Inhalte wie etwa Dateiformate aus Büroanwendungen (PDF-Dateien), die vor dem 23.09.2018 erstellt wurden, konnten derzeit noch nicht umgestellt werden. In einigen Fällen (insbesondere bei alten Fassungen der Benutzerinformation, der Jahresberichte oder Mitteilungsblätter, welche nur in Papierform vorliegen) ist eine Digitalisierung und anschließende Korrektur in ein barrierefreies Format derzeit nicht möglich. Die Umstellung auf barrierefreie Webauftritte ist bereits in Arbeit. Die Liveschaltung soll innerhalb der nächsten Monate erfolgen. Die Bereitstellung der Videos mit Audiotranskriptionen ist aufgrund des Umfangs des Videoarchivs noch nicht vollendet worden.</p>
+
+			<h2>Erstellungsdatum</h2>
+			<p>Die Erklärung wurde zuletzt am 15. Februar 2021 aktualisiert.<br>Die Bewertung basiert auf einer durchgeführten Selbstbewertung mit Unterstützung durch Dritte.</p>
+
+			<h2>Feedback und Kontaktangaben</h2>
+			<p>Etwaige Mängel in Bezug auf die Einhaltung der Barrierefreiheitsanforderungen können Sie uns mitteilen. Wenden Sie sich dazu bitte an:</p>
+			{f:cObject(typoscriptObjectPath: 'lib.content.accessibility')}
+
+			<h2>Durchsetzungsverfahren</h2>
+			<p>Im Rahmen eines Durchsetzungsverfahrens können Sie bei der zuständigen Durchsetzungsstelle online einen Antrag auf Prüfung der Einhaltung der Anforderungen an die Barrierefreiheit stellen.</p>
+
+			<h3>Kontaktdaten der Durchsetzungsstelle</h3>
+			<p>Landesamt für Digitalisierung, Breitband und Vermessung<br>
+				IT-Dienstleistungszentrum des Freistaats Bayern<br>
+				Durchsetzungs- und Überwachungsstelle für barrierefreie Informationstechnik<br>
+				St.-Martin-Straße 47<br>
+				81541 München<br>
+			</p>
+			<p>E-Mail: <a href="mailto:bitv@bayern.de">bitv@bayern.de</a><br>
+			Homepage: <a href="https://www.ldbv.bayern.de/digitalisierung/bitv.html" class="external-link">www.ldbv.bayern.de/digitalisierung/bitv.html</a></p>
+		</div>
+	</f:section>
+</html>

@@ -1,0 +1,31 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<nav aria-label="{f:translate(key: 'breadcrumbsNav', extensionName: 'sitetum')}" class="c-breadcrumb">
+    <f:if condition="{menuBreadcrumb}">
+        <ol class="c-breadcrumb__list">
+            <f:if condition="{data.uid} != {settings.HOMEPID}">
+                <li class="c-breadcrumb__item {f:if(condition: '{menuItem.current}', then: 'cur')}">
+                    <f:link.typolink parameter="{settings.HOMEPID}" title="|" class="c-breadcrumb__link" />
+                </li>
+            </f:if>
+            <f:for each="{menuBreadcrumb}" as="menuItem" iteration="crumb">
+                <li class="c-breadcrumb__item {f:if(condition: '{menuItem.current}', then: 'cur')}">
+                    <f:if condition="{menuItem.current}">
+                        <f:then>
+                            <span aria-current="page" title="{menuItem.title}">
+                                {menuItem.title -> f:format.htmlentitiesDecode() -> f:format.stripTags()}
+                            </span>
+                        </f:then>
+                        <f:else>
+                            <f:link.typolink parameter="{menuItem.link}" title="{menuItem.title}" class="c-breadcrumb__link">
+                                {menuItem.title -> f:format.htmlentitiesDecode() -> f:format.stripTags()}
+                            </f:link.typolink>
+                        </f:else>
+                    </f:if>
+                </li>
+            </f:for>
+        </ol>
+    </f:if>
+</nav>
+
+</html>

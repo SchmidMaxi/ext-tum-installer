@@ -1,0 +1,9 @@
+lib.menu.audience = HMENU
+lib.menu.audience {
+    if.isTrue = {$AUDIENCEPID}
+    wrap = <nav class="audience"><ul>|</ul></nav>
+    special = directory
+    special.value = {$AUDIENCEPID}
+    1 = TMENU
+    1.NO.wrapItemAndSub = <li>|</li>
+}

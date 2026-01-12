@@ -1,0 +1,73 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:ce="http://typo3.org/ns/TYPO3/CMS/FluidStyledContent/ViewHelpers"
+	  xmlns:tum="http://typo3.org/ns/ElementareTeilchen/Sitetum/ViewHelpers"
+	  xmlns:vac="http://typo3.org/ns/Praetorius/ViteAssetCollector/ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+<f:if condition="{data.image_zoom}">
+	<vac:asset.vite entry="frontend/sitetum/entrypoints/fancybox.js" useNonce="true" />
+</f:if>
+<figure class="image">
+	<f:if condition="{file.link}">
+		<f:then>
+			<f:link.typolink
+                class="ti ti-link"
+                parameter="{file.link}"
+                title="{file.title}"
+            >
+				<f:render partial="Media/Rendering/Image" arguments="{file: file, dimensions: dimensions, settings: settings}" />
+			</f:link.typolink>
+		</f:then>
+		<f:else>
+			<f:if condition="{data.image_zoom}">
+				<f:then>
+					<f:if condition="{file.properties.extension} == pdf || {file.properties.extension} == PDF">
+						<f:then>
+							<f:link.typolink
+									parameter="{file.publicUrl}"
+									title="{file.properties.description -> tum:explodeDescription(long:1)}"
+									class="ti ti-link-zoom"
+									additionalAttributes="{
+									data-fancybox: 'gallery{file.properties.uid_foreign}',
+									data-src: '{file.publicUrl}',
+									data-caption: '{file.properties.description -> tum:explodeDescription(long:1)}',
+									aria-label: '{f:if(condition: \'{file.alternative}\', then: \'{data.header} {f:translate(extensionName: \\\'sitetum\\\', key: \\\'lightbox.open.specific\\\')} {file.alternative}\', else: \'{data.header} {f:translate(extensionName: \\\'sitetum\\\', key: \\\'lightbox.open.default\\\')}\')}'
+									}"
+							>
+								<f:media class="image-embed-item t3colorbox cboxElement" file="{file}" width="{dimensions.width}" height="{dimensions.height}" alt="{file.alternative}" title="{file.title}"/>
+							</f:link.typolink>
+						</f:then>
+						<f:else>
+							<f:link.typolink
+								parameter="{f:uri.image(image: '{file}')}"
+								class="ti ti-link-zoom"
+								additionalAttributes="{
+									data-fancybox: 'gallery{file.properties.uid_foreign}',
+									data-media: '(max-width: 520px);(max-width: 767px);(max-width: 1199px);(max-width: 1399px);(min-width: 1400px)',
+									data-sources: '{f:uri.image(image: \'{file}\', maxWidth: \'320\')};
+												   {f:uri.image(image: \'{file}\', maxWidth: \'520\')};
+												   {f:uri.image(image: \'{file}\', maxWidth: \'780\')};
+												   {f:uri.image(image: \'{file}\', maxWidth: \'1000\')};
+												   {f:uri.image(image: \'{file}\', maxWidth: \'1280\')}
+												   ',
+									data-caption: '{file.properties.description -> tum:explodeDescription(long:1)}',
+									aria-label: '{f:if(condition: \'{file.alternative}\', then: \'{data.header} {f:translate(extensionName: \\\'sitetum\\\', key: \\\'lightbox.open.specific\\\')} {file.alternative}\', else: \'{data.header} {f:translate(extensionName: \\\'sitetum\\\', key: \\\'lightbox.open.default\\\')}\')}'
+									}"
+							>
+								<f:render partial="Media/Rendering/Image" arguments="{_all}"/>
+							</f:link.typolink>
+						</f:else>
+					</f:if>
+				</f:then>
+				<f:else>
+					<f:render partial="Media/Rendering/Image" arguments="{file: file, dimensions: dimensions, settings: settings}" />
+				</f:else>
+			</f:if>
+		</f:else>
+	</f:if>
+	<f:spaceless>
+		<f:if condition="{file.description}">
+			<figcaption class="image-caption"><f:format.raw><f:format.nl2br><f:if condition="{data.image_zoom}"><f:then>{file.properties.description -> tum:explodeDescription()}</f:then><f:else>{file.properties.description}</f:else></f:if></f:format.nl2br></f:format.raw></figcaption>
+		</f:if>
+	</f:spaceless>
+</figure>
+</html>

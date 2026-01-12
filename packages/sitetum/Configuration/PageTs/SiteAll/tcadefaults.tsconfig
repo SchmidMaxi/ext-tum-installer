@@ -1,0 +1,13 @@
+TCAdefaults {
+    tt_content {
+        CType = textmedia
+
+        // set checkbox for "Filelinks Layout :: Display description" by default
+        uploads_description=1
+
+        // we unset "default" (see typo3/ext/sitetum/Configuration/TCA/Overrides/tt_content.php) and give h2 as default instead
+        header_layout = 2
+
+        imagecols = 1
+    }
+}

@@ -1,0 +1,6 @@
+### content of header slider in intro layout
+lib.introheader = CONTENT
+lib.introheader {
+    carousel < styles.content.get
+    carousel.select.where = colPos=10
+}

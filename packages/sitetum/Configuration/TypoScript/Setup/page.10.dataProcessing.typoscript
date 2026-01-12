@@ -1,0 +1,76 @@
+# data processors for main fluid template
+page.10.dataProcessing {
+  # language menu
+  10 = TYPO3\CMS\Frontend\DataProcessing\LanguageMenuProcessor
+  10 {
+    as = menuLanguage
+  }
+
+  # see packages/sitetum/Configuration/TypoScript/Setup/page.10.dataProcessing.typoscript for news single view language menu
+
+  # main menu
+  21 = menu
+  21 {
+    levels = 5
+    includeSpacer = 1
+    as = menuMain
+  }
+
+  # breadcrumb
+  22 = menu
+  22 {
+    special = rootline
+    special.range = 1|-1
+    as = menuBreadcrumb
+  }
+
+  # get quick links parent directory name
+  23 = database-query
+  23 {
+    if.isTrue = {$QUICKLINKS_PID}
+    table = pages
+    uidInList = {$QUICKLINKS_PID}
+    pidInList = 0
+    as = menuQuickLinks
+
+    # quicklinks menu
+    dataProcessing {
+      10 = menu
+      10 {
+        special = directory
+        special.value.field = uid
+        # only allow shortcuts
+        excludeDoktypes = 1,6,7,199,254,255
+        as = quickLinksItems
+      }
+    }
+  }
+
+  # menu audience
+  24 = menu
+  24 {
+    if.isTrue = {$AUDIENCEPID}
+    special = directory
+    special.value = {$AUDIENCEPID}
+    as = menuAudience
+  }
+
+  30 = TYPO3\CMS\Frontend\DataProcessing\SiteProcessor
+  30 {
+    as = site
+  }
+}
+
+# for performance reasons, prepare introNavi only for intro pages, we have very little intro pages
+[traverse(page, "backend_layout") in ['pagets__intro1col','pagets__intro2col']]
+  page.10.dataProcessing {
+    20 = menu
+    20 {
+      if.isTrue = {$tum.pages.introNaviPid}
+      special = directory
+      special.value = {$tum.pages.introNaviPid}
+      levels = 1
+      as = introMenuItems
+    }
+  }
+[end]

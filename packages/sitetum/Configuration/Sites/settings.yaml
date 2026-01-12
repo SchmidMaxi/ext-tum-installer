@@ -1,0 +1,122 @@
+redirects:
+  # Automatically update slugs of all sub pages
+  # (default: true)
+  autoUpdateSlugs: true
+  # Automatically create redirects for pages with a new slug (works only in LIVE workspace)
+  # (default: true)
+  autoCreateRedirects: false
+  # Time To Live in days for redirect records to be created - `0` disables TTL, no expiration
+  # (default: 0)
+  redirectTTL: 90
+  # HTTP status code for the redirect, see
+  # https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections#Temporary_redirections
+  # (default: 307)
+  httpStatusCode: 301
+
+site:
+  themeColor: '#ffffff'
+  favicon:
+    safariHexColor: '#ffffff'
+
+  paths:
+    resourcesPublicFullPath: /_frontend/
+    resourcesPublicFaviconPath: /_frontend/favicon/
+
+# used mainly in packages/sitetum/Resources/Private/Partials/HeaderOrg.html
+tum:
+  TUM_URL:
+    de: https://www.tum.de/
+    en: https://www.tum.de/en/
+  TUM_NAME:
+    de: Technische Universität München
+    en: Technical University of Munich
+  TUM_TITLE:
+    de: Startseite www.tum.de
+    en: Home www.tum.de
+
+  TOP_OU_NAME:
+    de: Technische Universität München
+    en: Technical University of Munich
+  TOP_OU_URL:
+    de: https://www.tum.de/
+    en: https://www.tum.de/en/
+
+  CIT:
+    PARENT_OU_NAME:
+      de: TUM School of Computation, Information and Technology
+      en: TUM School of Computation, Information and Technology
+    PARENT_OU_URL:
+      de: https://www.cit.tum.de/
+      en: https://www.cit.tum.de/
+  ED:
+    PARENT_OU_NAME:
+      de: TUM School of Engineering and Design
+      en: TUM School of Engineering and Design
+    PARENT_OU_URL:
+      de: https://www.ed.tum.de/
+      en: https://www.ed.tum.de/
+  GS:
+    PARENT_OU_NAME:
+      de: TUM Graduate School
+      en: TUM Graduate School
+    PARENT_OU_URL:
+      de: https://www.gs.tum.de/
+      en: https://www.gs.tum.de/en/
+  HFP:
+    PARENT_OU_NAME:
+      de: Hochschule für Politik München
+      en: Munich School of Politics and Public Policy
+    PARENT_OU_URL:
+      de: https://www.hfp.tum.de/
+      en: https://www.hfp.tum.de/en/
+  LS:
+    PARENT_OU_NAME:
+      de: TUM School of Life Sciences
+      en: TUM School of Life Sciences
+    PARENT_OU_URL:
+      de: https://www.ls.tum.de/
+      en: https://www.ls.tum.de/
+  MH:
+    PARENT_OU_NAME:
+      de: TUM School of Medicine and Health
+      en: TUM School of Medicine and Health
+    PARENT_OU_URL:
+      de: https://www.mh.tum.de/
+      en: https://www.mh.tum.de/en/
+  MGT:
+    PARENT_OU_NAME:
+      de: TUM School of Management
+      en: TUM School of Management
+    PARENT_OU_URL:
+      de: https://www.mgt.tum.de/
+      en: https://www.mgt.tum.de/
+  NAT:
+    PARENT_OU_NAME:
+      de: TUM School of Natural Sciences
+      en: TUM School of Natural Sciences
+    PARENT_OU_URL:
+      de: https://www.nat.tum.de/
+      en: https://www.nat.tum.de/
+  SOT:
+    PARENT_OU_NAME:
+      de: TUM School of Social Sciences and Technology
+      en: TUM School of Social Sciences and Technology
+    PARENT_OU_URL:
+      de: https://www.sot.tum.de/
+      en: https://www.sot.tum.de/
+
+tum_news:
+  singlePid: 0
+  startingpoint: 0
+  list:
+    paginate:
+      maximumNumberOfLinks: 3
+  rss:
+    channel:
+      title: TUM - RSS configuration not finished for this site
+      description: TUM - RSS configuration not finished for this site, please check your TS constants
+      link: //www.typo3.tum.de/
+
+# load globally, TYPO3 is patched to supress error in log when EXT:curlcontent is NOT installed
+imports:
+  - resource: 'EXT:curlcontent/Configuration/Presets/urlPresets.yaml'

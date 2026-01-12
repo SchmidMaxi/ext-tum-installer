@@ -38,7 +38,9 @@
         "typo3/cms-workspaces": "^14.0",
         "typo3/minimal": "^14",
         "tum/installer": "@dev",
-        "georgringer/news": "^14.0"
+        "georgringer/news": "^14.0",
+        "in2code/sitescore": "^2.0",
+        "elementareteilchen/siteloader": "@dev"
     },
     "config": {
         "allow-plugins": {

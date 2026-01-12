@@ -1,0 +1,49 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:tum="http://typo3.org/ns/ElementareTeilchen/Sitetum/ViewHelpers"
+      xmlns:vac="http://typo3.org/ns/Praetorius/ViteAssetCollector/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<vac:asset.vite entry="frontend/sitetum/entrypoints/main.js" useNonce="true" />
+
+<f:if condition="{data.uid} == {settings.SEARCHRESULTSPID}">
+    <vac:asset.vite entry="frontend/sitetum/entrypoints/google-cse-resultpage.js" useNonce="true" />
+</f:if>
+<f:if condition="{settings.MATHJAX} == 1">
+    <vac:asset.vite entry="frontend/sitetum/entrypoints/mathjax.js" useNonce="true" />
+</f:if>
+
+<f:comment>
+    <!--# Build object TUM; used in tum.js -->
+</f:comment>
+<f:asset.script identifier="tumInlineJs" nonce="{f:security.nonce()}" priority="1"><f:spaceless>
+    <f:alias map="{ l: '{', r: '}' }">
+    let TUM = {l}
+        hp: "{f:uri.page(pageUid: '{settings.HOMEPID}')}",
+        pid: {data.uid},
+        lid: {languageId},
+        search: {l}
+            box: {f:if(condition: '{settings.SEARCH_BOX} == 1', then: '1', else: '0')},
+            path: "{f:uri.page(pageUid: '{settings.SEARCHRESULTSPID}')}"
+        {r},
+        video: [],
+        loadOnce: {}
+    {r};
+    </f:alias>
+    <f:comment>
+        <!--Add/remove js classes for html (needed to improve output without Javascript)-->
+        <!--JS classes are needed before page is fully loaded in order to prevent "jumping" content (CLS)-->
+    </f:comment>
+    document.querySelector('html').classList.remove('no-js');
+    document.querySelector('html').classList.add('js');
+</f:spaceless></f:asset.script>
+
+<header>
+    <f:render partial="HeaderFubar" arguments="{_all}"/>
+    <f:render partial="HeaderOrg" arguments="{_all}"/>
+</header>
+<f:render section="secMain" arguments="{_all}"/>
+<f:render partial="Footer" arguments="{_all}"/>
+<f:if condition="{settings.MATOMO_ID} > 0">
+    <f:render partial="Matomo" arguments="{_all}"/>
+</f:if>
+</html>

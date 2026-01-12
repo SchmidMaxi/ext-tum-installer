@@ -1,0 +1,39 @@
+# in older versions we used lib.content.main < styles.content.get
+# since v12 we get rid of that dependency and more easily and explicitly include own additional stuff
+lib.content.main = CONTENT
+lib.content.main {
+    table = tt_content
+    select {
+        orderBy = sorting
+        # we do NOT want to show content elements which are only given in english
+        # we show only properly translated content and content with language "All [-1]"
+        where = {#colPos}=0 AND {#sys_language_uid} IN (-1,0)
+    }
+}
+
+
+#old: styles.content.getRight < styles.content.get
+lib.content.right < lib.content.main
+lib.content.right {
+  # we do NOT want to show content elements which are only given in english
+  # we show only properly translated content and content with language "All [-1]"
+  select.where = {#colPos}=2 AND {#sys_language_uid} IN (-1,0)
+}
+
+
+# old: styles.content.getAccessibility < styles.content.get
+lib.content.accessibility < lib.content.main
+lib.content.accessibility {
+  renderObj = TEXT
+  renderObj.field = bodytext
+  renderObj.parseFunc =< lib.parseFunc_RTE
+}
+
+
+# old: styles.content.getIv < styles.content.get
+lib.content.iv < lib.content.main
+lib.content.iv {
+  renderObj = TEXT
+  renderObj.field = bodytext
+  renderObj.parseFunc =< lib.parseFunc_RTE
+}

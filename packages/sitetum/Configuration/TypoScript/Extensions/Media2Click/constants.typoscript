@@ -1,0 +1,8 @@
+
+plugin.media2click.enable = 1
+plugin.media2click.enablePermanently = 1
+plugin.media2click.storagePid = 196
+// we use our constant PRIVACY_URL instead, see packages/sitetum/Configuration/TypoScript/Setup/Extensions/media2click.typoscript
+plugin.media2click.privacyPid =
+plugin.media2click.showTitle = 1
+plugin.media2click.showPreviewImage = 1

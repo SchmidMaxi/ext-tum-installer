@@ -1,0 +1,11 @@
+config {
+  // only dev context
+
+  // https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Setup/Config/Index.html#contentobjectexceptionhandler
+  contentObjectExceptionHandler = 0
+
+  // you want to use $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] = true;
+  // see typo3conf/LocalConfiguration.php
+  compressCss = 0
+  compressJs = 0
+}

@@ -1,0 +1,51 @@
+# Defaults, set or overwrite in backend constants
+HOMEPID =
+FAVICONSUFFIX =
+AUDIENCEPID =
+QUICKLINKS_PID =
+SEARCHRESULTSPID =
+// must be 0 to turn off, not "". Otherweise JS error.
+#SEARCH_BOX = 1
+# expected values: inline / school / local / [empty]
+#CSE_PARENTSEARCH =
+# domain of parent site where google should search - explicitely NOT set here to be able to set in BE on higher level for all sites in subfolders
+#CSE_PARENTSITE =
+MATOMO_ID =
+MATOMO_URL = webstat.srv.tum.de
+### WEBSITE_TITLE_DE - this does not exist; here we use the "Sitetitle" / "Website Title" of the typoscript template
+WEBSITE_TITLE_EN =
+TUM_LOGOURL = EXT:sitetum/Resources/Public/Icons/Org/tum-logo.png
+LANGUAGE_NAV = 1
+GLOBAL_FOOTER = 1
+GLOBAL_IMPRESSUM = 1
+ADDITIONAL_PRIVACY = 0
+MATHJAX = 0 
+
+# currently only HFP uses custom logo, set by this constant
+SITE_LOGO_URL =
+SITE_LOGO_ALT =
+# currently only HFP uses custom css, set by this constant
+SITE_LOCAL_CSS =
+
+# these PIDs have to be set in the template and use the content element of given page ID
+# CONTACTPID
+# IMPRESSUMPID
+# ACCESSPID
+
+# privacy PID is used for link generation
+# PRIVACY_URL
+
+
+[siteLanguage("twoLetterIsoCode") == 'en']
+	PRIVACY_URL = https://www.typo3.tum.de/index.php?id=datenschutz&L=1
+	CONSENT_HREF = /index.php?id={$PRIVACY_URL}&L=1
+[global]
+
+[siteLanguage("twoLetterIsoCode") == 'de']
+	PRIVACY_URL = https://www.typo3.tum.de/index.php?id=datenschutz
+	CONSENT_HREF = /index.php?id={$PRIVACY_URL}
+[global]
+
+# sitetum
+THEME_PATH_PRIVATE = EXT:sitetum/Resources/Private
+THEME_PATH_PUBLIC = EXT:sitetum/Resources/Public

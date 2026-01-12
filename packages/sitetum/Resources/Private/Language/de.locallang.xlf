@@ -1,0 +1,276 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2018-01-01T14:38:32+01:00" target-language="de">
+		<header/>
+		<body>
+			<trans-unit id="homepage">
+				<source>Home</source>
+				<target state="translated">Startseite</target>
+			</trans-unit>
+
+			<trans-unit id="skipLink">
+				<source>skip to content</source>
+				<target>Zum Inhalt springen</target>
+			</trans-unit>
+
+			<trans-unit id="mobileNav">
+				<source>open navigation</source>
+				<target>Navigation öffnen</target>
+			</trans-unit>
+
+			<trans-unit id="navExpandButton">
+				<source>Open submenu of</source>
+				<target>Öffne das Untermenü von</target>
+			</trans-unit>
+
+			<!-- A11Y LANDMARKS -->
+			<trans-unit id="mainNav">
+				<source>main navigation</source>
+				<target>Hauptnavigation</target>
+			</trans-unit>
+			<trans-unit id="breadcrumbsNav">
+				<source>breadcrumbs</source>
+				<target>Breadcrumbs</target>
+			</trans-unit>
+			<trans-unit id="legalLinks">
+				<source>legal links</source>
+				<source>rechtlich relevante Links</source>
+			</trans-unit>
+
+			<!-- Menu CE -->
+			<trans-unit id="menu_abstract.title" resname="menu_abstract.title">
+				<source>Abstracts</source>
+				<target>Zusammenfassungen</target>
+			</trans-unit>
+			<trans-unit id="menu_categorized_content.title" resname="menu_categorized_content.title">
+				<source>Categorized content</source>
+				<target>Kategorisierter Inhalt</target>
+			</trans-unit>
+			<trans-unit id="menu_categorized_pages.title" resname="menu_categorized_pages.title">
+				<source>Categorized pages</source>
+				<target>Kategorisierter Seiten</target>
+			</trans-unit>
+			<trans-unit id="menu_pages.title" resname="menu_pages.title">
+				<source>Selected Pages</source>
+				<target>Ausgewählte Seiten</target>
+			</trans-unit>
+			<trans-unit id="menu_subpages.title" resname="menu_subpages.title">
+				<source>Subpages</source>
+				<target>Unterseiten</target>
+			</trans-unit>
+			<trans-unit id="menu_recently_updated.title" resname="menu_recently_updated.title">
+				<source>Recently updated pages</source>
+				<target>Kürzlich aktualisierte Seiten</target>
+			</trans-unit>
+			<trans-unit id="menu_related_pages.title" resname="menu_related_pages.title">
+				<source>Related pages</source>
+				<target>Verwandte Seiten</target>
+			</trans-unit>
+			<trans-unit id="menu_section.title" resname="menu_section.title">
+				<source>Section index</source>
+				<target>Sektionsindex</target>
+			</trans-unit>
+			<trans-unit id="menu_section_pages.title" resname="menu_section_pages.title">
+				<source>Section index of subpages from selected pages</source>
+				<target>Unterseiten von ausgewählten Seiten</target>
+			</trans-unit>
+			<trans-unit id="menu_sitemap.title" resname="menu_sitemap.title">
+				<source>Sitemap</source>
+				<target>Sitemap</target>
+			</trans-unit>
+			<trans-unit id="menu_sitemap_pages.title" resname="menu_sitemap_pages.title">
+				<source>Sitemaps of selected pages</source>
+				<target>Sitemap von ausgewählten Seiten</target>
+			</trans-unit>
+			<!-- /Menu CE -->
+			<!-- /A11Y LANDMARKS -->
+
+			<!-- LIGHTBOX GALLERY A11Y -->
+			<trans-unit id="lightbox.open.default">
+				<source>Open gallery here</source>
+				<target>Gallerie öffnen</target>
+			</trans-unit>
+			<trans-unit id="lightbox.open.specific">
+				<source>Open this gallery at</source>
+				<target>Gallerie öffnen bei dem Bild</target>
+			</trans-unit>
+			<!-- /LIGHTBOX GALLERY A11Y -->
+
+			<trans-unit id="linkToTUM">
+				<source>Go to homepage of Technical University of Munich</source>
+				<target>Zur Startseite der Technischen Universität München</target>
+			</trans-unit>
+			<trans-unit id="tumLogo">
+				<source>Technical University of Munich</source>
+				<target>Technische Universität München</target>
+			</trans-unit>
+
+			<!-- SUCHE -->
+			<trans-unit id="globalSearch.open">
+				<source>Google search</source>
+				<target>Google Suche</target>
+			</trans-unit>
+			<trans-unit id="globalSearch.popup.title">
+				<source>Google Custom Search</source>
+				<target>Google Custom Search</target>
+			</trans-unit>
+			<trans-unit id="globalSearch.popup.description">
+				<source>We use Google for our search. By clicking on „enable search“ you enable the search box and accept our terms of use.</source>
+				<target>Wir verwenden Google für unsere Suche. Mit Klick auf „Suche aktivieren“ aktivieren Sie das Suchfeld und akzeptieren die Nutzungsbedingungen.</target>
+			</trans-unit>
+			<trans-unit id="globalSearch.popup.link">
+				<source>Information on the use of Google Search</source>
+				<target>Hinweise zum Einsatz der Google Suche</target>
+			</trans-unit>
+			<trans-unit id="globalSearch.popup.enable">
+				<source>enable search</source>
+				<target>Suche aktivieren</target>
+			</trans-unit>
+			<trans-unit id="globalSearch.popup.close">
+				<source>close popup</source>
+				<target>Popup schliessen</target>
+			</trans-unit>
+			<trans-unit id="searchInput.label">
+				<source>search input</source>
+				<target>Suchbegriff eingeben</target>
+			</trans-unit>
+			<trans-unit id="searchButton.label">
+				<source>start searching</source>
+				<target>Suche ausführen</target>
+			</trans-unit>
+			<!-- /SUCHE -->
+
+			<!-- Google CSE -->
+			<trans-unit id="gcse.noscript">
+				<target>Es tut uns leid. Die Such-Funktion benötigt JavaScript.</target>
+			</trans-unit>
+			<trans-unit id="gcse.sitesall_title">
+				<target>tum.de, mytum.de, zhs-muenchen.de einschliesslich Subdomains und www.tum-universitaetsstiftung.de</target>
+			</trans-unit>
+			<trans-unit id="gcse.all">
+				<target>TUM-weit</target>
+			</trans-unit>
+			<trans-unit id="gcse.local">
+				<target>lokale Seite</target>
+			</trans-unit>
+			<trans-unit id="gcse.inline">
+				<target>fakultätsweit</target>
+			</trans-unit>
+			<trans-unit id="gcse.school">
+				<target>School-weit</target>
+			</trans-unit>
+			<!-- /Google CSE -->
+
+			<!-- Cookieconsent -->
+			<trans-unit id="cookieconsent.more">
+				<source>learn more about cookies</source>
+				<target>Weitere Informationen zu unseren verwendeten Cookies</target>
+			</trans-unit>
+			<!-- /Cookieconsent -->
+
+			<!-- to top -->
+			<trans-unit id="toTop" approved="yes">
+				<source>to Top</source>
+				<target state="translated">nach oben springen</target>
+			</trans-unit>
+			<!-- /to top -->
+
+			<!-- social media box -->
+			<trans-unit id="sbox.header">
+				<source>Follow TUM:</source>
+				<target>Folgen Sie der TUM:</target>
+			</trans-unit>
+			<trans-unit id="sbox.icon.title.bluesky">
+				<source>Follow TUM at Bluesky</source>
+				<target>Folgen Sie TUM auf Bluesky</target>
+			</trans-unit>
+			<trans-unit id="sbox.icon.title.facebook">
+				<source>TUM at Facebook</source>
+				<target>TUM auf Facebook</target>
+			</trans-unit>
+			<trans-unit id="sbox.icon.title.instagram">
+				<source>TUM at Instagram</source>
+				<target>TUM auf Instagram</target>
+			</trans-unit>
+			<trans-unit id="sbox.icon.title.linkedin">
+				<source>TUM at Linkedin</source>
+				<target>TUM auf Linkedin</target>
+			</trans-unit>
+			<trans-unit id="sbox.icon.title.twitter">
+				<source>Follow TUM at X</source>
+				<target>Folgen Sie TUM auf X</target>
+			</trans-unit>
+			<trans-unit id="sbox.icon.title.youtube">
+				<source>TUM at Youtube</source>
+				<target>TUM auf Youtube</target>
+			</trans-unit>
+			<!-- /social media box -->
+
+			<!-- tum footer -->
+			<trans-unit id="tumfooter.note">
+				<source><![CDATA[Find more topics on the central web site of the Technical University of Munich: <a class="note__link  ti ti-link-ext" href="https://www.tum.de/en/">www.tum.de</a>]]></source>
+				<target><![CDATA[Finden Sie weitere Themen auf der zentralen Webseite der Technischen Universität München: <a class="note__link  ti ti-link-ext" href="https://www.tum.de/">www.tum.de</a>]]></target>
+			</trans-unit>
+
+
+				<!-- misc links -->
+			<trans-unit id="tumfooter.jobs">
+				<source><![CDATA[<a href="https://www.tum.de/en/about-tum/working-at-tum/open-positions/">Jobs</a>]]></source>
+				<target><![CDATA[<a href="https://www.tum.de/die-tum/arbeiten-an-der-tum/stellenangebote/">Jobs</a>]]></target>
+			</trans-unit>
+			<trans-unit id="tumfooter.feedback">
+				<source><![CDATA[<a href="https://www.tum.de/en/about-tum/contact-directions/feedback/">Feedback</a>]]></source>
+				<target><![CDATA[<a href="https://www.tum.de/die-tum/kontakt-und-anfahrt/feedback/">Feedback</a>]]></target>
+			</trans-unit>
+			<trans-unit id="tumfooter.media">
+				<source><![CDATA[<a href="https://www.tum.de/en/media/">Media</a>]]></source>
+				<target><![CDATA[<a href="https://www.tum.de/presse/">Presse</a>]]></target>
+			</trans-unit>
+
+				<!-- socials -->
+			<trans-unit id="tumfooter.facebook">
+				<source>TUM on Facebook</source>
+				<target>TUM bei Facebook</target>
+			</trans-unit>
+			<trans-unit id="tumfooter.twitter">
+				<source>Follow TUM on X</source>
+				<target>Folgen Sie TUM auf X</target>
+			</trans-unit>
+			<trans-unit id="tumfooter.youtube">
+				<source>TUM on YouTube</source>
+				<target>TUM auf YouTube</target>
+			</trans-unit>
+			<trans-unit id="tumfooter.instagram">
+				<source>Follow TUM on Instagram</source>
+				<target>TUM auf Instagram</target>
+			</trans-unit>
+			<!-- /tum footer -->
+
+			<!-- former constants -->
+			<trans-unit id="privacy">
+				<source>Privacy</source>
+				<target>Datenschutz</target>
+			</trans-unit>
+			<trans-unit id="imprint">
+				<source>Imprint</source>
+				<target>Impressum</target>
+			</trans-unit>
+			<trans-unit id="accessibility">
+				<source>Accessibility</source>
+				<target>Barrierefreiheit</target>
+			</trans-unit>
+			<trans-unit id="searchbutton">
+				<source>Search</source>
+				<target>Suche</target>
+			</trans-unit>
+			<trans-unit id="skipnav">
+				<source>Skip to content</source>
+				<target>Zum Inhalt springen</target>
+			</trans-unit>
+			<trans-unit id="menu">
+				<source>Menu</source>
+				<target>Menü</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

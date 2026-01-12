@@ -1,0 +1,7 @@
+lib.backLink = RECORDS
+lib.backLink {
+  source.data = current
+  tables = pages
+  conf.pages = TEXT
+  conf.pages.field = nav_title//title
+}

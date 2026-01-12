@@ -1,0 +1,259 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+	<f:section name="secPrivacy">
+		<f:if condition="{SITE_LANGUAGE} == 'en'">
+			<f:then>
+				<f:comment>Bisher nur deutsch; hier ist der Platz für die englische Version</f:comment>
+				<f:render section="privacy-de" arguments="{_all}"/>
+			</f:then>
+			<f:else>
+				<f:render section="privacy-de" arguments="{_all}"/>
+			</f:else>
+		</f:if>
+	</f:section>
+	<f:section name="privacy-de">
+		<div class="csc-default pos-1">
+			<h1>
+				Daten&shy;schutz&shy;erklärung </h1>
+			<p class="intro">
+				Für die Technische Universität München ist Datenschutz ein wichtiges Anliegen. Wir möchten, dass Sie wissen, wann wir welche Daten speichern und wie wir sie verwenden. Personenbezogene Daten werden auf diesem zentralen Web-Server der Universität (www.tum.de) nur im technisch notwendigen Umfang erhoben. Die Datenverarbeitung unterliegt den geltenden datenschutzrechtlichen Bestimmungen, insbesondere der Datenschutz-Grundverordnung (DSGVO), dem Bayerischen Datenschutzgesetz (BayDSG) und dem
+				<a class="external-link" href="https://www.gesetze-im-internet.de/ddg/BJNR0950B0024.html" title="Opens external link in current window">Digitale-Dienste-Gesetz (DDG)</a>.
+			</p>
+			<p class="intro">
+				Nachfolgend informieren wir Sie über Art, Umfang und Zweck der Erhebung und Verwendung personenbezogener Daten. Diese Informationen können jederzeit von unserer Webseite abgerufen werden. </p>
+		</div>
+		<div class="csc-default">
+			<h2 class="lines">
+				Technische Umsetzung </h2>
+			<p>
+				Die Webserver der Technischen Universität München werden vom
+				<a class="external-link" href="https://www.lrz.de/" title="Opens external link in current window">Leibniz-Rechenzentrum (LRZ)</a> betrieben.
+			</p>
+			<p>
+				Leibniz-Rechenzentrum (LRZ)<br> Boltzmannstraße 1<br> 85748 Garching b. München </p>
+		</div>
+		<div class="csc-default">
+			<h2 class="lines">
+				Protokollierung </h2>
+			<p>
+				Wenn Sie diese oder andere Internetseiten aufrufen, übermitteln Sie über Ihren Internetbrowser Daten an unseren Webserver. Die folgenden Daten werden während einer laufenden Verbindung zur Kommunikation zwischen Ihrem Internetbrowser und unserem Webserver temporär in einer Logdatei aufgezeichnet: </p>
+			<ul>
+				<li>IP-Adresse des anfragenden Rechners</li>
+				<li>Datum und Uhrzeit des Zugriffs</li>
+				<li>Name, URL und übertragene Datenmenge der abgerufenen Datei</li>
+				<li>Zugriffsstatus (angeforderte Datei übertragen, nicht gefunden etc.)</li>
+				<li>Erkennungs&shy;daten des verwendeten Browser- und Betriebssystems (sofern vom anfragenden Webbrowser übermittelt)</li>
+				<li>Webseite, von der aus der Zugriff erfolgte (sofern vom anfragenden Webbrowser übermittelt)</li>
+			</ul>
+			<p>
+				Die Verarbeitung der Daten in dieser Logdatei geschieht wie folgt: </p>
+			<ul>
+				<li>Die Logeinträge werden kontinuierlich automatisch ausgewertet, um Angriffe auf die Webserver erkennen und entsprechend reagieren zu können.</li>
+				<li>In Einzelfällen, d.h. bei gemeldeten Störungen, Fehlern und Sicherheits&shy;vorfällen, erfolgt eine manuelle Analyse.</li>
+				<li>Logeinträge, die älter als sieben Tage sind, werden durch Kürzung der IP-Adresse anonymisiert.</li>
+				<li>Die anonymisierten Logs werden zur Erstellung von Zugriffs&shy;statistiken verwendet. Die hierfür eingesetzte Software wird lokal vom LRZ betrieben.</li>
+			</ul>
+			<p>
+				Die in den Logeinträgen enthaltenen IP-Adressen werden vom LRZ nicht mit anderen Datenbeständen zusammengeführt, so dass für das LRZ kein Rückschluss auf einzelne Personen möglich ist. </p>
+		</div>
+		<div class="csc-default">
+			<h2 class="lines" id="AktiveKomponenten">
+				Aktive Komponenten </h2>
+			<p>
+				In diesem Webauftritt werden aktive Komponenten wie JavaScript, Java-Applets oder Active-X-Controls verwendet. Diese Funktion kann durch die Einstellung Ihres Internetbrowsers von Ihnen abgeschaltet werden. </p>
+		</div>
+		<f:if condition="{settings.MATOMO_ID}">
+			<f:render section="privacy-piwik-de" arguments="{_all}"/>
+		</f:if>
+		<f:if condition="{settings.SEARCHRESULTSPID}">
+			<f:render section="privacy-google-de"/>
+		</f:if>
+		<div class="csc-default">
+			<h2 class="lines">
+				Google Maps </h2>
+			<p>
+				Dieser Webauftritt verwendet die „Google Maps und Routenplaner“- Funktion der Google Inc., 1600 Amphitheatre Parkway, Mountain View, CA 94043, United States („Google“), um geographische Informationen und Anfahrtrouten darzustellen bzw. zu berechnen. Durch Google Maps können Daten über Ihre Nutzung dieser Webseite an Google übertragen, erhoben und von Google genutzt werden. Sie können eine solche Datenübertragung verhindern, wenn Sie in Ihrem Browser „Javascript“ deaktivieren. In dem Falle können aber keine Karten angezeigt werden. Durch die Nutzung dieser Webseite und die Nichtdeaktivierung von „Javascript“ erklären Sie Ihr Einverständnis, dass Sie mit der Bearbeitung Ihrer Daten durch Google zum obigen Zwecke einverstanden sind. Weitere Informationen darüber wie „Google Maps“ und der Routenplaner Ihre Daten verwenden sowie die Datenschutzerklärung von Google finden Sie unter:
+				<a class="external-link" href="https://www.google.com/intl/de_de/help/terms_maps/" title="Opens external link in current window">https://www.google.com/intl/de_de/help/terms_maps/</a>
+			</p>
+		</div>
+		<div class="csc-default">
+			<h2 class="lines">
+				BayernAtlas </h2>
+			<p>
+				Dieser Webauftritt benutzt unter anderm auch den BayernAtlas zur Darstellung von Luftbildern und Gebäudeansichten. Dieser Dienst wird vom Landesamt für Digitalisierung, Breitband und Vermessung, Alexandrastraße 4, 80538 München, Postanschrift: Postfach 22 14 28, 80504 München, bereit gestellt. Durch die Nutzung dieser Webauftritt erklären Sie sich mit dessen Nutzungbedingungen und mit Erheben und Verarbeiten der Daten sowie der von Ihnen eingegeben Daten durch dieses einverstanden. Die
+				<a class="external-link" href="https://geoportal.bayern.de/geoportalbayern/seiten/nutzungsbedingungen.html" title="Opens external link in current window">Nutzungsbedingungen</a> und die
+				<a class="external-link" href="http://geoportal.bayern.de/geoportalbayern/seiten/datenschutz" title="Opens external link in current window">Datenschutzerklärung</a> finden Sie auf der Seite vom Geoportal Bayern.
+			</p>
+		</div>
+		<!-- Zur Zeit benutzen wir im FE keine Cookies -->
+		<div class="csc-default">
+			<h2 class="lines">
+				Cookies </h2>
+			<p>
+				Um den Funktionsumfang unseres Internetangebotes zu erweitern und die Nutzung für Sie komfortabler zu gestalten, verwenden wir zum Teil so genannte „Cookies". Mit Hilfe dieser Cookies können bei dem Aufruf unserer Webseite Daten auf Ihrem Rechner gespeichert werden. Sie können das Speichern von Cookies jedoch deaktivieren oder Ihren Browser so einstellen, dass Cookies nur für die Dauer der jeweiligen Verbindung zum Internet gespeichert werden. Hierdurch könnte allerdings der Funktionsumfang unseres Angebotes eingeschränkt werden. </p>
+		</div>
+		<div class="csc-default">
+			<h2 class="lines">
+				Online-Formulare </h2>
+			<p>
+				Personenbezogene Daten, die Sie gegebenenfalls über Kontaktformulare, Anmeldeformulare und ähnliche Webseiten auf unseren Webservern an uns leiten werden nur mit Ihrem Einverständnis entgegengenommen und dienen ausschließlich dem in den Formularen genannten Zweck. Bitte beachten Sie die entsprechenden Hinweise auf den Formularen. </p>
+			<p>
+				In allen Formularen werden nur die personenbezogenen Daten erhoben, die unbedingt erforderlich sind. Üblicherweise werden die personenbezogenen Daten in einer Datenbank des Leibnitz Rechenzentrums gespeichert und sind den jeweils zuständigen Mitarbeitern der TUM zugänglich. Ist der Zweck der Datenerhebung, die Daten auch anderen Mitgliedern der TUM zugänglich zu machen, so wird hierbei das Prinzip der Datensparsamkeit beachtet. Ihre Daten werden nicht an Dritte weiteregegeben, es sei denn, dies ist im Formular explizit angegeben. </p>
+			<p>
+				Ihre personenbezogen Daten werden nach Zweckerfüllung gelöscht, es sei denn Sie haben Ihre Einwilligung zu weiteren Kontaktpflege gegeben. </p>
+			<p>
+				Sie können jederzeit für die Zukunft Ihre Einwilligung widerrufen. Hierzu wenden Sie sich bitte an
+				<a href="mailto:it-support@tum.de">it-support@tum.de</a>. Ihre Daten werden dann unverzüglich gelöscht. </p>
+		</div>
+		<div class="csc-default">
+			<h2 class="lines">
+				Elektronische Post (E-Mail) </h2>
+			<p>
+				Informationen, die Sie unverschlüsselt per Elektronische Post (E-Mail) an uns senden, können möglicherweise auf dem Übertragungsweg von Dritten gelesen werden. Wir können in der Regel auch Ihre Identität nicht überprüfen und wissen nicht, wer sich hinter einer E-Mail-Adresse verbirgt. Eine rechtssichere Kommunikation durch einfache E-Mail ist daher nicht gewährleistet. Wir setzen - wie viele E-Mail-Anbieter - Filter gegen unerwünschte Werbung („SPAM-Filter“) ein, die in seltenen Fällen auch normale E-Mails fälschlicherweise automatisch als unerwünschte Werbung einordnen und löschen. E-Mails, die schädigende Programme („Viren“) enthalten, werden von uns in jedem Fall automatisch gelöscht. </p>
+		</div>
+		<div class="csc-default">
+			<h2 class="lines">
+				Verwendung von Facebook Social Plugins </h2>
+			<p>
+				Unser Internetauftritt verwendet Social Plugins ("Plugins") des sozialen Netzwerkes facebook.com, welches von der Facebook Inc., 1601 S. California Ave, Palo Alto, CA 94304, USA betrieben wird ("Facebook"). Die Plugins sind mit einem Facebook Logo oder dem Zusatz "Facebook Social Plugin" gekennzeichnet. </p>
+			<p>
+				Wenn Sie eine Webseite unseres Internetauftritts aufrufen, die ein solches Plugin enthält, baut Ihr Browser eine direkte Verbindung mit den Servern von Facebook auf. Der Inhalt des Plugins wird von Facebook direkt an Ihren Browser übermittelt und von diesem in die Webseite eingebunden. </p>
+			<p>
+				Durch die Einbindung der Plugins erhält Facebook die Information, dass Sie die entsprechende Seite unseres Internetauftritts aufgerufen haben. Sind Sie bei Facebook eingeloggt kann Facebook den Besuch Ihrem Facebook-Konto zuordnen, selbst wenn Sie den „Gefällt mir“ Button nicht bestätigt haben. Wenn Sie mit den Plugins interagieren, zum Beispiel den "Gefällt mir" Button betätigen oder einen Kommentar abgeben, wird die entsprechende Information von Ihrem Browser direkt an Facebook übermittelt und dort gespeichert. </p>
+			<p>
+				Auch wenn Sie keinen Facebook-Account besitzen, kann Facebook Daten, wie z. B. die IP-Adresse, über Sie sammeln. Zweck und Umfang der Datenerhebung und die weitere Verarbeitung und Nutzung der Daten durch Facebook sowie Ihre diesbezüglichen Rechte und Einstellungsmöglichkeiten zum Schutz Ihrer Privatsphäre entnehmen Sie bitte den
+				<a class="external-link" href="https://www.facebook.com/about/privacy/" title="Opens external link in current window">Datenschutzhinweisen</a> von Facebook.
+			</p>
+			<p>
+				Wenn Sie nicht möchten, dass Facebook über unseren Internetauftritt Daten über Sie sammelt, müssen Sie sich vor dem Besuch unseres Internetauftritts bei Facebook ausloggen. Zusätzlich können Sie auch durch Add-Ons entsprechende Blocker für Ihren Browser installieren. </p>
+		</div>
+		<div class="csc-default">
+			<h2 class="lines">
+				Nutzung von X (Twitter) </h2>
+			<p>
+				Die TU München greift für den hier angebotenen Kurznachrichtendienst auf die technische Plattform und die Dienste der Twitter Inc., 1355 Market Street, Suite 900, San Francisco, CA 94103 U.S.A. zurück. Verantwortlich für die Datenverarbeitung von außerhalb der Vereinigten Staaten lebenden Personen ist die Twitter International Company, One Cumberland Place, Fenian Street, Dublin 2 D02 AX07, Irland. </p>
+			<p>
+				Wir weisen darauf hin, dass wir als Anbieter der Seiten keine Kenntnis vom Inhalt der übermittelten Daten sowie deren Nutzung durch X (Twitter) erhalten. Weitere Informationen hierzu finden Sie in der Datenschutzerklärung von X (Twitter) unter
+				<a class="external-link" href="https://x.com/de/privacy" title="Opens external link in current window">https://x.com/privacy</a>.
+			</p>
+		</div>
+		<div class="csc-default">
+			<h2 class="lines">
+				Nutzung von Bluesky </h2>
+			<p>
+				Auf unserer Homepage finden Sie Funktionen des Anbieters Bluesky. Diese werden von Bluesky PBLLC, 113 Cherry St # 24821, Seattle Washington 98104-2205, United States angeboten. Durch das Benutzen von Bluesky werden werden Daten an Bluesky übertragen. </p>
+			<p>Zwar erheben wir selbst keine Daten über Ihren Bluesky-Account. Die von Ihnen bei Bluesky eingegebenen Daten, insbesondere Ihr Nutzername und die unter Ihrem Account veröffentlichten Inhalte, werden von uns aber insofern verarbeitet, als wir Ihre Posts gegebenenfalls teilen oder diese kommentieren oder auch von uns aus Posts verfassen, die auf Ihren Account verweisen. Die von Ihnen frei bei Bluesky veröffentlichten und verbreiteten Daten werden so auf dem Bluesky-Profil der Universität einbezogen und den Followern zugänglich gemacht. Darüber hinaus verarbeiten wir Ihre Daten, wenn Sie uns über Bluesky eine Direktnachricht schicken.</p>
+			<p>
+				Die bei der Nutzung des Dienstes über Sie erhobenen Daten werden von der Bluesky PBLLC verarbeitet und dabei gegebenenfalls in Länder außerhalb der Europäischen Union übertragen. Informationen darüber finden Sie hier:
+				<a class="external-link" href="https://bsky.social/about/support/privacy-policy" title="Opens external link in current window">https://bsky.social/about/support/privacy-policy</a>.
+			</p>
+		</div>
+		<div class="csc-default">
+			<h2 class="lines">
+				Nutzung von YouTube-Plugins (Videos) </h2>
+			<p>
+				In unserem Webauftritt sind Plugins von
+				<a class="external-link" href="https://www.youtube.com/" title="Opens external link in current window">www.youtube.com</a> integriert, welche von der Google Inc., 1600 Amphitheatre Parkway, Mountain View, CA 94043, United States betrieben wird („Google“).
+			</p>
+			<p>
+				Wenn Sie mit einem solchen Plugin versehene Seiten unserer Internetauftritts aufrufen, wird eine Verbindung zu den Youtube-Servern hergestellt und dabei das Plugin durch Mitteilung an Ihren Browser auf der Internetseite dargestellt. Hierdurch wird an den Youtube-Server übermittelt, welche unserer Internetseiten Sie besucht haben. Sind Sie dabei als Mitglied bei Youtube eingeloggt, ordnet YouTube diese Information Ihren jeweils persönlichen Benutzerkonten dieser Plattformen zu. Bei Nutzung von diesen Plugins wie z.B. Anklicken/Start-Buttons eines Videos oder Senden eines Kommentars, werden diese Informationen Ihrem z.B. YouTube-Benutzerkonto zugeordnet, was Sie nur durch Ausloggen vor Nutzung des Plugins verhindern können. Weitere Informationen zur Erhebung und Nutzung der Daten durch die Plattform bzw. Plugins finden Sie in den Datenschutzhinweisen von Youtube unter folgendem Link:
+				<a class="external-link" href="https://policies.google.com/privacy?hl=de" title="Opens external link in current window">https://policies.google.com/privacy?hl=de</a>.
+			</p>
+			<p>
+				Wir verwenden eingebettete YouTube-Videos im erweiterten Datenschutzmodus. Das heißt: YouTube speichert keine Cookies für einen Nutzer, der eine Webseite mit einem eingebetteten YouTube-Videoplayer anzeigt, jedoch nicht auf das Video klickt, um die Wiedergabe zu starten. </p>
+		</div>
+		<div class="csc-default">
+			<h2 class="lines">
+				Nutzung von Vimeo-Plugins (Videos) </h2>
+			<p>
+				In unserem Webauftritt sind Plugins des Videoportals Vimeo der Vimeo, LLC, 555 West 18th Street, New York, New York 10011, USA eingebunden. Bei jedem Aufruf einer Seite, die ein oder mehrere Vimeo-Videoclips anbietet, wird eine direkte Verbindung zwischen Ihrem Browser und einem Server von Vimeo in den USA hergestellt. Dabei werden Informationen über Ihren Besuch und Ihre IP-Adresse dort gespeichert. Durch Interaktionen mit den Vimeo Plugins (z.B. Klicken des Start-Buttons) werden diese Informationen ebenfalls an Vimeo übermittelt und dort gespeichert. </p>
+			<p>
+				Wenn Sie ein Vimeo-Benutzerkonto haben und nicht möchten, dass Vimeo über diese Webseite Daten über Sie sammelt und mit Ihren bei Vimeo gespeicherten Mitgliedsdaten verknüpft, müssen Sie sich vor Ihrem Besuch dieser Webseite bei Vimeo ausloggen. </p>
+			<p>
+				Die Datenschutzerklärung für Vimeo mit näheren Informationen zur Erhebung und Nutzung Ihrer Daten durch Vimeo finden Sie unter
+				<a class="external-link" href="https://vimeo.com/privacy" title="Opens external link in current window">https://vimeo.com/privacy</a>.
+			</p>
+		</div>
+		<div class="csc-default">
+			<h2 class="lines">
+				Issuu </h2>
+			<p>
+				Dieser Webauftritt benutzt den Webdienst der Issuu, Inc., 131 Lytton Ave, Palo Alto, CA 94301, USA. Issuu verwendet sogenannte „Cookies“, Textdateien, die auf Ihrem Computer gespeichert werden und die eine Analyse der Benutzung des Webauftritts durch Sie ermöglichen. Die durch den Cookie erzeugten Informationen über Ihre Benutzung dieses Webauftritts werden in der Regel an einen Server von Issuu in den USA übertragen und dort gespeichert. Wir haben keine Kenntnis vom Inhalt der übermittelten Daten sowie deren Nutzung durch Issuu. Benutzern unter 13 Jahren wird die Nutzung von Issuu nicht empfohlen. Wir verweisen für Details zur Verwendung von Cookies auf die
+				<a class="external-link" href="https://issuu.com/legal/privacy" title="Opens external link in current window">Datenschutzerklärung von Issuu</a>.
+			</p>
+		</div>
+		<div class="csc-default">
+			<h2 class="lines">
+				Zwei Klicks für mehr Datenschutz </h2>
+			<p>
+				Erst durch das Anklicken eines Social Network Buttons wird dieser aktiv und Ihr Browser baut eine direkte Verbindung mit den jeweiligen Servern auf. Der erstmalige Klick auf den Button bedeutet somit, dass Sie Ihre Zustimmung zur Datenübermittlung an den entsprechenden Anbieter erteilen. </p>
+			<p>
+				Durch die Aktivierung des Buttons erhält dieser die Information, dass Sie die entsprechende Seite unseres Internetauftritts aufgerufen haben. Sind Sie bei dem jeweiligen Sozialen Netzwerk eingeloggt kann der Besuch ab diesem Moment Ihrem Konto zugeordnet werden, selbst wenn Sie den Button kein zweites Mal bestätigen. Wenn Sie mit den Plugins interagieren, zum Beispiel einen Kommentar abgeben indem Sie den Button ein weiteres Mal betätigen, wird die entsprechende Information von Ihrem Browser direkt an den Anbieter übermittelt und dort gespeichert.. </p>
+		</div>
+		<f:if condition="{settings.ADDITIONAL_PRIVACY}">
+			<f:then>
+				{f:cObject(typoscriptObjectPath: 'lib.content.main')}
+			</f:then>
+		</f:if>
+		<div class="csc-default">
+			<h2 class="lines">
+				Änderung der Datenschutzbestimmungen </h2>
+			<p>
+				Wir behalten uns vor, unsere Datenschutzbestimmungen gelegentlich anzupassen, damit sie stets den aktuellen rechtlichen Anforderungen entspricht oder um Änderungen unserer Leistungen in der Datenschutzerklärung umzusetzen. Wir empfehlen Ihnen, diese Datenschutzbestimmungen regelmäßig zu lesen, um über den Schutz der von uns erfassten persönlichen Daten auf dem Laufenden zu bleiben. Durch die fortgesetzte Nutzung des Dienstes erklären Sie sich mit diesen Datenschutzbestimmungen und deren Aktualisierung einverstanden. </p>
+		</div>
+		<div class="csc-default">
+			<h2 class="lines">
+				Behördlicher Datenschutzbeauftragter </h2>
+			<p>
+				Den behördlichen Datenschutzbeauftragten der Technischen Universität München erreichen Sie per E-Mail beauftragter(at)datenschutz.tum.de oder über
+				<a class="external-link" href="https://www.datenschutz.tum.de/" title="Opens external link in current window">www.datenschutz.tum.de</a>
+			</p>
+		</div>
+		<div>
+			<h2 class="lines">
+				Auskunft und Berichtigung </h2>
+			<p>
+				Sie haben das Recht, auf schriftlichen Antrag und unentgeltlich Auskunft über die personen&shy;bezogenen Daten zu erhalten, die über Sie gespeichert sind. Zusätzlich haben Sie das Recht auf Berichtigung unrichtiger Daten, Sperrung und Löschung. </p>
+		</div>
+	</f:section>
+	<f:section name="privacy-piwik-de">
+		<div class="csc-default">
+			<h2 class="lines">
+				Auswertung des Nutzerverhaltens (Webtracking) </h2>
+			<p class="bodytext">
+				In diesem Webauftritt werden unter Einsatz der Webanalysedienst-Software Matomo (www.matomo.org), einem Dienst des Anbieters InnoCraft Ltd., 150 Willis St, 6011 Wellington, Neuseeland, („Matomo“) auf Basis unseres berechtigten Interesses an der statistischen Analyse des Nutzerverhaltens zu Optimierungs- und Marketingzwecken gemäß Art. 6 Abs. 1 lit. f DSGVO Daten gesammelt und gespeichert. Aus diesen Daten können zum selben Zweck pseudonymisierte Nutzungsprofile erstellt und ausgewertet werden. Hierzu können Cookies eingesetzt werden. Bei Cookies handelt es sich um kleine Textdateien, die lokal im Zwischenspeicher des Internet-Browsers des Seitenbesuchers gespeichert werden. Die Cookies ermöglichen unter anderem die Wiedererkennung des Internet-Browsers. Die mit der Matomo-Technologie erhobenen Daten (einschließlich Ihrer pseudonymisierten IP-Adresse) werden auf Servern des LRZ verarbeitet. </p>
+			<p class="bodytext">
+				Die durch das Cookie erzeugten Informationen im pseudonymen Nutzerprofil werden nicht dazu benutzt, den Besucher dieses Webauftritts persönlich zu identifizieren und nicht mit personenbezogenen Daten über den Träger des Pseudonyms zusammengeführt. </p>
+			<p class="bodytext">
+				Die Installation der Cookies können Sie durch eine entsprechende Einstellung Ihres Browsers verhindern. Wir weisen jedoch darauf hin, dass Sie in diesem Fall gegebenenfalls nicht sämtliche Funktionen dieses Webauftritts vollumfänglich nutzen können. </p>
+			<p class="bodytext">
+				Wir empfehlen Ihnen, die ganze Datenschutzerklärung von Matomo zu lesen:
+				<a class="external-link" href="https://matomo.org/privacy-policy/" title="Opens external link in current window">https://matomo.org/privacy-policy/</a>
+			</p>
+		</div>
+		<div class="csc-default">
+			<h2 class="lines">
+				Deaktivierung Matomo Tracking (Opt-Out) </h2>
+			<p class="bodytext">
+				Wenn Sie mit der Speicherung und Auswertung dieser Daten durch Matomo aus Ihrem Besuch nicht einverstanden sind, dann können Sie der Speicherung und Nutzung nachfolgend per Mausklick jederzeit widersprechen. In diesem Fall wird in Ihrem Browser ein sog. Opt-Out-Cookie abgelegt, was zur Folge hat, dass Matomo keinerlei Sitzungsdaten erhebt. </p>
+			<div style="text-align: center">
+				<a href="https://webstat.srv.tum.de/index.php?module=CoreAdminHome&amp;action=optOut&amp;language=de&amp;idsite={settings.MATOMO_ID}" onclick="window.open(this.href, 'Matomo Widerspruch', 'width=600,height=250,left=400,top=300,location=no,scrollbars=yes,resizable=yes,dependent=yes'); return false" title="Externer Link öffnet in einem neuen Fenster"> Abmeldung Matomo </a>
+			</div>
+			<p>
+				<b>Achtung:</b>
+				<br>Wenn Sie Ihre Cookies löschen, so hat dies zur Folge, dass auch das Opt-Out-Cookie gelöscht wird und ggf. von Ihnen erneut aktiviert werden muss.
+			</p>
+		</div>
+	</f:section>
+	<f:section name="privacy-google-de">
+		<div class="csc-default">
+			<h2 class="lines" lang="en" id="GoogleCustomSearch">
+				Google Custom Search </h2>
+			<p class="bodytext">
+				Die Ergebnisse der Suchfunktion dieses Webauftritts werden von Google Inc. („Google“) zur Verfügung gestellt („Google Custom Search“). Sie erkennen an und stimmen zu, dass die Datenschutzbestimmungen von Google (unter
+				<a target="_blank" href="https://policies.google.com/privacy?gl=de">https://policies.google.com/privacy?gl=de</a>) für Ihre Verwendung des Suchfeldes gelten und dass Sie sich durch die Verwendung des Suchfeldes Google gegenüber verpflichten, Ihre persönlichen Daten gemäß den Datenschutzbestimmungen zu verwenden.
+			</p>
+			<p class="bodytext">
+				Falls Sie die diese Zustimmung nicht geben möchten, verzichten Sie bitte auf die Nutzung der Suche. Daten werden nur dann an Google übermittelt, wenn das Formular abgeschickt wird. </p>
+		</div>
+	</f:section>
+</html>

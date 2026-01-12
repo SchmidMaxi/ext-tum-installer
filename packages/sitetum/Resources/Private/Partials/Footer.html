@@ -1,0 +1,42 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+	<footer class="c-footer">
+
+        <div class="c-footer__legal">
+            <nav class="container" aria-label="{f:translate(key: 'legalLinks', extensionName: 'sitetum')}">
+                <f:spaceless>
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                            <f:link.typolink parameter="{settings.PRIVACY_URL}">{f:translate(key: 'privacy', extensionName: 'sitetum')}</f:link.typolink>
+                        </li>
+                        <li class="list-inline-item">
+                            <f:link.typolink parameter="{settings.IMPRESSUMPID}">{f:translate(key: 'imprint', extensionName: 'sitetum')}</f:link.typolink>
+                        </li>
+                        <f:if condition="{settings.ACCESSPID}>1">
+                            <f:then>
+                                <li class="list-inline-item"><f:link.typolink parameter="{settings.ACCESSPID}">{f:translate(key: 'accessibility', extensionName: 'sitetum')}</f:link.typolink></li>
+                            </f:then>
+                            <f:else></f:else>
+                        </f:if>
+                    </ul>
+                </f:spaceless>
+                <img aria-hidden="true" src="https://tum.de/hsts/default" height="1" width="1" />
+            </nav>
+        </div>
+
+        <f:comment>
+            <f:if condition="{settings.GLOBAL_FOOTER} == 1">
+                <div class="c-footer__global bg-light">
+                    <div class="container container-fluid">
+                        <f:comment>
+                            <f:cObject typoscriptObjectPath="lib.footer" />
+                        </f:comment>
+                        <f:render partial="GlobalFooter" section="globalFooter" arguments="{_all}"/>
+                    </div>
+                </div>
+            </f:if>
+        </f:comment>
+
+	</footer>
+
+</html>

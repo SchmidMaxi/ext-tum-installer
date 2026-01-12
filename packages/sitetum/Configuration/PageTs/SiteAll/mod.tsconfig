@@ -1,0 +1,13 @@
+mod {
+    web_layout {
+        // do not allow to copy (loose the connection to the default language) when translating - this setting will have an effect from TYPO3 9.0 on
+        localization.enableCopy = 0
+        // show translated content elements on same height as original language
+        #defLangBinding = 1
+    }
+    web_list {
+        enableDisplayBigControlPanel = activated
+        enableClipBoard = activated
+        enableLocalizationView = activated
+    }
+}

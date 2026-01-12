@@ -1,0 +1,32 @@
+{
+    "name": "elementareteilchen/sitetum",
+    "description": "tum theme extension",
+    "type": "typo3-cms-extension",
+    "version": "1.0.0",
+    "license": [
+        "GPL-2.0-or-later"
+    ],
+    "require": {
+        "typo3/cms-core": "*",
+        "elementareteilchen/siteloader": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "ElementareTeilchen\\Sitetum\\": "Classes"
+        }
+    },
+    "autoload-dev": {
+    },
+    "authors": [
+        {
+            "name": "Franz Kugelmann",
+            "email": "franz.kugelmann@elementare-teilchen.de",
+            "homepage": "https://www.elementare-teilchen.de/"
+        }
+    ],
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "sitetum"
+        }
+    }
+}

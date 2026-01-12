@@ -1,0 +1,38 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<div id="content" class="c-main">
+
+	<f:switch expression="{data.uid}">
+		<f:case value="{settings.IMPRESSUMPID}">
+			<f:comment>most pages make use of the global imprint, but i.e. https://www.hfp.tum.de/impressum/ not</f:comment>
+			<f:if condition="{settings.GLOBAL_IMPRESSUM}">
+				<f:then>
+					<f:render partial="Impressum" section="secImpressum" arguments="{_all}"/>
+				</f:then>
+				<f:else>
+					<f:cObject typoscriptObjectPath="lib.content.main" />
+				</f:else>
+			</f:if>
+		</f:case>
+		<f:case value="{settings.PRIVACY_URL}">
+			<f:render partial="Privacy" section="secPrivacy" arguments="{_all}"/>
+		</f:case>
+		<f:case value="{settings.ACCESSPID}">
+			<f:render partial="Accessibility" section="secAccessibility" arguments="{_all}"/>
+		</f:case>
+		<f:case value="{settings.SEARCHRESULTSPID}">
+			<f:render partial="SearchResult" section="secSearchResult" arguments="{_all}"/>
+		</f:case>
+		<f:defaultCase>
+			<f:cObject typoscriptObjectPath="lib.content.main" />
+		</f:defaultCase>
+	</f:switch>
+
+</div>
+
+<div class="c-link-to-top  js-link-to-top">
+	<a href="#topbar" title="{f:translate(key: 'toTop', extensionName: 'sitetum')}">
+		<f:translate key="toTop" extensionName="fluid_styled_content" />
+	</a>
+</div>
+
+</html>

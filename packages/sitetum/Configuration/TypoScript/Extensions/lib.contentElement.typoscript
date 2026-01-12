@@ -1,0 +1,35 @@
+// only add ours, do not touch original at 0 in case they change pathes (as happened already)
+lib.contentElement {
+    templateRootPaths {
+        // media2click uses lib.contentElement, see vendor/amazing/media2click/Configuration/TypoScript/Setup/FluidStyledContent.typoscript
+        5 = EXT:sitetum/Resources/Private/Extensions/Media2Click/Templates/
+        10 = EXT:sitetum/Resources/Private/Extensions/FluidStyledContent/Templates/
+    }
+
+    partialRootPaths {
+        10 = EXT:sitetum/Resources/Private/Extensions/FluidStyledContent/Partials/
+    }
+
+    layoutRootPaths {
+        5 = EXT:sitetum/Resources/Private/Extensions/Media2Click/Layouts/
+        10 = EXT:sitetum/Resources/Private/Extensions/FluidStyledContent/Layouts/
+    }
+
+    settings {
+        media {
+            popup {
+                # configuration is done in fluid template
+                wrap >
+            }
+
+            additionalConfig {
+
+                placeholderContent {
+                    cObject.templateRootPaths.2 = EXT:sitetum/Resources/Private/Extensions/Media2Click/Templates/
+                    cObject.layoutRootPaths.2 = EXT:sitetum/Resources/Private/Extensions/Media2Click/Layouts/
+                }
+            }
+
+        }
+    }
+}

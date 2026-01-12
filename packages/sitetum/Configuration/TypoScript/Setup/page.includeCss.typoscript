@@ -1,0 +1,22 @@
+page {
+
+  includeCSSLibs {
+    fancybox >
+  }
+
+  // since the css files are quite small, we include them all always, even if in some websites single extensions might not be installed
+    // import Extension CSS in buildstack!
+  includeCSS >
+  includeCSS {
+
+    # custom icon font from builder in frontend/iconfont
+    tum_icons = _frontend/icon-font/css/tum-icons.min.css
+
+//     main = typo3_encore:screen
+//     main.disableCompression = 1
+
+//     print = typo3_encore:print
+//     print.media = print
+//     print.disableCompression = 1
+  }
+}

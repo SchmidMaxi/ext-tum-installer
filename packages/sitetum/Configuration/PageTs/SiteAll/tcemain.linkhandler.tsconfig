@@ -1,0 +1,23 @@
+TCEMAIN.linkHandler {
+    // hide link type folder in link popup
+    folder >
+    // Leaving page type empty on purpose.
+    page {
+
+    }
+
+    # see: https://stackoverflow.com/questions/43596767/how-to-define-custom-class-title-and-target-in-link-browser-for-content-elemen
+    # ET-SK: only used &linkAttributes[class]= and &linkAttributes[target]= ... for default values; not used: linkAttributes[title], linkAttributes[params]
+    #    file {
+    #      addParams = onclick="jumpToUrl('?act=file&linkAttributes[target]=_blank&linkAttributes[title]=&linkAttributes[class]=download&linkAttributes[params]=');return false;"
+    #    }
+    #
+    #    url {
+    #      addParams = onclick="jumpToUrl('?act=url&linkAttributes[target]=_blank&linkAttributes[title]=&linkAttributes[class]=external-link&linkAttributes[params]=');return false;"
+    #    }
+    #
+    #    mail {
+    #      addParams = onclick="jumpToUrl('?act=mail&linkAttributes[class]=mail');return false;"
+    #    }
+
+}

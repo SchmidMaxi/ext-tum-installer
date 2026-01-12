@@ -1,0 +1,27 @@
+# extensions which are loaded in all instances
+@import 'EXT:fluid_styled_content/Configuration/TypoScript/constants.typoscript'
+// @import 'EXT:typo3_encore/Configuration/TypoScript/constants.typoscript'
+@import 'EXT:t3up_carousel/Configuration/TypoScript/constants.typoscript'
+@import 'EXT:media2click/Configuration/TypoScript/constants.typoscript'
+@import 'EXT:dp_cookieconsent/Configuration/TypoScript/constants.typoscript'
+@import 'EXT:seo/Configuration/TypoScript/XmlSitemap/constants.typoscript'
+// @import 'EXT:typo3_encore/Configuration/TypoScript/constants.typoscript'
+
+# extensions which are optional - parser does not complain it files are just not there
+@import 'EXT:curlcontent/Configuration/TypoScript/constants.typoscript'
+@import 'EXT:news/Configuration/TypoScript/constants.typoscript'
+@import 'EXT:news/Configuration/TypoScript/SeoSitemap/constants.typoscript'
+@import 'EXT:tumextendnews/Configuration/TypoScript/constants.typoscript'
+
+# add every extension with modified constants here
+@import 'EXT:sitetum/Configuration/TypoScript/Extensions/Cookieconsent/constants.typoscript'
+@import 'EXT:sitetum/Configuration/TypoScript/Extensions/Media2Click/constants.typoscript'
+@import 'EXT:sitetum/Configuration/TypoScript/Extensions/Seo/constants.typoscript'
+// @import 'EXT:sitetum/Configuration/TypoScript/Extensions/Typo3Encore/constants.typoscript'
+
+# our site TS
+@import 'EXT:sitetum/Configuration/TypoScript/Constants/*.typoscript'
+
+[applicationContext == 'Development']
+@import 'EXT:sitetum/Configuration/TypoScript/Constants/Development/*.typoscript'
+[global]

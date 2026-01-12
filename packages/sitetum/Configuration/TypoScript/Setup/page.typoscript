@@ -1,0 +1,173 @@
+page = PAGE
+
+# BE option "no search" writes robots meta tag
+[traverse(page, "no_search") == 1]
+    page.meta.robots = noindex,follow
+[global]
+[applicationContext == "Production/Testing"]
+    page.meta.robots = noindex,nofollow
+[global]
+
+### Body tag with class list
+page.bodyTagCObject = COA
+page.bodyTagCObject {
+    wrap = <body class="|" data-pid="{TSFE:id}">
+    wrap.insertData = 1
+}
+
+# add Version t3v12 (currently NOT used by JS, only for testing / upgrade)
+page.bodyTagCObject.5.value := addToList(t3v12)
+
+page.bodyTagCObject.5.stdWrap.replacement.10 {
+    search = ,
+    replace.char = 32
+}
+
+
+### Website title in English (optional)
+# General
+[siteLanguage("languageId") > 0 && "{$WEBSITE_TITLE_EN}"]
+### if german OR no englisch website title is set
+### remember: there is no constant for DE like {$WEBSITE_TITLE_DE}; we use the "Sitetitle" / "Website Title" of the typoscript template
+    config.noPageTitle = 2
+    page.headerData.10 = TEXT
+    page.headerData.10 {
+        field = subtitle//title
+        stripHtml = 1
+        htmlSpecialChars = 1
+        noTrimWrap = |<title>| - {$WEBSITE_TITLE_EN}</title>|
+    }
+[global]
+
+# we configure subparts from page in EXT:tumextendnews, which is loaded BEFORE this, thus do not flush the object "page" with > here
+page {
+    typeNum = 0
+
+    meta {
+        viewport = width=device-width, initial-scale=1
+        keywords.override.field = keywords
+        description.override.field = description
+        # use summary lage image as default
+        twitter:card = summary_large_image
+        twitter:card.replace = 1
+        # use page.seo_title or page.title for twitter title
+        twitter:title.override.field = seo_title // title
+        # use page.description for twitter for description
+        twitter:description.override.field = description
+        # use page.seo_title or page.title for open graph title
+        og:title.override.field = seo_title // title
+        # use page.description for open graph for description
+        og:description.override.field = description
+    }
+
+#    headerData.9000 < lib.consent.site
+
+    headerData {
+
+        200 = TEXT
+        200.value (
+<link rel="icon" type="image/png" href="{path:{$site.paths.resourcesPublicFaviconPath}favicon-96x96.png}" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="{path:{$site.paths.resourcesPublicFaviconPath}favicon.svg}" />
+<link rel="shortcut icon" href="{path:{$site.paths.resourcesPublicFaviconPath}favicon.ico}" />
+<link rel="apple-touch-icon" sizes="180x180" href="{path:{$site.paths.resourcesPublicFaviconPath}apple-touch-icon.png}" />
+<meta name="apple-mobile-web-app-title" content="TUM" />
+<link rel="manifest" href="{path:{$site.paths.resourcesPublicFaviconPath}site.webmanifest}" />
+        )
+        200.insertData = 1
+    }
+
+    10 = FLUIDTEMPLATE
+    10 {
+        file.stdWrap.cObject = CASE
+        file.stdWrap.cObject {
+            key.data = pagelayout
+            default = TEXT
+            default.value = {$THEME_PATH_PRIVATE}/Templates/3col.html
+            pagets__2col = TEXT
+            pagets__2col.value = {$THEME_PATH_PRIVATE}/Templates/2col.html
+            pagets__3col = TEXT
+            pagets__3col.value = {$THEME_PATH_PRIVATE}/Templates/3col.html
+            pagets__intro1col = TEXT
+            pagets__intro1col.value = {$THEME_PATH_PRIVATE}/Templates/intro1col.html
+            pagets__intro2col = TEXT
+            pagets__intro2col.value = {$THEME_PATH_PRIVATE}/Templates/intro2col.html
+        }
+
+        templateRootPaths.10 = {$THEME_PATH_PRIVATE}/Templates/
+        // is rarely extended directly in Backend like page.10.partialRootPaths.100 = fileadmin/w00blu/layout/header/
+        partialRootPaths.10 = {$THEME_PATH_PRIVATE}/Partials/
+        layoutRootPaths.10 = {$THEME_PATH_PRIVATE}/Layouts/
+
+        settings {
+            TUM_LOGOURL = {$TUM_LOGOURL}
+            HOMEPID = {$HOMEPID}
+            GLOBAL_FOOTER = {$GLOBAL_FOOTER}
+            GLOBAL_IMPRESSUM = {$GLOBAL_IMPRESSUM}
+            SEARCH_BOX = {$SEARCH_BOX}
+
+            ### ADDITIONAL LOGO ######################
+            SITE_LOGO_URL = {$SITE_LOGO_URL}
+            SITE_LOGO_ALT = {$SITE_LOGO_ALT}
+
+            ### ORGANISATION UNIT ####################
+            THIS_OU_NAME = {$THIS_OU_NAME}
+
+            ### PRIVACY ##############################
+            PRIVACY_URL = {$PRIVACY_URL}
+            ADDITIONAL_PRIVACY = {$ADDITIONAL_PRIVACY}
+
+            ### IMPRINT ##############################
+            IMPRESSUMPID = {$IMPRESSUMPID}
+            IMPRESSUM_LANGUAGE = {$IMPRESSUM_LANGUAGE}
+
+            ### ACCESSIBILITY ########################
+            ACCESSPID = {$ACCESSPID}
+
+            ### GOOGLE SEARCH RESULT #################
+            #CSE_PARENTSEARCH: inline / school / local / default: none
+            PARENTSITEDISPLAY = {$CSE_PARENTSEARCH}
+            MYPARENTSITE = {$CSE_PARENTSITE}
+            SEARCHRESULTSPID = {$SEARCHRESULTSPID}
+
+            # auskommentiert, damit ist die condition in Default-Layout deaktiviert (settings.MATHJAX), während temporär die v10 mathjax verwendet wird
+            MATHJAX = {$MATHJAX}
+
+            MATOMO_ID = {$MATOMO_ID}
+            MATOMO_URL = {$MATOMO_URL}
+
+        }
+        variables {
+            lang = TEXT
+            lang.data = siteLanguage:twoLetterIsoCode
+            languageId = TEXT
+            languageId.data = siteLanguage:languageId
+            PARENT_OU = TEXT
+            PARENT_OU.data = site:settings.tum.PARENT_OU
+            // build accessor for settings value dynamically, fluid can only resolve one variable inside another, not two or more
+            dynamicParentOuName = COA
+            dynamicParentOuName.10 = TEXT
+            dynamicParentOuName.10.data = site:settings.tum.PARENT_OU
+            dynamicParentOuName.20 = TEXT
+            dynamicParentOuName.20.value = .PARENT_OU_NAME.
+            dynamicParentOuName.30 = TEXT
+            dynamicParentOuName.30.data = siteLanguage:twoLetterIsoCode
+            dynamicParentOuUrl < .dynamicParentOuName
+            dynamicParentOuUrl.20.value = .PARENT_OU_URL.
+
+            SITE_LANGUAGE = TEXT
+            SITE_LANGUAGE.data = siteLanguage:twoLetterIsoCode
+
+            MYHOSTNAME = TEXT
+            MYHOSTNAME {
+                data = getenv : HTTP_HOST
+                htmlSpecialChars = 1
+            }
+
+            ###############LANGUAGE MENU TOGGLE AND CUSTOM TEXT###############
+            // can be empty|0|1 to toggle language menu or custom text which will be displayed instead of language menu
+            LANGUAGE_NAV = TEXT
+            LANGUAGE_NAV.value = {$LANGUAGE_NAV}
+            LANGUAGE_NAV.value.insertData = 1
+        }
+    }
+}

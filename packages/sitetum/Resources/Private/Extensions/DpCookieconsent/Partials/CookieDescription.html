@@ -1,0 +1,19 @@
+<f:if condition="{settings.MATOMO_ID} > 0">
+    <f:then>
+        <f:translate key="message.matomo" extensionName="dp_cookieconsent"/>
+    </f:then>
+    <f:else>
+        <f:translate key="message" extensionName="dp_cookieconsent"/>
+    </f:else>
+</f:if>
+
+<f:if condition="{settings.url}">
+    <a aria-label="{f:translate(key: 'cookieconsent.more', extensionName: 'sitetum')}"
+       class="cc-link"
+       href="{f:uri.page(pageUid:'{settings.url}')}#AktiveKomponenten"
+       rel="noopener noreferrer nofollow"
+       target="{settings.target}"
+    >
+        <f:translate key="link" extensionName="dp_cookieconsent"/>
+    </a>
+</f:if>

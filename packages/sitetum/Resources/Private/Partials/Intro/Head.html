@@ -1,0 +1,18 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+    <f:if condition="{introMenuItems}">
+        <div class="navbar navbar-expand-md">
+            <nav id="sitenav" class="c-page-intro__nav navbar-collapse collapse">
+                <ul class="c-page-intro__nav-list navbar-nav">
+                    <f:for each="{introMenuItems}" as="item">
+                        <li class="c-page-intro__nav-item nav-item">
+                            <f:link.typolink class="c-page-intro__nav-link nav-link" parameter="{item.link}">{item.title}</f:link.typolink>
+                        </li>
+                    </f:for>
+                </ul>
+            </nav>
+        </div>
+    </f:if>
+    <div id="intromedia" class="intro-carousel">
+        <f:cObject typoscriptObjectPath="lib.introheader.carousel"/>
+    </div>
+</html>

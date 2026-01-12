@@ -1,0 +1,73 @@
+plugin.tx_seo {
+    config {
+        xmlSitemap {
+            sitemaps {
+                pages {
+                    config {
+                        // also ignore pages hidden in navigation
+                        additionalWhere = {#no_index} = 0 AND {#canonical_link} = '' AND {#nav_hide} = 0
+                    }
+                }
+            }
+        }
+    }
+}
+
+[{$tum_news.singlePid} > 0]
+    plugin.tx_seo {
+        config {
+            xmlSitemap {
+                sitemaps {
+                    news {
+                        provider = GeorgRinger\News\Seo\NewsXmlSitemapDataProvider
+                        config {
+                            # exclude internal & external news
+                            excludedTypes = 1,2
+
+                            sortField = datetime
+                            sortDirection = ASC
+                            lastModifiedField = tstamp
+
+                            # Storage Folder
+                            pid = {$tum_news.startingpoint}
+                            recursive = 0
+
+                            url {
+                                # PID Detailseite
+                                pageId = {$tum_news.singlePid}
+                                useCategorySinglePid = 1
+
+                                fieldToParameterMap {
+                                    uid = tx_news_pi1[news]
+                                }
+
+                                additionalGetParameters {
+                                    tx_news_pi1.controller = News
+                                    tx_news_pi1.action = detail
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            googleNewsSitemap {
+                sitemaps {
+                    news < plugin.tx_seo.config.xmlSitemap.sitemaps.news
+                    news {
+                        config {
+                            template = EXT:news/Resources/Private/Templates/News/GoogleNews.xml
+                            googleNews = 1
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    seo_sitemap_news < seo_sitemap
+    seo_sitemap_news {
+        typeNum = 1533906436
+        10.sitemapType = googleNewsSitemap
+    }
+[END]
+

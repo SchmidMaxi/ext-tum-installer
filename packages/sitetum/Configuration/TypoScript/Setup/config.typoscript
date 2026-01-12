@@ -1,0 +1,43 @@
+config {
+  absRefPrefix = auto
+
+  // https://www.sebkln.de/tutorials/http-security-header-teil-2-csp/
+  // CSP see csp.yaml
+  additionalHeaders {
+    16.header = Strict-Transport-Security: max-age=63072000; includeSubDomains
+    17.header = Referrer-Policy: strict-origin-when-cross-origin
+    18.header = X-Frame-Options: SAMEORIGIN
+  }
+
+  # .cache see config.cache.setup, if used
+  cache_period = 864000 // 10 days
+  sendCacheHeaders = 0
+
+  // you want to use $GLOBALS['TYPO3_CONF_VARS']['FE']['compressionLevel'] = true;
+  // see typo3conf/LocalConfiguration.php
+  compressCss = 1
+  compressJs = 1
+  // with http2 0 is better
+  concatenateCss = 0
+  concatenateJs = 0
+
+#  removeDefaultJS = external
+  removeDefaultJS = 1
+
+  disablePrefixComment = 1
+
+  spamProtectEmailAddresses = 10
+  spamProtectEmailAddresses_atSubst = (at)
+
+  showWebsiteTitle = 1
+  pageTitleFirst = 1
+  pageTitleSeparator = -
+  pageTitleSeparator.noTrimWrap = | | |
+  # do not use tags like <sup> in title tag
+  # config for EN is done in page.setupts with config.noPageTitle = 2 and custom page.headerData.10
+  pageTitle.stripHtml = 1
+}
+
+[{$tum_news.startingpoint} > 0]
+config.cache.all = tx_news_domain_model_news:{$tum_news.startingpoint}
+[END]

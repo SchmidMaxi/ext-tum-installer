@@ -1,0 +1,15 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:vac="http://typo3.org/ns/Praetorius/ViteAssetCollector/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<vac:asset.vite entry="frontend/sitetum/entrypoints/media2click.js" useNonce="true" />
+<div class="media2click-placeholder media2click-placeholder-video{f:if(condition: settings.previewImage, then: ' media2click-haspreview')}"
+    style="{f:if(condition: settings.width, then: 'width:{settings.width}px;')}{f:if(condition: settings.height, then: 'height:{settings.height}px;')}"
+     aria-label="{settings.title}"
+    data-host="{settings.videoProvider}">
+
+    <f:if condition="{settings.previewImage}">
+        <img src="{settings.previewImage}" aria-hidden="true"/>
+    </f:if>
+    <f:render section="Main" arguments="{_all}"/>
+</div>
+</html>

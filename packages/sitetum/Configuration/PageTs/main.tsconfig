@@ -1,0 +1,2 @@
+@import 'EXT:sitetum/Configuration/PageTs/BackendLayouts/*.tsconfig'
+@import 'EXT:sitetum/Configuration/PageTs/SiteAll/*.tsconfig'

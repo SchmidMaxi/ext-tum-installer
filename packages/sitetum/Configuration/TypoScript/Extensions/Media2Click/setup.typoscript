@@ -1,0 +1,5 @@
+// use our privacy pid constant
+lib.contentElement.settings.media.additionalConfig.placeholderContent.cObject.settings.m2cPrivacyPid = {$PRIVACY_URL}
+tt_content.media2click_content.settings.m2cPrivacyPid = {$PRIVACY_URL}
+tt_content.media2click_iframe.settings.m2cPrivacyPid = {$PRIVACY_URL}
+

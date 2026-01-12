@@ -1,0 +1,39 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  ElementareTeilchen\Sitetum\:
+    resource: '../Classes/*'
+
+  # make sure our _my_direct_uploads folder cannot be deleted / renamed / moved
+  ElementareTeilchen\Sitetum\EventListener\UploadFolder:
+    tags:
+      - name: 'event.listener'
+        identifier: 'immutableUploadFolder'
+        event: TYPO3\CMS\Core\Resource\Event\BeforeFolderRenamedEvent
+      - name: event.listener
+        identifier: 'immutableUploadFolder'
+        event: TYPO3\CMS\Core\Resource\Event\BeforeFolderMovedEvent
+      - name: event.listener
+        identifier: 'immutableUploadFolder'
+        event: TYPO3\CMS\Core\Resource\Event\BeforeFolderDeletedEvent
+
+  ElementareTeilchen\Sitetum\EventListener\SitemapCspEventListener:
+    tags:
+      - name: event.listener
+        identifier: 'SitemapCspEventListener'
+        event: TYPO3\CMS\Core\Security\ContentSecurityPolicy\Event\PolicyMutatedEvent
+
+  ElementareTeilchen\Sitetum\Command\InjectSitemapsIntoRobotsCommand:
+    tags:
+      - name: console.command
+        command: 'sitetum:robots:inject-sitemaps'
+        description: 'Injects sitemap URLs for all sites and languages into robots.txt'
+
+  ElementareTeilchen\Sitetum\Command\BeUserCleanupCommand:
+    tags:
+      - name: console.command
+        command: 'sitetum:beuser:cleanup-inactive'
+        description: 'Deactivate BE users after N days and soft-delete disabled users after M days (DataHandler)'

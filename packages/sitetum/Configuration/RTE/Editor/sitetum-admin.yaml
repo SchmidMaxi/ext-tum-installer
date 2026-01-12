@@ -1,0 +1,15 @@
+# Load default processing options
+imports:
+  - { resource: "EXT:sitetum/Configuration/RTE/Editor/sitetum.yaml" }
+
+editor:
+  config:
+    toolbar:
+      items:
+        - { name: 'source', items: ['Source'] }
+
+    extraPlugins:
+      # activate this if you want to easily find out names of field to be able to address them, DEV only!
+      # http://docs.ckeditor.com/#!/guide/dev_devtools
+      - devtools
+      - '@ckeditor/ckeditor5-inspector'

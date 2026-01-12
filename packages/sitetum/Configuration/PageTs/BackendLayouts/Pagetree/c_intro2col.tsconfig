@@ -1,0 +1,44 @@
+// only allow intro layout when loaded via TsConfig include in BE
+TCEFORM.pages.backend_layout.keepItems = pagets__intro2col
+TCEFORM.pages.backend_layout_next_level.keepItems = pagets__intro2col
+mod.web_layout.BackendLayouts {
+	intro2col {
+		title = Intro Page with 2 Columns
+		name = intro
+		icon = EXT:sitetum/Resources/Public/Icons/BackendLayouts/icon-layout-intro.png
+		config {
+			backend_layout {
+				colCount = 2
+				rowCount = 2
+				rows {
+					0 {
+						columns {
+							1 {
+								name = header-carousel
+								colPos = 10
+								colspan = 3
+								allowed {
+									CType = t3up_carousel
+								}
+							}
+						}
+					}
+					1 {
+						columns {
+							1 {
+								name = normal-large
+								colPos = 0
+								colspan = 2
+							}
+							2 {
+								name = right
+								colPos = 2
+								colspan = 1
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

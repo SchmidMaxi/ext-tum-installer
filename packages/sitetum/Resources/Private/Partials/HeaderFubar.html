@@ -1,0 +1,182 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:comment>
+    the string '<div id="topbar"' is used in packages/sitetum/Classes/Middleware/AlertRenderer.php
+    if you change here, you MUST change there
+</f:comment>
+<div id="topbar" class="c-topbar py-1">
+	<div class="container">
+		<a class="c-skiplink"
+           id="skipnav"
+           href="#content"
+           title="{f:translate(key: 'skipLink', extensionName: 'sitetum')}"
+           aria-label="{f:translate(key: 'skipLink', extensionName: 'sitetum')}"
+        >
+			{f:translate(key: 'skipnav', extensionName: 'sitetum')}
+		</a>
+
+        <div class="d-flex justify-content-md-end justify-content-between">
+
+            <div class="d-flex">
+
+                <f:if condition="{menuQuickLinks}">
+                    <nav class="dropdown c-quicklinks" aria-labelledby="quickLinksButton">
+                        <button
+                                id="quickLinksButton"
+                                class="btn dropdown-toggle c-quicklinks__toggle"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                data-testid="quicklinks"
+                                aria-controls="quickLinksList"
+                                aria-expanded="false"
+                        >
+                            {menuQuickLinks.0.data.title}
+                        </button>
+                        <ul id="quickLinksList" class="dropdown-menu c-quicklinks__menu">
+                            <f:for each="{menuQuickLinks.0.quickLinksItems}" as="menuItem">
+                                <li>
+                                    <f:link.typolink parameter="{menuItem.link}" title="{menuItem.title}" class="dropdown-item">
+                                        {menuItem.title}
+                                    </f:link.typolink>
+                                </li>
+                            </f:for>
+                        </ul>
+                    </nav>
+                </f:if>
+
+                <f:comment>
+                    <!-- Only show language navigation if there are more than 1 available language -->
+                </f:comment>
+                <f:variable name="availableLanguages" value="0" />
+                <f:for each="{menuLanguage}" as="lang" iteration="langs">
+                    <f:if condition="{lang.available}">
+                        <f:variable name="availableLanguages" value="{availableLanguages + 1}" />
+                    </f:if>
+                </f:for>
+
+                <f:if condition="{availableLanguages} > 1">
+                    <div class="c-languagenav">
+                        <f:if condition="{LANGUAGE_NAV} == 1 && {menuLanguage}">
+                                <f:then>
+                                    <ul class="list-inline  c-languagenav__list">
+                                        <f:for each="{menuLanguage}" as="item">
+                                            <f:comment>since content of item is always the same but wrapped differently, we use an alias</f:comment>
+                                            <f:alias map="{languageMenuItemContent: '<abbr lang=\"{item.twoLetterIsoCode}\" title=\"{item.navigationTitle}\">{item.twoLetterIsoCode}</abbr>'}">
+                                            <li class="list-inline-item  c-languagenav__item">
+                                                <f:if condition="{item.active}">
+                                                    <f:then>
+                                                        <strong>
+                                                            {languageMenuItemContent -> f:format.raw()}
+                                                        </strong>
+                                                    </f:then>
+                                                    <f:else>
+                                                        <f:if condition="{item.available}">
+                                                            <f:then>
+                                                                <a class="c-languagenav__link" href="{item.link}" hreflang="{item.hreflang}">
+                                                                    {languageMenuItemContent -> f:format.raw()}
+                                                                </a>
+                                                            </f:then>
+                                                            <f:else>
+                                                                {languageMenuItemContent -> f:format.raw()}
+                                                            </f:else>
+                                                        </f:if>
+                                                    </f:else>
+                                                </f:if>
+                                            </li>
+                                            </f:alias>
+                                        </f:for>
+                                    </ul>
+                                </f:then>
+                                <f:else>
+                                    <f:if condition="{LANGUAGE_NAV} && {LANGUAGE_NAV} !== 0">
+                                        {LANGUAGE_NAV}
+                                    </f:if>
+                                </f:else>
+                        </f:if>
+                    </div>
+                </f:if>
+
+                <f:if condition="{settings.SEARCH_BOX}">
+                    <f:if condition="{settings.SEARCHRESULTSPID} != {data.uid}">
+                        <f:comment>is replaced with form in frontend/sitetum/src/js/tum/googleCustomSearch.js</f:comment>
+                        <div class="c-global-search">
+                            <button class="btn c-global-search__toggle js-search-toggle"
+                                    data-testid="search-dialog-opener"
+                                    type="button"
+                                    aria-controls="global-search-overlay"
+                                    aria-haspopup="dialog"
+                            >
+                                <span>{f:translate(key: 'globalSearch.open', extensionName: 'sitetum')}</span>
+                                <svg width="18px" height="18px" viewBox="-2 -2 20 20">
+                                    <path
+                                        transform="translate(-1015.000000, -9.000000)"
+                                        stroke-width="1"
+                                        stroke="currentColor"
+                                        fill="currentColor"
+                                        d="M1015,16 C1015,19.866 1018.134,23.001 1022,23.001 C1023.753,23.001 1025.351,22.352 1026.579,21.287 L1032,26.707 L1032.707,26.001 L1027.286,20.58 C1028.351,19.352 1029,17.753 1029,16 C1029,12.134 1025.866,9 1022,9 C1018.134,9 1015,12.134 1015,16 L1015,16 Z M1016,16 C1016,12.692 1018.692,10 1022,10 C1025.308,10 1028,12.692 1028,16 C1028,19.309 1025.308,22 1022,22 C1018.692,22 1016,19.309 1016,16 L1016,16 Z"
+                                    ></path>
+                                </svg>
+                            </button>
+                            <span class="c-global-search__search">
+						        <span id="cse-stub"></span>
+					        </span>
+                        </div>
+                    </f:if>
+                </f:if>
+
+            </div>
+
+            <div class="d-md-none">
+                <button id="menutoggle" class="c-menu-mobile navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sitenav" aria-expanded="false" title="{f:translate(key: 'mobileNav', extensionName: 'sitetum')}" aria-label="{f:translate(key: 'mobileNav', extensionName: 'sitetum')}">
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="c-menu-mobile__text">{f:translate(key: 'menu', extensionName: 'sitetum')}</span>
+                </button>
+            </div>
+
+            <f:if condition="{menuAudience}">
+                <nav class="audience">
+                    <ul>
+                        <f:for each="{menuAudience}" as="menuItem">
+                            <li>
+                                <f:link.typolink parameter="{menuItem.link}" title="{menuItem.title}">
+                                    {menuItem.title}
+                                </f:link.typolink>
+                            </li>
+                        </f:for>
+                    </ul>
+                </nav>
+            </f:if>
+
+            <template id="global-search-popup">
+                <dialog id="global-search-overlay"
+                        class="c-global-search-overlay js-gsc-dialog px-5 py-4 bg-body shadow"
+                        aria-labelledby="global-search-popup-title"
+                        aria-describedby="global-search-popup-desc"
+                >
+                    <h2 id="global-search-popup-title" class="fs-1 border-0">{f:translate(key: 'globalSearch.popup.title', extensionName: 'sitetum')}</h2>
+                    <p id="global-search-popup-desc">
+                        {f:translate(key: 'globalSearch.popup.description', extensionName: 'sitetum')}
+                    </p>
+                    <p>
+                        <a href="{f:uri.page(pageUid:'{settings.PRIVACY_URL}')}#GoogleCustomSearch" title="{f:translate(key: 'privacy', extensionName: 'sitetum')}">
+                            {f:translate(key: 'globalSearch.popup.link', extensionName: 'sitetum')}
+                        </a>
+                    </p>
+                    <form method="dialog">
+                        <button class="btn btn-primary c-global-search__button c-global-search__accept js-search-activate js-search-close"
+                                type="button"
+                        >
+                            {f:translate(key: 'globalSearch.popup.enable', extensionName: 'sitetum')}
+                        </button>
+                        <button class="btn-close position-absolute top-0 end-0 p-2 js-search-close"
+                                type="button"
+                                aria-label="{f:translate(key: 'globalSearch.popup.close', extensionName: 'sitetum')}"
+                        >
+                        </button>
+                    </form>
+                </dialog>
+            </template>
+
+        </div>
+
+	</div>
+</div>

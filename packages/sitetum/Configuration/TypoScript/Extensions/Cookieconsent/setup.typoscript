@@ -1,0 +1,17 @@
+page.footerData {
+    998 {
+        # we modify the lib, therefore need to use reference instead of copy
+        # clear is necessary, otherwise originally copied sub-elements are still there
+        20 >
+        20 =< lib.dp_cookieconsent
+    }
+}
+
+lib.dp_cookieconsent {
+    settings {
+        MATOMO_ID = {$MATOMO_ID}
+        # we set our constant in setup.typoscript, because in v12 you cannot use constants in constants
+        url = {$PRIVACY_URL}
+    }
+}
+

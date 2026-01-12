@@ -1,0 +1,16 @@
+TCEMAIN {
+
+	permissions {
+		// explicit 0 so rights are only given through groups
+		user = 0
+		// for new pages group can do everything
+		group = 31
+		// copyFromParent means a new page inherits the settings from its parent page
+		// we set wanted settings i.e. on site root page and func page sysfolder
+		// what is allowed:
+		everybody = copyFromParent
+
+		// which BE usergroup is set:
+		groupid = copyFromParent
+	}
+}

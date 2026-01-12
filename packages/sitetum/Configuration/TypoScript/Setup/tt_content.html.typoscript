@@ -1,0 +1,135 @@
+/**
+* Restrict tags for CE HTML
+* See full list of html tags https://www.w3.org/TR/2012/WD-html-markup-20121025/elements.html
+* This part of script is introduced in 2020.06 by a.sommer@tum.de
+* as www.mw.tum.de/mimed is allowed to use CE html
+*/
+tt_content.html.stdWrap.replacement {
+ # remove doctype
+ 10 {
+  search = #<!DOCTYPE(.*?)>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove html tag
+ 20 {
+  search = #<html>|<html(.*?)>|<\/html>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove head tag
+ 30 {
+  search = #<head>|<head\s(.*?)>|<\/head>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove body tag
+ 40 {
+  search = #<body>|<body(.*?)>|<\/body>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove base tag
+ 50 {
+  search = #<base(.*?)>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove link tag
+ 60 {
+  search = #<link(.*?)>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove script tag and containing
+ 70 {
+  search = #<script(.*?)>(.*?)<\/script>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove style tag and containing
+ 80 {
+  search = #<style(.*?)>(.*?)<\/style>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove meta tag
+ 90 {
+  search = #<meta(.*?)>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove title tag and containing
+ 100 {
+  search = #<title(.*?)>(.*?)<\/title>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove input tag
+ 110 {
+  search = #<input(.*?)>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove textarea tag and containing
+ 120 {
+  search = #<textarea(.*?)>(.*?)<\/textarea>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove select tag and containing
+ 130 {
+  search = #<select(.*?)>(.*?)<\/select>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove button tag and containing
+ 140 {
+  search = #<button(.*?)>(.*?)<\/button>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove form tag
+ 150 {
+  # to remove containing, use #<form(.*?)>(.*?)<\/form>#si instead
+  search = #<form(.*?)>|<\/form>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove iframe tag and containing
+ 160 {
+  search = #<iframe(.*?)>(.*?)<\/iframe>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove object tag and containing
+ 170 {
+  search = #<object(.*?)>(.*?)<\/object>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove embed tag
+ 180 {
+  search = #<embed(.*?)>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove frame tag
+ 190 {
+  search = #<frame\s(.*?)>#i
+  replace = 
+  useRegExp = 1
+ }
+ # remove frameset tag and containing
+ 200 {
+  search = #<frameset.+<\/frameset>#si
+  replace = 
+  useRegExp = 1
+ }
+ # remove div tag avoiding breaking layout
+ 210 {
+  search = #<div>|<div(.*?)>|<\/div>#si
+  replace = 
+  useRegExp = 1
+ }
+}

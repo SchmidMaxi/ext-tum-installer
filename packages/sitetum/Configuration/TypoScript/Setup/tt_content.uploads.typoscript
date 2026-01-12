@@ -1,0 +1,22 @@
+# Layout 3: Split description at "|" into description and lightbox caption
+tt_content.uploads.20.renderObj.30.split {
+    token.char = 124
+    returnKey = 0
+    if {
+        value = 3
+        equals.data = field:layout
+    }
+}
+tt_content.uploads.20.renderObj.stdWrap.typolink.title {
+    if {
+        value = 3
+        equals.data = field:layout
+    }
+    data = file:current:description
+    required = 1
+    split {
+        token.char = 124
+        returnKey = 1
+    }
+    htmlSpecialChars = 1
+}

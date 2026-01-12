@@ -1,0 +1,150 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:tum="http://typo3.org/ns/ElementareTeilchen/Sitetum/ViewHelpers"
+	  xmlns:vac="http://typo3.org/ns/Praetorius/ViteAssetCollector/ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+<f:layout name="Default" />
+<f:section name="Main">
+	<f:variable name="iconClass" value="ce-uploads-icon ti {f:if(condition: '{data.target} === \"locked\"', then: 'ti-link-lock', else: 'ti-link-download')}" />
+
+	<f:if condition="{files}">
+		<ul class="ce-uploads ce-uploads-{data.uploads_type} {f:if(condition:'{data.layout}==3', then:'ce-uploads-3 js-colorbox')}">
+			<f:for each="{files}" as="file" iteration="fileIterator">
+				<f:if condition="{data.layout} == 3">
+					<f:then>
+						<vac:asset.vite entry="frontend/sitetum/entrypoints/fancybox.js" useNonce="true" />
+						<li>
+							<f:comment>
+								<!-- lightbox -->
+								<!-- differenciate between image & PDF -->
+							</f:comment>
+							<f:render section="lightbox" contentAs="content" arguments="{_all}">
+								<f:image
+										image="{file}"
+										alt="{file.properties.alternative}"
+										class="t3colorbox"
+										fileExtension="webp"
+										maxWidth="142"
+								/>
+								<span class="ce-uploads-fileName">
+									<strong>
+										{f:if(condition: file.properties.title, then: file.properties.title, else: file.name) -> f:format.raw()}<span class="{iconClass}"></span>
+									</strong>
+								</span>
+								<f:if condition="{file.properties.description}">
+									<f:if condition="{data.uploads_description}">
+										<span class="ce-uploads-description">
+											{file.properties.description -> tum:explodeDescription()}
+										</span>
+									</f:if>
+								</f:if>
+								<f:if condition="{data.filelink_size}">
+									<span class="ce-uploads-filesize">
+										<f:format.bytes value="{file.properties.size}" />
+									</span>
+								</f:if>
+							</f:render>
+
+						</li>
+					</f:then>
+					<f:else>
+						<f:if condition="">
+							<f:then></f:then>
+						</f:if>
+						<li>
+							<a href="{file.publicUrl}" {f:if(condition:data.target,then: ' target="{data.target}"')}>
+								<f:comment>
+									<!-- file name and file extension icon -->
+								</f:comment>
+								<f:if condition="{data.uploads_type} == 1">
+									<img src="{f:uri.resource(path: 'EXT:frontend/Resources/Public/Icons/FileIcons/{file.extension}.gif')}" alt="">
+								</f:if>
+								<f:comment>
+									<!-- file name and thumbnail -->
+								</f:comment>
+								<f:if condition="{data.uploads_type} == 2">
+									<f:if condition="{f:uri.image(src: 'file:{f:if(condition: file.originalFile, then: \'file:{file.originalFile.uid}\', else: \'file:{file.uid}\')}')} != '/'">
+										<f:then>
+											<f:media file="{file}" width="120" height="" alt="{file.properties.alternative}" />
+										</f:then>
+										<f:else>
+											<img src="{f:uri.resource(path: 'EXT:frontend/Resources/Public/Icons/FileIcons/{file.extension}.gif')}" alt="">
+										</f:else>
+									</f:if>
+								</f:if>
+								<span>
+									<span class="ce-uploads-fileName{f:if(condition: '{data.uploads_type} === 2', then: ' d-block')}">
+										<strong>
+											{f:if(condition: file.properties.title, then: file.properties.title, else: file.name) -> f:format.raw()}<span class="{iconClass}"></span>
+										</strong>
+									</span>
+									<f:if condition="{file.properties.description}">
+										<f:if condition="{data.uploads_description}">
+											<span class="ce-uploads-description">{file.properties.description}</span>
+										</f:if>
+									</f:if>
+									<f:if condition="{data.filelink_size}">
+												<span class="ce-uploads-filesize">
+													<f:format.bytes value="{file.properties.size}" />
+												</span>
+									</f:if>
+									<f:if condition="{data.uploads_type} == 2">
+										<span class="ce-uploads-dlbutton d-block">
+											<strong class="btn btn-primary btn-sm download">
+												Download<span class="{iconClass}"></span>
+											</strong>
+										</span>
+									</f:if>
+								</span>
+							</a>
+
+						</li>
+					</f:else>
+				</f:if>
+
+			</f:for>
+		</ul>
+	</f:if>
+
+</f:section>
+
+<f:section name="lightbox">
+	<f:if condition="{file.properties.extension} == pdf || {file.properties.extension} == PDF">
+		<f:then>
+			<f:link.typolink
+					parameter="{file.publicUrl}"
+					class="t3colorbox colorbox"
+					additionalAttributes="{
+									data-fancybox: 'files{file.properties.uid_foreign}',
+									data-src: '{file.publicUrl}',
+									data-caption: '{file.properties.description -> tum:explodeDescription(long:1)}',
+									aria-label: '{f:if(condition: \'{file.alternative}\', then: \'{data.header} {f:translate(extensionName: \\\'sitetum\\\', key: \\\'lightbox.open.specific\\\')} {file.alternative}\', else: \'{data.header} {f:translate(extensionName: \\\'sitetum\\\', key: \\\'lightbox.open.default\\\')}\')}'
+									}"
+			>
+
+				{content -> f:format.raw()}
+			</f:link.typolink>
+		</f:then>
+		<f:else>
+			<f:link.typolink
+					parameter="{f:uri.image(image: '{file}')}"
+					class="ti ti-link-zoom"
+					additionalAttributes="{
+									data-fancybox: 'gallery{file.properties.uid_foreign}',
+									data-media: '(max-width: 520px);(max-width: 767px);(max-width: 1199px);(max-width: 1399px);(min-width: 1400px)',
+									data-sources: '{f:uri.image(image: file, maxWidth: \'320\')};
+												   {f:uri.image(image: file, maxWidth: \'520\')};
+												   {f:uri.image(image: file, maxWidth: \'780\')};
+												   {f:uri.image(image: file, maxWidth: \'1000\')};
+												   {f:uri.image(image: file, maxWidth: \'1280\')}
+												   ',
+									data-caption: '{file.properties.description -> tum:explodeDescription(long:1)}',
+									aria-label: '{f:if(condition: \'{file.alternative}\', then: \'{data.header} {f:translate(extensionName: \\\'sitetum\\\', key: \\\'lightbox.open.specific\\\')} {file.alternative}\', else: \'{data.header} {f:translate(extensionName: \\\'sitetum\\\', key: \\\'lightbox.open.default\\\')}\')}'
+									}"
+			>
+				{content -> f:format.raw()}
+			</f:link.typolink>
+		</f:else>
+	</f:if>
+</f:section>
+
+</html>

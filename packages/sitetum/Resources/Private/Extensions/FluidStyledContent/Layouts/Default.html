@@ -1,0 +1,99 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+	<f:if condition="{data.CType} == 'menu_abstract' || {data.CType} == 'menu_categorized_content' || {data.CType} == 'menu_categorized_pages' || {data.CType} == 'menu_pages' || {data.CType} == 'menu_recently_updated' || {data.CType} == 'menu_related_pages' || {data.CType} == 'menu_section' || {data.CType} == 'menu_section_pages' || {data.CType} == 'menu_sitemap' || {data.CType} == 'menu_sitemap_pages' || {data.CType} == 'menu_subpages'">
+		<f:then>
+
+				<nav id="c{data.uid}"
+					 aria-label="{f:if(condition: '{data.header} && {data.header_layout} != 100', then: '{data.header}', else: '{f:translate(key: \'LLL:EXT:sitetum/Resources/Private/Language/locallang.xlf:{data.CType}.title\')}')}"
+					 class="frame {f:render(partial:'FrameClassMap', arguments: {frameClass:'{data.frame_class}'})} frame-type-{data.CType} frame-layout-{data.layout}{f:if(condition: data.space_before_class, then: ' frame-space-before-{data.space_before_class}')}{f:if(condition: data.space_after_class, then: ' frame-space-after-{data.space_after_class}')}">
+					<f:comment>logic for accordion is done in partial</f:comment>
+					<f:render partial="AccordionWrapper" section="accordionItem" contentAs="content" arguments="{_all}">
+						<f:if condition="{data._LOCALIZED_UID}">
+							<a id="c{data._LOCALIZED_UID}"></a>
+						</f:if>
+						<f:render section="Before" optional="true">
+							<f:render partial="DropIn/Before/All" arguments="{_all}" />
+						</f:render>
+						<f:render section="Header" optional="true">
+							<f:render partial="Header/All" arguments="{_all}" />
+						</f:render>
+						<f:render partial="AccordionWrapper" section="accordionBody" contentAs="content" arguments="{_all}">
+							<f:render section="Main" optional="true" />
+						</f:render>
+
+						<f:comment>
+							This is not needed anymore, link to top is default implemented
+							<f:render section="Footer" optional="true">
+								<f:render partial="Footer/All" arguments="{_all}" />
+							</f:render>
+						</f:comment>
+
+						<f:render section="After" optional="true">
+							<f:render partial="DropIn/After/All" arguments="{_all}" />
+						</f:render>
+					</f:render>
+				</nav>
+
+
+		</f:then>
+		<f:else>
+
+			<f:if condition="{data.frame_class} != 'none'">
+				<f:then>
+
+					<div id="c{data.uid}" class="frame {f:render(partial:'FrameClassMap', arguments: {frameClass:'{data.frame_class}'})} frame-type-{data.CType} frame-layout-{data.layout}{f:if(condition: data.space_before_class, then: ' frame-space-before-{data.space_before_class}')}{f:if(condition: data.space_after_class, then: ' frame-space-after-{data.space_after_class}')}{f:if(condition: '{data.CType} == header && {data.frame_class} == default', then:' clearfix u-clear-both')}">
+                        <f:comment>logic for accordion is done in partial</f:comment>
+                        <f:render partial="AccordionWrapper" section="accordionItem" contentAs="content" arguments="{_all}">
+                            <f:if condition="{data._LOCALIZED_UID}">
+                                <a id="c{data._LOCALIZED_UID}" class="d-inline"></a>
+                            </f:if>
+                            <f:comment>
+                                opening and closing div if element is in sidebar and is infobox / contactbox for styling/layout reasons conditional;
+                                divs in format.raw ... see: https://www.npostnik.de/2019/04/
+                            </f:comment>
+                            <f:if condition="{data.frame_class} == tum-infoBox || {data.frame_class} == tum-contactBox">
+                                <f:format.raw value="<div>" />
+                            </f:if>
+                            <f:render section="Before" optional="true">
+                                <f:render partial="DropIn/Before/All" arguments="{_all}" />
+                            </f:render>
+                            <f:render section="Header" optional="true">
+                                <f:render partial="Header/All" arguments="{_all}" />
+                            </f:render>
+                            <f:render partial="AccordionWrapper" section="accordionBody" contentAs="content" arguments="{_all}">
+                                <f:render section="Main" optional="true" />
+                            </f:render>
+                            <f:render section="After" optional="true">
+                                <f:render partial="DropIn/After/All" arguments="{_all}" />
+                            </f:render>
+                        </f:render>
+
+						<f:if condition="{data.frame_class} == tum-infoBox || {data.frame_class} == tum-contactBox">
+							<f:format.raw value="</div>" />
+						</f:if>
+					</div>
+
+				</f:then>
+				<f:else>
+
+					<a id="c{data.uid}"></a>
+					<f:if condition="{data._LOCALIZED_UID}">
+						<a id="c{data._LOCALIZED_UID}"></a>
+					</f:if>
+					<f:render section="Before" optional="true">
+						<f:render partial="DropIn/Before/All" arguments="{_all}" />
+					</f:render>
+					<f:render section="Header" optional="true">
+						<f:render partial="Header/All" arguments="{_all}" />
+					</f:render>
+					<f:render section="Main" optional="true" />
+					<f:render section="After" optional="true">
+						<f:render partial="DropIn/After/All" arguments="{_all}" />
+					</f:render>
+
+				</f:else>
+			</f:if>
+		</f:else>
+	</f:if>
+	<f:render partial="Clearer" arguments="{frameClass:'{data.frame_class}'}"></f:render>
+</html>

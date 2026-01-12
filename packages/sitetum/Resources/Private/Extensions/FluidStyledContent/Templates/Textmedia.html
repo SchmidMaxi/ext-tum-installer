@@ -1,0 +1,164 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	  xmlns:tum="http://typo3.org/ns/ElementareTeilchen/Sitetum/ViewHelpers"
+	  data-namespace-typo3-fluid="true">
+<f:layout name="Default"/>
+
+<f:section name="Header">
+	<f:comment>
+		set f:variable to simplify header position condition
+	</f:comment>
+
+
+		<f:if condition="{gallery.position.noWrap} != 1 || ({data.frame_class} == tum-accordion) || ({data.frame_class} == tum-accordion-2colLeft) || ({data.frame_class} == tum-accordion-2colRight)">
+			<f:then>
+				{f:variable(name: 'headerAbove', value: '1')}
+			</f:then>
+			<f:else>
+				{f:variable(name: 'headerAbove', value: '0')}
+			</f:else>
+		</f:if>
+
+
+	<f:if condition="{headerAbove}">
+				<f:render partial="Header/All" arguments="{_all}"/>
+	</f:if>
+
+</f:section>
+
+<f:section name="Main">
+
+	<f:if condition="{gallery.count.files} != 0">
+		<f:then>
+			<f:variable name="frame"><f:spaceless>
+				<f:switch expression="{data.frame_class}">
+					<f:case value="tum-3colLeft">Frame33</f:case>
+					<f:case value="tum-3colLeftBox">Frame33</f:case>
+					<f:case value="tum-3colCenter">Frame33</f:case>
+					<f:case value="tum-3colCenterBox">Frame33</f:case>
+					<f:case value="tum-3colRight">Frame33</f:case>
+					<f:case value="tum-3colRightBox">Frame33</f:case>
+					<f:case value="tum-2colLeft">Frame50</f:case>
+					<f:case value="tum-2colLeftBox">Frame50</f:case>
+					<f:case value="tum-2colRight">Frame50</f:case>
+					<f:case value="tum-2colRightBox">Frame50</f:case>
+					<f:defaultCase></f:defaultCase>
+				</f:switch>
+			</f:spaceless></f:variable>
+			<f:variable name="cols"><f:spaceless>
+				<f:if condition="{data.imagecols} < 4">
+					<f:then>ImageCols{data.imagecols}</f:then>
+					<f:else>ImageCols1</f:else>
+				</f:if>
+			</f:spaceless></f:variable>
+			<f:variable name="position"><f:spaceless>
+				<f:switch expression="{gallery.position.vertical}">
+					<f:case value="above">PositionVertical</f:case>
+					<f:case value="below">PositionVertical</f:case>
+					<f:case value="intext">PositionHorizontal</f:case>
+				</f:switch>
+			</f:spaceless></f:variable>
+
+			<f:if condition="{frame} === 'Frame33' || {frame} === 'Frame50'">
+				<f:then>
+					{tum:variableSet(name: 'srcSet', value: '{tum:variableGet(name: \'pageLayout\')}Textmedia{frame}')}
+				</f:then>
+				<f:else>
+					{tum:variableSet(name: 'srcSet', value: '{tum:variableGet(name: \'pageLayout\')}Textmedia{cols}{position}')}
+				</f:else>
+			</f:if>
+
+			<div
+				class="ce-textpic ce-{gallery.position.horizontal} ce-{gallery.position.vertical}{f:if(condition: gallery.position.noWrap, then: ' ce-nowrap')}{f:if(condition: data.imageheight, then: ' ce-textpic-equalheight')}"
+			>
+
+				<f:if condition="{gallery.position.vertical} != 'below'">
+					<f:render partial="Media/Gallery" arguments="{_all}"/>
+				</f:if>
+
+				<f:if condition="{data.bodytext}">
+					<f:then>
+						<div class="ce-bodytext">
+							<f:if condition="!{headerAbove}">
+								<f:render partial="Header/All" arguments="{_all}"/>
+							</f:if>
+							<f:format.html>{data.bodytext}</f:format.html>
+						</div>
+					</f:then>
+					<f:else>
+						<f:if condition="{gallery.position.noWrap}">
+							<f:if condition="{data.header}">
+								<div class="ce-bodytext">
+									<f:render partial="Header/All" arguments="{_all}"/>
+								</div>
+							</f:if>
+						</f:if>
+					</f:else>
+				</f:if>
+
+				<f:if condition="{gallery.position.vertical} == 'below'">
+					<f:render partial="Media/Gallery" arguments="{_all}"/>
+				</f:if>
+			</div>
+		</f:then>
+		<f:else>
+			<f:if condition="{data.bodytext}">
+				<f:then>
+					<f:if condition="{gallery.position.noWrap}">
+						<f:render partial="Header/All" arguments="{_all}"/>
+					</f:if>
+                    <f:format.html>{data.bodytext}</f:format.html>
+				</f:then>
+				<f:else>
+					<f:if condition="{gallery.position.noWrap}">
+						<f:if condition="{data.header}">
+							<f:render partial="Header/All" arguments="{_all}"/>
+						</f:if>
+					</f:if>
+				</f:else>
+			</f:if>
+		</f:else>
+	</f:if>
+
+
+	<f:if condition="{data.frame_class} == tum-socialBox">
+		<f:then>
+			<div class="c-social">
+				<f:format.raw>{f:translate(key:"sbox.header", extensionName="sitetum")}</f:format.raw>
+				<ul class="c-social__list">
+					<li class="c-social__item">
+						<a class="c-social__link" href="https://de.linkedin.com/school/technische-universitat-munchen/" title="{f:translate(key:'sbox.icon.title.linkedin', extensionName: 'sitetum')}">
+							<f:image src="EXT:sitetum/Resources/Public/EditorPool/Icons/icon_linkedin-grau.svg" maxWidth="24"/>
+						</a>
+					</li>
+					<li class="c-social__item">
+						<a class="c-social__link" href="https://www.instagram.com/tu.muenchen/" title="{f:translate(key:'sbox.icon.title.instagram', extensionName: 'sitetum')}">
+							<f:image src="EXT:sitetum/Resources/Public/EditorPool/Icons/icon_instagram-grau.svg"/>
+						</a>
+					</li>
+					<li class="c-social__item">
+						<a class="c-social__link" href="https://bsky.app/profile/tum.de/" title="{f:translate(key:'sbox.icon.title.bluesky', extensionName: 'sitetum')}">
+							<f:image src="EXT:sitetum/Resources/Public/EditorPool/Icons/icon_bluesky-grau.svg" maxWidth="24"/>
+						</a>
+					</li>
+					<li class="c-social__item">
+						<a class="c-social__link" href="https://www.facebook.com/TU.Muenchen" title="{f:translate(key:'sbox.icon.title.facebook', extensionName: 'sitetum')}">
+							<f:image src="EXT:sitetum/Resources/Public/EditorPool/Icons/icon_facebook-grau.svg"/>
+						</a>
+					</li>
+					<li class="c-social__item">
+						<a class="c-social__link" href="https://www.youtube.com/user/TUMuenchen1" title="{f:translate(key:'sbox.icon.title.youtube', extensionName: 'sitetum')}">
+							<f:image src="EXT:sitetum/Resources/Public/EditorPool/Icons/icon_youtube-grau.svg"/>
+						</a>
+					</li>
+					<li class="c-social__item">
+						<a class="c-social__link" href="https://x.com/TU_Muenchen" title="{f:translate(key:'sbox.icon.title.twitter', extensionName: 'sitetum')}">
+							<f:image src="EXT:sitetum/Resources/Public/EditorPool/Icons/icon_x-schwarz.svg"/>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</f:then>
+	</f:if>
+
+</f:section>
+</html>

@@ -1,0 +1,12 @@
+ /* Make the background- and border fields in the ckeditor table properties         */
+ /* invisible. The selectors are not in .ck-content, so they have to be excluded    */
+.ck .ck.ck-table-form__border-row,
+.ck .ck.ck-table-form__background-row,
+.ck .ck.ck-table-cell-properties-form__padding-row {
+   display: none !important;
+}
+
+.ck-table-cell-properties-form__alignment-row > div:first-of-type .ck-toolbar__items button:nth-child(2),
+.ck-table-cell-properties-form__alignment-row > div:first-of-type .ck-toolbar__items button:nth-child(3) {
+    display: none !important;
+}

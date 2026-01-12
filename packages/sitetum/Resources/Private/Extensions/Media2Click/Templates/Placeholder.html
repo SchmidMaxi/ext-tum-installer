@@ -1,0 +1,43 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:m="http://typo3.org/ns/Amazing/Media2click/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<f:layout name="Default"/>
+
+<f:section name="Main">
+    <m:hostdata hostsData="{m2cHostsData}" host="{settings.videoProvider}"/>
+    <div class="media2click-placeholder-inner">
+        <f:if condition="{hostData.m2cLogoImage.0}">
+            <f:image image="{hostData.m2cLogoImage.0}" alt="{hostData.title}" class="media2click-placeholder-logo"/>
+        </f:if>
+        <f:if condition="{settings.showTitle}">
+            <div class="media2click-title">{settings.title}</div>
+        </f:if>
+        <f:if condition="{hostData.placeholder}">
+            <f:then>
+                <div class="media2click-content">{hostData.placeholder -> f:format.html()}</div>
+            </f:then>
+            <f:else>
+                <div class="media2click-content">
+                    <f:comment>
+                        Build a translation key containing the video provider ("placeHolderVideo.youtube")
+                    </f:comment>
+                    <f:variable name='placeholderTranslationKey'><f:format.trim>
+                        placeHolderVideo.<f:format.case mode="lower">{settings.videoProvider}</f:format.case>
+                    </f:format.trim></f:variable>
+                    <f:format.raw>{f:translate(extensionName: 'Media2click', key: '{placeholderTranslationKey}')}</f:format.raw>
+                    <f:if condition="{settings.m2cPrivacyPid}">
+                        <br><f:link.page pageUid="{settings.m2cPrivacyPid}">{f:translate(extensionName: 'Media2click', key: 'moreInfo', default: 'More Info')}</f:link.page>
+                    </f:if>
+                </div>
+            </f:else>
+        </f:if>
+    </div>
+    <div class="media2click-controls">
+        <button class="media2click-button media2click-once" data-host="{settings.videoProvider}"><f:translate key="activateOnce" extensionName="Media2click" default="Activate once"/></button>
+        <f:if condition="{settings.m2cEnablePermanently}">
+            <button class="media2click-button media2click-permanent" data-host="{settings.videoProvider}"><f:translate key="activatePermanently" extensionName="Media2click" default="Activate permanently"/></button>
+        </f:if>
+    </div>
+</f:section>
+
+</html>

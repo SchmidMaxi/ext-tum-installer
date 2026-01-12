@@ -1,0 +1,4 @@
+#site.email.admin.fromEmail = dev@elementare-teilchen.de
+#site.email.admin.toEmail = dev@elementare-teilchen.de
+#
+#site.email.sender.fromEmail = dev@elementare-teilchen.de

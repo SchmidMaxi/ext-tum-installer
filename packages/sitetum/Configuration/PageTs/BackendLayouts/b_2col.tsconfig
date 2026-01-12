@@ -1,0 +1,24 @@
+mod.web_layout.BackendLayouts {
+	2col {
+		#title = test 2-col (war: ID 2) Page: no right column
+		title = Page: no right column
+		name = 2col
+		icon = EXT:sitetum/Resources/Public/Icons/BackendLayouts/icon-layout-2cols.png
+		config {
+			backend_layout {
+				colCount = 1
+				rowCount = 1
+				rows {
+					1 {
+						columns {
+							1 {
+								name = normal-large
+								colPos = 0
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

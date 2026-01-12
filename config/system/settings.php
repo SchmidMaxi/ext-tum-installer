@@ -86,6 +86,9 @@ return [
         'scheduler' => [
             'maxLifetime' => '1440',
         ],
+        'sitescore' => [
+            'apiKey' => 'AIzaSyAZHsLNxKYsmO8C0ApOtgY03d2kVv78Eb4',
+        ],
     ],
     'FE' => [
         'cacheHash' => [

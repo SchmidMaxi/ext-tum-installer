@@ -1,0 +1,71 @@
+# https://github.com/DirkPersky/typo3-dp_cookieconsent
+# Extension name is dp_cookieconsent but we need tx_cookieconsent for constants
+plugin.tx_cookieconsent {
+    view {
+        # cat=plugin.tx_cookieconsent/file; type=string; label=templateRootPath
+#        templateRootPath = EXT:sitetum/Resources/Private/Extensions/DpCookieconsent/Templates/
+        # cat=plugin.tx_cookieconsent/file; type=string; label=partialRootPath
+        partialRootPath = EXT:sitetum/Resources/Private/Extensions/DpCookieconsent/Partials/
+        # cat=plugin.tx_cookieconsent/file; type=string; label=layoutRootPath
+        layoutRootPath = EXT:sitetum/Resources/Private/Extensions/DpCookieconsent/Layouts/
+    }
+
+    settings {
+        # we set our constant in setup.typoscript, because in v12 you cannot use constants in constants
+        url =
+        # cat=plugin.tx_cookieconsent; type=string; label= target for link tag
+        target = _blank
+        # cat=plugin.tx_cookieconsent; type=options[edgeless,classic,basic]; label=Layout
+        theme = basic
+        # cat=plugin.tx_cookieconsent; type=options[top,top-left,top-right,bottom,bottom-left,bottom-right]; label= Position
+        position = bottom-right
+        # cat=plugin.tx_cookieconsent; type=int+; label= dismiss on scroll (in PX)
+        dismissOnScroll =
+        # cat=plugin.tx_cookieconsent; type=options[info,opt-out,opt-in]; label = Type
+        type = opt-in
+        # cat=plugin.tx_cookieconsent; type=options[basic,dpextend]; label = extend layout with checkboxes
+        layout = dpextend
+        # cat=plugin.tx_cookieconsent; type=options[true,false]; label = adds a button to review the consent window
+        revokable = true
+        # cat=plugin.tx_cookieconsent; type=options[true,false]; label = pre check statistics in checkboxes layout
+        statistics = false
+        # cat=plugin.tx_cookieconsent; type=options[true,false]; label = pre check marketing in checkboxes layout
+        marketing = false
+        # cat=plugin.tx_cookieconsent; type=options[true,false]; label = should the cookie popup appear automatically
+        autoOpen = true
+        # cat=plugin.tx_cookieconsent; type=options[true,false]; label = force page reload after revoke
+        reloadOnRevoke = false
+
+        overlay {
+            # cat=plugin.tx_cookieconsent/overlay; type=options[true,false]; label = display iframe overlay
+            notice = true
+            box {
+                # cat=plugin.tx_cookieconsent/overlay; type=color; label= Overlay: Background
+                background = rgba(48,112,179,.75)
+                # cat=plugin.tx_cookieconsent/overlay; type=color; label= Overlay: Text
+                text = #fff
+            }
+            button {
+                # cat=plugin.tx_cookieconsent/overlay; type=color; label= Overlay Button: Background
+                background = #b81839
+                # cat=plugin.tx_cookieconsent/overlay; type=color; label= Overlay Button: Text
+                text = #fff
+            }
+        }
+
+        palette {
+            popup {
+                # cat=plugin.tx_cookieconsent/popup; type=color; label= Bar: Background
+                background = rgba(48,112,179,1)
+                # cat=plugin.tx_cookieconsent/popup; type=color; label= Bar: Text
+                text = #fff
+            }
+            buttontt_content {
+                # cat=plugin.tx_cookieconsent/button; type=color; label= Button: Background
+                background = #fff
+                # cat=plugin.tx_cookieconsent/button; type=color; label= Button: Text
+                text = #4d4d4d
+            }
+        }
+    }
+}

@@ -1,0 +1,29 @@
+mod.web_layout.BackendLayouts {
+	3col {
+		#title = 3-col (war: ID 1) Page: with right column
+		title = Page: with right column
+		name = 3col
+		icon = EXT:sitetum/Resources/Public/Icons/BackendLayouts/icon-layout-3cols.png
+		config {
+			backend_layout {
+				colCount = 2
+				rowCount = 1
+				rows {
+					1 {
+						columns {
+							1 {
+								name = normal
+								colPos = 0
+							}
+
+							2 {
+								name = right
+								colPos = 2
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

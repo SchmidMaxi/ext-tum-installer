@@ -1,0 +1,24 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:tum="http://typo3.org/ns/ElementareTeilchen/Sitetum/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<f:layout name="Default"/>
+
+<f:section name="secMain">
+	<main id="page-body" class="c-page-intro cols-both">
+        <f:render partial="Intro/Head" arguments="{_all}" />
+        <div class="container  c-content-area">
+			<div class="row" id="normal">
+
+                <div class="col-xl-10 js-link-checker">
+                    {tum:variableSet(name: 'pageLayout', value: 'LayoutIntro2ColMain')}
+                    <f:render partial="ContentMain" arguments="{_all}" />
+                </div>
+                <div class="col-xl-2 js-link-checker">
+                    {tum:variableSet(name: 'pageLayout', value: 'LayoutIntro2ColAside')}
+                    <f:render partial="Sidebar" arguments="{_all}"/>
+                </div>
+			</div>
+		</div>
+	</main>
+</f:section>
+</html>

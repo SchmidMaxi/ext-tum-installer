@@ -1,0 +1,57 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:m="http://typo3.org/ns/Amazing/Media2click/ViewHelpers"
+      xmlns:tum="http://typo3.org/ns/ElementareTeilchen/Sitetum/ViewHelpers"
+      xmlns:vac="http://typo3.org/ns/Praetorius/ViteAssetCollector/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<f:layout name="Default"/>
+
+<f:section name="Main">
+    <f:variable name="iframeHost"><m:uri.part uri="{data.tx_media2click_iframe_src}"/></f:variable>
+    <f:variable name="frame"><f:spaceless>
+        <f:switch expression="{data.frame_class}">
+            <f:case value="tum-3colLeft">Frame33</f:case>
+            <f:case value="tum-3colLeftBox">Frame33</f:case>
+            <f:case value="tum-3colCenter">Frame33</f:case>
+            <f:case value="tum-3colCenterBox">Frame33</f:case>
+            <f:case value="tum-3colRight">Frame33</f:case>
+            <f:case value="tum-3colRightBox">Frame33</f:case>
+            <f:case value="tum-2colLeft">Frame50</f:case>
+            <f:case value="tum-2colLeftBox">Frame50</f:case>
+            <f:case value="tum-2colRight">Frame50</f:case>
+            <f:case value="tum-2colRightBox">Frame50</f:case>
+            <f:defaultCase></f:defaultCase>
+        </f:switch>
+    </f:spaceless></f:variable>
+    {tum:variableSet(name: 'srcSet', value: '{tum:variableGet(name: \'pageLayout\')}Media2Click{frame}')}
+
+    <f:if condition="{settings.m2cEnable2click}">
+        <f:then>
+            <vac:asset.vite entry="frontend/sitetum/entrypoints/media2click.js" useNonce="true" />
+            <m:hostdata hostsData="{m2cHostsData}" host="{iframeHost}"/>
+            <div class="media2click-wrap media2click-ratio media2click-ratio-{data.tx_media2click_iframe_ratio}">
+                <div class="media2click-placeholder media2click-placeholder-iframe{f:if(condition: m2cBackgroundImage.0, then: ' media2click-haspreview')}"
+                     data-host="{iframeHost}">
+                    <f:if condition="{m2cBackgroundImage.0}">
+                        <div class="media2click-placeholder-img">
+                            <f:render partial="Media/Rendering/Image" arguments="{file: m2cBackgroundImage.0, dimensions: m2cBackgroundImage.0.properties}"/>
+                        </div>
+                    </f:if>
+                    <f:render partial="Media2click/Placeholder/{iframeHost}" optional="true" arguments="{_all}">
+                        <div class="media2click-placeholder-inner">
+                            <f:render partial="Media2click/Placeholder/Default" arguments="{_all}"/>
+                        </div>
+                    </f:render>
+                    <f:render partial="Media2click/Controls/Default" arguments="{_all}"/>
+                </div>
+                <div class="media2click-iframedata" data-attributes='{f:format.json(value: { src: '{data.tx_media2click_iframe_src}', title: '{f:if(condition: \'{hostData.title}\', then: \'{f:translate(key: \\\'externalContent\\\', extensionName: \\\'Media2click\\\')}: {hostData.title}\', else: \'{f:translate(key: \\\'externalContentFrom\\\', extensionName: \\\'Media2click\\\')} {iframeHost}\' )}'})}'></div>
+            </div>
+        </f:then>
+        <f:else>
+            <div class="media2click-ratio media2click-ratio-{data.tx_media2click_iframe_ratio}">
+                <iframe src="{data.tx_media2click_iframe_src}" title="{f:translate(key: 'externalContentFrom', extensionName: 'Media2click')} {iframeHost}"></iframe>
+            </div>
+        </f:else>
+    </f:if>
+</f:section>
+
+</html>

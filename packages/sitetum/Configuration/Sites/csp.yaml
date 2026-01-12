@@ -1,0 +1,123 @@
+# see https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/ContentSecurityPolicy/Index.html
+# Inherits default site-unspecific frontend policy mutations (enabled per default)
+# MIND: if a directive is set by some PHP Code, you might also need to set the directive here explicitely with wantend values here,
+# because then default-src is not relevant anymore
+mutations:
+  - mode: extend
+    directive: 'default-src'
+    sources:
+      - "'self'"
+      # - 'wss:'
+
+  - mode: extend
+    directive: 'frame-src'
+    sources:
+      - 'airtable.com'
+      - 'atlas.bayern.de'
+      - 'baucam313.panocloud.webcam'
+      - 'bibbase.org'
+      - 'community-tum.de'
+      - 'dante-gymnasium.de'
+      - 'dialog.newsletter-marketing-center.de'
+      - 'doo.net'
+      - 'embed.kumu.io'
+      - 'eveeno.com'
+      - 'flo.uri.sh'
+      - 'forms.office.com'
+      - 'geoportal.bayern.de'
+      - 'manavmahan.de'
+      - 'mesters.net'
+      - 'mobimetrix.de'
+      - 'npr.org'
+      - 'onedrive.live.com'
+      - 'orcid.org'
+      - 'pix.sueddeutsche.de'
+      - 'syndication.twitter.com'
+      - 'tum.cloud.panopto.eu'
+      - 'tu-muenchen.maps.arcgis.com'
+      - 'view.genial.ly'
+      - 'www.linkedin.com'
+      - 'www.foto-webcam.eu'
+      - 'www.webofscience.com'
+      - 'x.com'
+      - 'xmail.mwn.de'
+      - '*.ardmediathek.de'
+      - '*.br.de'
+      - '*.flipsnack.com'
+      - '*.github.io'
+      - '*.google.com'
+      - '*.google.de'
+      - '*.issuu.com'
+      - '*.lrz.de'
+      - '*.openstreetmap.fr'
+      - '*.openstreetmap.org'
+      - '*.spotify.com'
+      - '*.repowermap.org'
+      - '*.researchgate.net'
+      - '*.slideslive.com'
+      - '*.swr.de'
+      - '*.tum.de'
+      - '*.yumpu.com'
+      - 'https://www.google.com/maps/embed'
+      - 'paul-sowa.de'
+      - '*.studycheck.de'
+      - 'api.mapbox.com'
+      - 'fsmb.de'
+
+  - mode: extend
+    directive: 'img-src'
+    sources:
+      - 'data:'
+      - 'https://tum.de/'
+      - 'https://mediatum.ub.tum.de/'
+      - 'https://campus.tum.de/'
+      - 'https://www.google.com/cse/'
+      - 'https://*.google.com/'
+      - 'https://*.googleapis.com/'
+      - 'https://*.gstatic.com/'
+      - 'https://webstat.srv.tum.de/'
+      - 'https://tum.de/hsts/default'
+      - 'https://*.tum.de/'
+
+  - mode: set
+    directive: 'object-src'
+    sources:
+      - "'none'"
+
+  # 'strict-dynamic' is only applicable for script-src(-attr|-elem), see vendor/typo3/cms-core/Classes/Security/ContentSecurityPolicy/SourceKeyword.php
+  - mode: set
+    directive: 'script-src'
+    sources:
+      - "'nonce-proxy'"
+      - "'strict-dynamic'"
+      # needed by google CSE
+      - "'unsafe-eval'"
+
+  - mode: extend
+    directive: 'connect-src'
+    sources:
+      - 'https://csp.withgoogle.com/'
+      - 'https://webstat.srv.tum.de/'
+
+  - mode: extend
+    directive: 'style-src'
+    sources:
+      - 'https://cse.google.com/'
+      - 'https://www.google.com/cse/'
+      - 'https://webstat.srv.tum.de/'
+
+  - mode: extend
+    directive: 'style-src-elem'
+    sources:
+      - 'https://cse.google.com/'
+      - 'https://www.google.com/cse/'
+
+  - mode: extend
+    directive: 'font-src'
+    sources:
+      - 'data:'
+
+  - mode: set
+    directive: 'worker-src'
+    sources:
+      - 'blob:'

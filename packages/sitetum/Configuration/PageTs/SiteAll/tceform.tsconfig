@@ -1,0 +1,125 @@
+TCEFORM {
+
+    pages {
+        // Remove "none" layout from dropdown
+        backend_layout.removeItems = -1
+        backend_layout_next_level.removeItems = -1
+
+        // these two are disabled by EXT:bolt, enable it again
+        TSconfig.disabled = 0
+        tsconfig_includes.disabled = 0
+
+        keywords.disabled = 1
+
+    }
+
+    tt_content {
+        # Specify the allowed values for tumcourses link options; Available options: tc, to, me, op, no
+        pi_flexform.tumcourses_list.sheetList.settings\.list_courselinks1.keepItems = to, me, op, no
+        # Example to add options, in this case the Single-LV
+        #pi_flexform.tumcourses_list.sheetList.settings\.list_courselinks1.keepItems := addToList(tc)
+
+        CType {
+            // we do NOT want old CSC elements to be used
+            removeItems = text, textpic, image, media2click_content
+        }
+
+        frame_class {
+            removeItems = ruler-before, ruler-after, indent, indent-left, indent-right
+            addItems.tum-socialBox = Social media box
+
+            // Zweispaltiger Content ohne Box
+            addItems.tum-2colLeft = 2 columns, content left
+            addItems.tum-2colRight = 2 columns, content right
+
+            // Zweispaltiger Content mit Box
+            addItems.tum-2colLeftBox = 2 columns, content left, with box
+            addItems.tum-2colRightBox = 2 columns, content right, with box
+
+            // Zweispaltiger Content mit Accordion
+            addItems.tum-accordion-2colLeft = 2 columns, content left, accordion
+            addItems.tum-accordion-2colRight = 2 columns, content right, accordion
+
+            // Dreispaltiger Content ohne Box
+            addItems.tum-3colLeft = 3 columns, content left
+            addItems.tum-3colCenter = 3 columns, content center
+            addItems.tum-3colRight = 3 columns, content right
+
+            // Dreispaltiger Content mit Box
+            addItems.tum-3colLeftBox = 3 columns, content left, with box
+            addItems.tum-3colCenterBox = 3 columns, content center, with box
+            addItems.tum-3colRightBox = 3 columns, content right, with box
+
+            // Content mit Box volle Breite
+            addItems.tum-1ColBox = content with box
+
+            // Akkordeon
+            addItems.tum-accordion = Accordion
+
+            addItems.tum-importantBox = Important! box
+            addItems.tum-infoBox = Info box
+            addItems.tum-contactBox = Contact box
+        }
+
+        // hide all optics frame_class, only keep layout without boxes
+        frame_class.types.shortcut {
+            removeItems < TCEFORM.tt_content.frame_class.removeItems
+            removeItems := addToList(tum-newsBox, tum-accordion-2colLeft, tum-accordion-2colRight, tum-socialBox, tum-2colLeftBox, tum-2colRightBox, tum-3colLeftBox, tum-3colCenterBox, tum-3colRightBox, tum-1ColBox, tum-accordion, tum-importantBox, tum-infoBox, tum-contactBox)
+        }
+
+        header_layout {
+            // removeItems = 0 does not work, we do it in typo3/ext/sitetum/Configuration/TCA/Overrides/tt_content.php
+
+            altLabels {
+                1 = H1
+                2 = H2
+                3 = H3
+                4 = H4
+                5 = H5
+            }
+
+            addItems {
+                // this order is wanted for backend to be the same as before our upgrade/migration
+                6 = H6
+                // is first removed in typo3/ext/sitetum/Configuration/TCA/Overrides/tt_content.php, then readded here
+                100 = Hidden
+            }
+        }
+
+        header_position.disabled = 1
+
+        table_class {
+            // altLabel for Default (with key="") cannot be set with empty key, we set it via TCA then,
+            // see typo3/ext/sitetum/Configuration/TCA/Overrides/tt_content.php
+
+            removeItems = striped, bordered
+            addItems {
+                flexEqual-width = Basic (no style, equal width) responsive
+                h-lines = Horizontal lines responsive
+                h-lineFlexEqual-width = Horizontal lines (equal width) responsive
+                gitternetzFlex = Gitternetz responsive
+                gitternetzFlexEqual-width = Gitternetz (equal width) responsive
+                borderedFlex = Bordered responsive
+                borderedFlexEqual-width = Bordered (equal width) responsive
+            }
+        }
+
+        layout {
+            types {
+                uploads {
+                    # Notice: we had removed Layout 2 globally (only wanted for file links / uploads)
+                    # now it is available again globally
+                    altLabels {
+                        3 = Layout 3 - Lightbox
+                    }
+                }
+            }
+        }
+
+        date.disabled = 1
+        linkToTop.disabled = 1
+    }
+}
+
+# disable caption orientation for editors
+sys_file_reference.caption_orientation.disabled = 1

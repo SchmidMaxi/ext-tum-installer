@@ -1,0 +1,163 @@
+####
+# Example of what CKEditor can all bring
+###
+
+# Load default processing options
+imports:
+  - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Processing.yaml' }
+  - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml' }
+  - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml' }
+
+# Resources/Public/Contrib/@ckeditor/ckeditor5-code-block.js
+# Add configuration for the editor
+# For complete documentation see https://ckeditor.com/docs/ckeditor5/latest/features/index.html
+editor:
+  config:
+    contentsCss:
+      - "%vite('frontend/sitetum/entrypoints/rte.scss')%"
+      # "contentsCss" is deprecated CSS is now included in packages/sitetum/ext_localconf.php
+
+    importModules:
+      - { module: '@sitetum/rte-ckeditor/plugin/fullscreen.js', exports: ['FullScreen'] }
+      - { module: '@sitetum/rte-ckeditor/plugin/linkablebrs.js', exports: ['default'] }
+      - { module: '@sitetum/rte-ckeditor/plugin/bookmark-plugin', exports: ['BookmarkPlugin'] }
+
+    style:
+      definitions:
+        # block level styles
+        - { name: 'Code block', element: 'code', classes: ['u-code-block'], }
+        # styles for paragraphs
+        # - { name: 'default', element: 'p', classes: [] }
+        - { name: 'intro', element: 'p', classes: ['intro'] }
+        - { name: 'small', element: 'p', classes: ['small'] }
+        # styles for tables
+        # default table class if no style is set: "ce-table js-flex"; set in: lib.parseFunc_RTE
+        - { name: 'Basic', element: 'table', classes: ['ce-table', 'js-flex'] }
+        - { name: 'Equal Width', element: 'table', classes: ['ce-table', 'ce-table--equal-width', 'js-flex', 'js-equal-width-table'] }
+        - { name: 'Gitternetz', element: 'table', classes: ['ce-table', 'ce-table--gitternetz', 'js-flex'] }
+        - { name: 'Horizontal lines', element: 'table', classes: ['ce-table', 'ce-table--hlines', 'js-flex'] }
+        - { name: 'Bordered', element: 'table', classes: ['ce-table', 'ce-table--bordered', 'js-flex'] }
+
+        # Internal Links
+        # - { name: 'internal link', element: 'a', classes: ['internal-link'] }
+        # Kein Icon // set .ti to prevent external link icon
+        - { name: 'internal link', element: 'a', classes: ['ti', 'ti-none'] }
+        # Pfeil Icon
+        - { name: 'internal link ->', element: 'a', classes: ['ti', 'ti-link'] }
+        # External Links
+        - { name: 'external link', element: 'a', classes: ['ti', 'ti-link-ext'] }
+        # E-Mail
+        - { name: 'E-Mail', element: 'a', classes: ['mail', 'ti', 'ti-link-mail'] }
+        # RSS link (mainly on startpage)
+        - { name: 'rss link', element: 'a', classes: ['rss', 'ti', 'ti-rss'] }
+        # locked urls
+        - { name: 'locked url', element: 'a', classes: ['ti', 'ti-link-lock'] }
+        # download
+        - { name: 'download', element: 'a', classes: ['download', 'ti', 'ti-link-download'] }
+        # button
+        - { name: 'button', element: 'a', classes: ['c-button', 'c-button--primary'] }
+        # social media icons
+        - { name: 'bluesky', element: 'a', classes: ['icon-bluesky'] }
+        - { name: 'facebook', element: 'a', classes: ['icon-facebook'] }
+        - { name: 'twitter', element: 'a', classes: ['icon-twitter'] }
+        - { name: 'instagram', element: 'a', classes: ['icon-instagram'] }
+        - { name: 'youtube', element: 'a', classes: ['icon-youtube'] }
+        - { name: 'linkedin', element: 'a', classes: ['icon-linkedin'] }
+
+    heading:
+      options:
+        - { model: 'paragraph', title: 'Paragraph' }
+        - { model: 'heading2', view: 'h2', title: 'Heading 2' }
+        - { model: 'heading3', view: 'h3', title: 'Heading 3' }
+        - { model: 'heading4', view: 'h4', title: 'Heading 4' }
+        - { model: 'heading5', view: 'h5', title: 'Heading 5' }
+        - { model: 'heading6', view: 'h6', title: 'Heading 6' }
+        # - { model: 'formatted', view: 'code', title: 'Code Block' }
+
+    toolbar:
+      items:
+        - { name: 'clipboard', items: ['Undo', 'Redo'] }
+        - { name: 'styles', items: ['Styles', 'Format', 'RemoveFormat'] }
+        - { name: 'basicstyles', items: ['Blockquote', 'Bold', 'Italic', 'Subscript', 'Superscript'] }
+        - { name: 'paragraph', items: ['JustifyLeft', 'JustifyCenter', 'JustifyBlock', '-', 'NumberedList', 'BulletedList'] }
+        - { name: 'links', items: ['Link', 'Unlink', 'insertBookmark'] }
+        - { name: 'insert', items: ['insertTable', 'tableRow', 'tableColumn', 'tableCellProperties', 'mergeTableCells', 'SpecialChar'] }
+        - { name: 'tools', items: ['Maximize'] }
+        - { name: 'about', items: ['About'] }
+        - { name: 'fullScreen', items: ['fullScreen'] }
+
+        # - code
+
+    alignment:
+      options:
+        - { name: 'left', className: 'text-start' }
+        - { name: 'center', className: 'text-center' }
+        - { name: 'right', className: 'text-end' }
+        - { name: 'justify', className: 'text-justify' }
+
+    htmlSupport:
+      allow:
+        - { name: 'a', attributes: ['id', 'class'] }
+
+# Allow s and u tag
+# processing:
+#  allowTags:
+#    - s
+#    - u
+#    - code
+
+buttons:
+  link:
+    properties:
+      class:
+        allowedClasses: 'ti ti-none, ti ti-link, ti ti-link-ext, download ti ti-link-download, mail ti ti-link-mail, ti ti-link-lock, c-button c-button--primary'
+    page:
+      properties:
+        class:
+          default: 'ti ti-none'
+    url:
+      properties:
+        class:
+          default: 'ti ti-link-ext'
+    file:
+      properties:
+        class:
+          default: 'download ti ti-link-download'
+    email:
+      properties:
+        class:
+          default: 'mail ti ti-link-mail'
+
+classesAnchor:
+  page:
+    class: 'ti ti-none'
+    type: 'page'
+  file:
+    class: 'download ti ti-link-download'
+    type: 'file'
+  url:
+    class: 'ti ti-link-ext'
+    type: 'url'
+    target: '_blank'
+  email:
+    class: 'mail ti ti-link-mail'
+    type: 'email'
+# telephone:
+# class: 'ti ti-link-tel'
+# type: 'telephone'
+
+classes:
+  ti ti-none:
+    name: 'internal link'
+  ti ti-link:
+    name: 'internal link with arrow'
+  ti ti-link-ext:
+    name: 'external link'
+  download ti ti-link-download:
+    name: 'download'
+  mail ti ti-link-mail:
+    name: 'e-mail'
+  ti ti-link-lock:
+    name: 'locked url'
+  c-button c-button--primary:
+    name: 'button'

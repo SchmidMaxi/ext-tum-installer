@@ -1,0 +1,16 @@
+styles.content {
+    # we explicitely do want external links to open in same window by default, editor can set a target manually for each link
+    links.extTarget = _top
+    ### max content area with sidebar: 720
+    ### max content without sidebar right: 950
+    # Max. image width (SK: this is for slideshow)
+    textmedia.maxW = 1416
+    textmedia.maxH = 1200
+    # Max. image width in text (955 for slideshow)
+    # SK: only for image IN text ... not for above
+    textmedia.maxWInText = 478
+
+    # see: vendor/typo3/cms-fluid-styled-content/Configuration/TypoScript/Helper/ContentElement.typoscript
+    textmedia.linkWrap.width = 1416m
+    textmedia.linkWrap.height = 1200m
+}

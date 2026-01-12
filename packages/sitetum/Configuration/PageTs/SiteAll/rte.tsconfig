@@ -1,0 +1,6 @@
+// ckEditor
+RTE.default.preset = sitetum
+
+[backend.user.isAdmin]
+ RTE.default.preset = sitetum-admin
+[end]

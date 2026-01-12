@@ -1,0 +1,27 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:tum="http://typo3.org/ns/ElementareTeilchen/Sitetum/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<f:layout name="Default"/>
+
+<f:section name="secMain">
+	<main id="page-body">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-md-3 col-xl-2">
+                    <f:render partial="Menu" arguments="{_all}" />
+                </div>
+
+                <div class="col-md-9 col-xl-10 js-link-checker">
+                    <f:render partial="MenuBreadcrumb" arguments="{_all}"/>
+                    {tum:variableSet(name: 'pageLayout', value: 'Layout2ColMain')}
+                    <f:render partial="ContentMain" arguments="{_all}" />
+                </div>
+
+            </div>
+
+        </div>
+	</main>
+</f:section>
+</html>

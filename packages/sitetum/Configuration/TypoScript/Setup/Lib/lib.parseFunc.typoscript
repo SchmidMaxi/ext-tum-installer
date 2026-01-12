@@ -1,0 +1,9 @@
+### RTE
+# Avoid unwanted p-elements in th/td on the way to FE
+lib.parseFunc_RTE.externalBlocks.table.HTMLtableCells.default >
+lib.parseFunc_RTE.externalBlocks.table.HTMLtableCells.default.stdWrap.parseFunc =< lib.parseFunc
+
+### TABLES
+# New class for RTE table
+lib.parseFunc_RTE.externalBlocks.table.stdWrap.HTMLparser.tags.table.fixAttrib.class.default = ce-table js-flex
+lib.parseFunc_RTE.externalBlocks.table.stdWrap.HTMLparser.tags.table.fixAttrib.class.list >

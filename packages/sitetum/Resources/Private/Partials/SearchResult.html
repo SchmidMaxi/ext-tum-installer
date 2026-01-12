@@ -1,0 +1,25 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:section name="secSearchResult">
+	<noscript id="sorrymsg">
+		<p class="error">
+			<f:translate key="gcse.noscript" extensionName="sitetum" />
+		</p>
+	</noscript>
+	<f:asset.script identifier="tumSearchResult" nonce="{f:security.nonce()}" type="text/javascript">
+		TUM.search.parentsitedisplay = '{f:if(condition: '{settings.PARENTSITEDISPLAY} !== \'{$CSE_PARENTSEARCH}\'', then: '{settings.PARENTSITEDISPLAY}', else: '')}';
+		TUM.search.myparentsite = '{f:if(condition: '{settings.MYPARENTSITE} !== \'{$CSE_PARENTSITE}\'', then: '{settings.MYPARENTSITE}', else: '')}';
+		TUM.search.myhostname = '{MYHOSTNAME}';
+		TUM.search.l10n = {
+			sitesall_title: '<f:format.raw>{f:translate(key:"gcse.sitesall_title", extensionName="sitetum")}</f:format.raw>',
+			siteslabel: {
+				all: '<f:format.raw>{f:translate(key:"gcse.all", extensionName="sitetum")}</f:format.raw>',
+				local: '<f:format.raw>{f:translate(key:"gcse.local", extensionName="sitetum")}</f:format.raw>',
+				inline: '<f:format.raw>{f:translate(key:"gcse.inline", extensionName="sitetum")}</f:format.raw>',
+				school: '<f:format.raw>{f:translate(key:"gcse.school", extensionName="sitetum")}</f:format.raw>',
+			}
+		}
+	</f:asset.script>
+</f:section>
+
+</html>

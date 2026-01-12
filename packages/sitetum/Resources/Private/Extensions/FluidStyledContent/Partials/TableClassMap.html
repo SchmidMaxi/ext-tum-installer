@@ -1,0 +1,12 @@
+<f:spaceless>
+	<f:switch expression="{tableClass}">
+		<f:case value="flexEqual-width">ce-table ce-table--equal-width js-equal-width-table  js-flex</f:case>
+		<f:case value="h-lines">ce-table ce-table--hlines js-flex</f:case>
+		<f:case value="h-lineFlexEqual-width">ce-table ce-table--hlines ce-table--equal-width js-equal-width-table  js-flex</f:case>
+		<f:case value="gitternetzFlex">ce-table ce-table--gitternetz js-flex</f:case>
+		<f:case value="gitternetzFlexEqual-width">ce-table ce-table--gitternetz  ce-table--equal-width js-equal-width-table  js-flex</f:case>
+		<f:case value="borderedFlex">ce-table ce-table--bordered js-flex</f:case>
+		<f:case value="borderedFlexEqual-width">ce-table ce-table--bordered  ce-table--equal-width js-equal-width-table  js-flex</f:case>
+		<f:defaultCase>ce-table js-flex</f:defaultCase>
+	</f:switch>
+</f:spaceless>

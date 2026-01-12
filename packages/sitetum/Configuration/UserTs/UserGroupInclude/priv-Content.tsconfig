@@ -1,0 +1,2 @@
+# tum/tumdocs was deactivated in v12 due to lack of resources to maintain in properly
+#setup.default.startModule = web_TumdocsTxTumdocs

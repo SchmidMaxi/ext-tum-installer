@@ -1,0 +1,55 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:comment>Link and logo bar at header of page</f:comment>
+<f:comment>very rarely this partial will be overridden via setting in TS, like hfp.tum.de / www.bund-der-freunde.tum.de / www.zhs-muenchen.de</f:comment>
+<div class="c-siteorg {f:if(condition: settings.SITE_LOGO_URL, then: ' c-siteorg--site-logo')}">
+    <div class="container c-siteorg__grid">
+        <f:if condition="{settings.SITE_LOGO_URL}">
+            <f:link.typolink class="c-siteorg__site-logo" parameter="{settings.HOMEPID}" title="{f:translate(key: 'homepage', extensionName: 'sitetum')} {settings.THIS_OU_NAME}">
+                <img class="sitelogo" src="{settings.SITE_LOGO_URL}" alt="{settings.SITE_LOGO_ALT}"/>
+            </f:link.typolink>
+        </f:if>
+        <div class="nav clearfix">
+            <ul class="c-siteorg__list">
+                <f:if condition='{site.settings.all.tum.THIS_OU_NAME.{lang}}'>
+                    <li class="l_this">
+                        <f:link.typolink parameter="{settings.HOMEPID}" title="{f:translate(key: 'homepage', extensionName: 'sitetum')} {site.settings.all.tum.THIS_OU_NAME.{lang}}">
+                            {site.settings.all.tum.THIS_OU_NAME.{lang}}
+                        </f:link.typolink>
+                    </li>
+                </f:if>
+
+                <f:if condition='{PARENT_OU}'>
+                    <f:then>
+                        <f:variable name="parentOuName">{site.settings.all.tum.{dynamicParentOuName}}</f:variable>
+                        <f:variable name="parentOuUrl">{site.settings.all.tum.{dynamicParentOuUrl}}</f:variable>
+                    </f:then>
+                    <f:else>
+                        <f:variable name="parentOuName">{site.settings.all.tum.PARENT_OU_NAME.{lang}}</f:variable>
+                        <f:variable name="parentOuUrl">{site.settings.all.tum.PARENT_OU_URL.{lang}}</f:variable>
+                    </f:else>
+                </f:if>
+                <f:if condition='{parentOuName}'>
+                    <li class="l_parent">
+                        <f:link.typolink parameter="{parentOuUrl}" title="{f:translate(key: 'homepage', extensionName: 'sitetum')} {parentOuName}">
+                            {parentOuName}
+                        </f:link.typolink>
+                    </li>
+                </f:if>
+
+                <f:if condition='{site.settings.all.tum.TOP_OU_NAME.{lang}}'>
+                    <li class="l_top">
+                        <f:link.typolink parameter="{site.settings.all.tum.TOP_OU_URL.{lang}}" title="{f:translate(key: 'homepage', extensionName: 'sitetum')} {site.settings.all.tum.TOP_OU_NAME.{lang}}">
+                            {site.settings.all.tum.TOP_OU_NAME.{lang}}
+                        </f:link.typolink>
+                    </li>
+                </f:if>
+            </ul>
+        </div>
+        <div>
+            <a href="{site.settings.all.tum.TUM_URL.{lang}}" title="{site.settings.all.tum.TUM_TITLE.{lang}}">
+                <img src="{f:uri.image(src:'{settings.TUM_LOGOURL}')}?neu" alt="{f:translate(key: 'tumLogo', extensionName: 'sitetum')}" />
+            </a>
+        </div>
+    </div>
+</div>
+

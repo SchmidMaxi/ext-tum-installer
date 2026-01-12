@@ -1,0 +1,115 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<div class="c-sitenav navbar navbar-expand-md">
+    <div id="sitenav" class="collapse navbar-collapse">
+        <nav class="sitemenu c-sitenav__wrapper" aria-label="{f:translate(key: 'mainNav', extensionName: 'sitetum')}">
+            <f:if condition="{menuMain}">
+                <ul id="menuMain"
+                    class="accordion c-sitenav__menu"
+                >
+                    <f:for each="{menuMain}" as="menuItem" iteration="number">
+                        <li class="{f:if(condition: '{menuItem.children}', then: 'accordion-item  c-sitenav__item')}{f:if(condition: '{menuItem.current}', then: ' is-current')}{f:if(condition: '{menuItem.active}', then: ' is-active')}">
+
+                            <f:if condition="{menuItem.current}">
+                                <f:then>
+                                <a aria-current="page" class="{f:if(condition: '{menuItem.children}', then: ' accordion-header  c-sitenav__header')}">
+                                    {menuItem.title -> f:format.htmlentitiesDecode() -> f:format.stripTags()}
+                                </a>
+                                </f:then>
+                                <f:else>
+                                    <f:link.typolink
+                                        class="{f:if(condition: '{menuItem.data.doktype} == 3', then: 'c-sitenav__link-ext ti ti-link-ext')}{f:if(condition: '{menuItem.children}', then: ' accordion-header')}"
+                                        parameter="{menuItem.link}"
+                                        title="{menuItem.title}"
+                                        target="{f:if(condition: '{menuItem.data.target}', then: '{menuItem.data.target}', else: '_self')}"
+                                    >
+                                        {menuItem.title -> f:format.htmlentitiesDecode() -> f:format.stripTags()}
+                                    </f:link.typolink>
+                                </f:else>
+                            </f:if>
+                            <f:if condition="{menuItem.children}">
+                                <button class="accordion-button {f:if(condition: '!{menuItem.active}', then: 'collapsed')} c-sitenav__button"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#menuMain{number.index}"
+                                        aria-label="{f:translate(key: 'LLL:EXT:sitetum/Resources/Private/Language/locallang.xlf:navExpandButton')} {menuItem.title}"
+                                        aria-expanded="{f:if(condition: '{menuItem.active}', then: 'true', else: 'false')}"
+                                        aria-controls="menuMain{number.index}"
+                                ></button>
+                                <div id="menuMain{number.index}"
+                                     class="accordion-collapse collapse c-sitenav__accordion{f:if(condition: '{menuItem.active}', then: ' show')}"
+                                >
+                                    <div class="accordion-body c-sitenav__body">
+                                        <f:render section="menuMainChildren"
+                                                  arguments="{children: menuItem.children,
+                                                      level: 1,
+                                                      number: number,
+                                                      accordionClass: 'accordion'}"
+                                        />
+                                    </div>
+                                </div>
+                            </f:if>
+
+                        </li>
+                    </f:for>
+                </ul>
+            </f:if>
+        </nav>
+    </div>
+</div>
+
+
+<f:section name="menuMainChildren">
+    <ul id="menuMain{prefix}l{level}-e{number.index}"
+        class="{accordionClass} c-sitenav__menu-children"
+    >
+        <f:for each="{children}" as="child" iteration="childNumber">
+            <f:variable name="accordionOptions" value="{prefix}l{level}-e{number.index}-l{level + 1}-e{childNumber.index}" />
+
+            <li class="accordion-item c-sitenav__item-children{f:if(condition: '{child.current}', then: ' is-current')}{f:if(condition: '{child.active}', then: ' is-active')}">
+                <f:if condition="{child.current}">
+                    <f:then>
+                        <a aria-current="page" class="{f:if(condition: '{child.children}', then: ' accordion-header c-sitenav__header')}">
+                            {child.title -> f:format.htmlentitiesDecode() -> f:format.stripTags()}
+                        </a>
+                    </f:then>
+                    <f:else>
+                        <f:link.typolink
+                            class="{f:if(condition: '{child.data.doktype} == 3', then: 'c-sitenav__link-ext ti ti-link-ext')}{f:if(condition: '{child.children}', then: ' accordion-header c-sitenav__header')}"
+                            parameter="{child.link}"
+                            title="{child.title}"
+                            target="{f:if(condition: '{child.data.target}', then: '{child.data.target}', else: '_self')}"
+                        >
+                            {child.title -> f:format.htmlentitiesDecode() -> f:format.stripTags()}
+                        </f:link.typolink>
+                    </f:else>
+                </f:if>
+                <f:if condition="{child.children}">
+                    <button class="accordion-button {f:if(condition: '!{child.active}', then: 'collapsed')} c-sitenav__button"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#{accordionOptions}"
+                            aria-label="{f:translate(key: 'LLL:EXT:sitetum/Resources/Private/Language/locallang.xlf:navExpandButton')} {child.title}"
+                            aria-expanded="{f:if(condition: '{child.active}', then: 'true', else: 'false')}"
+                            aria-controls="{accordionOptions}"
+                    >
+                    </button>
+                    <div id="{accordionOptions}"
+                         class="accordion-collapse collapse c-sitenav__accordion{f:if(condition: '{child.active}', then: ' show')}"
+                    >
+                        <div class="accordion-body c-sitenav__body">
+                            <f:render section="menuMainChildren"
+                                      arguments="{children: child.children,
+                                                  level: '{level + 1}',
+                                                  number: childNumber,
+                                                  prefix: '{prefix}l{level}-e{number.index}-'}"
+                            />
+                        </div>
+                    </div>
+            </f:if>
+            </li>
+        </f:for>
+    </ul>
+</f:section>
+
+</html>

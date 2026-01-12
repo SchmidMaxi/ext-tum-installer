@@ -1,0 +1,36 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  ElementareTeilchen\Siteloader\:
+    resource: '../Classes/*'
+
+  ElementareTeilchen\Siteloader\Configuration\PackageHelper:
+    public: true
+
+  ElementareTeilchen\Siteloader\TsConfig\Loader:
+    public: true
+    tags:
+      # Remove when TYPO3 v11 compat is dropped
+      - name: event.listener
+        identifier: 'add-site-configuration-v11'
+        event: TYPO3\CMS\Core\Configuration\Event\ModifyLoadedPageTsConfigEvent
+        method: 'addSiteConfigurationCore11'
+      # TYPO3 v12 and above
+      - name: event.listener
+        identifier: 'add-site-configuration'
+        event: TYPO3\CMS\Core\TypoScript\IncludeTree\Event\ModifyLoadedPageTsConfigEvent
+        method: 'addSiteConfiguration'
+
+  ElementareTeilchen\Siteloader\TypoScript\Loader:
+    public: true
+
+  ElementareTeilchen\Siteloader\TypoScript\AddTypoScriptFromSiteExtensionEvent:
+    public: true
+    tags:
+      - name: event.listener
+        identifier: 'et-siteloader/add-typoscript-from-site-extension'
+        # for v10 compat, optional since v11
+        event: TYPO3\CMS\Core\TypoScript\IncludeTree\Event\AfterTemplatesHaveBeenDeterminedEvent
