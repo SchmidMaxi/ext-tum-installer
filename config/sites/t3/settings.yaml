@@ -1,0 +1,12 @@
+tum:
+  THIS_OU_NAME:
+    de: 'Zentrale Informationstechnik (TYPO3-Team)'
+    en: 'Central Information Technology (TYPO3-Team)'
+  pages:
+    introNaviPid: 0
+imports:
+  -
+    resource: 'EXT:sitetum/Configuration/Sites/settings.yaml'
+tum_news:
+  singlePid: 0
+  startingpoint: 19

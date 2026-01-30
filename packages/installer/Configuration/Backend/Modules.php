@@ -16,6 +16,9 @@ return [
             BackendInstallerController::class => [
                 'index',
                 'execute',
+                'step2',
+                'submitWebinfo',
+                'skipWebinfo',
             ],
         ],
     ],

@@ -1,0 +1,4 @@
+inheritDefault: true
+imports:
+  -
+    resource: 'EXT:sitetum/Configuration/Sites/csp.yaml'

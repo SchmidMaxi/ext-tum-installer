@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="messages" date="2026-01-30T12:00:00Z">
+        <header/>
+        <body>
+            <trans-unit id="tx_webinfo_domain_model_website">
+                <source>Website</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -1,0 +1,174 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <h1>TUM Webinfo - Website-Übersicht</h1>
+
+    <f:flashMessages />
+
+    <!-- Search Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <f:form action="index" method="get" class="row g-3">
+                <div class="col-md-10">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <core:icon identifier="actions-search" size="small" />
+                        </span>
+                        <f:form.textfield name="search" value="{search}" class="form-control" placeholder="Suche nach URL, Domain, WID, Typ, Umgebung..." />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Suchen</button>
+                </div>
+            </f:form>
+
+            <f:if condition="{search}">
+                <div class="mt-2">
+                    <f:link.action action="index" class="btn btn-sm btn-outline-secondary">
+                        <core:icon identifier="actions-close" size="small" /> Filter zurücksetzen
+                    </f:link.action>
+                </div>
+            </f:if>
+        </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h2 class="card-title mb-0">{total}</h2>
+                    <p class="card-text text-muted">
+                        <f:if condition="{search}">
+                            <f:then>Gefundene Websites</f:then>
+                            <f:else>Websites gesamt</f:else>
+                        </f:if>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Table -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Websites</span>
+            <span class="badge bg-secondary">{total} Einträge</span>
+        </div>
+        <div class="card-body p-0">
+            <f:if condition="{websites}">
+                <f:then>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>URL</th>
+                                    <th>WID</th>
+                                    <th>Setup</th>
+                                    <th>Umgebung</th>
+                                    <th>Typ</th>
+                                    <th>TYPO3</th>
+                                    <th>Erstellt</th>
+                                    <th>Laufzeit bis</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <f:for each="{websites}" as="website">
+                                    <tr>
+                                        <td>
+                                            <a href="{website.url}" target="_blank" rel="noopener">
+                                                {website.url}
+                                                <core:icon identifier="actions-window-open" size="small" />
+                                            </a>
+                                        </td>
+                                        <td><code>{website.wid}</code></td>
+                                        <td>
+                                            <span class="badge bg-info">{website.setup}</span>
+                                        </td>
+                                        <td>{website.umgebung}</td>
+                                        <td>{website.websiteType}</td>
+                                        <td>
+                                            <span class="badge bg-secondary">{website.typo3Version}</span>
+                                        </td>
+                                        <td>
+                                            <f:if condition="{website.createdAt}">
+                                                <f:format.date format="d.m.Y">{website.createdAt}</f:format.date>
+                                            </f:if>
+                                        </td>
+                                        <td>
+                                            <f:if condition="{website.validUntil}">
+                                                <f:format.date format="d.m.Y">{website.validUntil}</f:format.date>
+                                            </f:if>
+                                        </td>
+                                        <td>
+                                            <f:link.action action="detail" arguments="{uid: website.uid}" class="btn btn-sm btn-outline-primary">
+                                                <core:icon identifier="actions-open" size="small" />
+                                            </f:link.action>
+                                        </td>
+                                    </tr>
+                                </f:for>
+                            </tbody>
+                        </table>
+                    </div>
+                </f:then>
+                <f:else>
+                    <div class="p-4 text-center text-muted">
+                        <f:if condition="{search}">
+                            <f:then>
+                                <p>Keine Websites gefunden für "<strong>{search}</strong>"</p>
+                            </f:then>
+                            <f:else>
+                                <p>Noch keine Websites registriert.</p>
+                            </f:else>
+                        </f:if>
+                    </div>
+                </f:else>
+            </f:if>
+        </div>
+
+        <!-- Pagination -->
+        <f:if condition="{totalPages} > 1">
+            <div class="card-footer">
+                <nav aria-label="Pagination">
+                    <ul class="pagination justify-content-center mb-0">
+                        <f:if condition="{currentPage} > 1">
+                            <li class="page-item">
+                                <f:link.action action="index" arguments="{search: search, page: 1}" class="page-link">
+                                    &laquo; Erste
+                                </f:link.action>
+                            </li>
+                            <li class="page-item">
+                                <f:link.action action="index" arguments="{search: search, page: '{currentPage - 1}'}" class="page-link">
+                                    &lsaquo; Zurück
+                                </f:link.action>
+                            </li>
+                        </f:if>
+
+                        <li class="page-item disabled">
+                            <span class="page-link">Seite {currentPage} von {totalPages}</span>
+                        </li>
+
+                        <f:if condition="{currentPage} < {totalPages}">
+                            <li class="page-item">
+                                <f:link.action action="index" arguments="{search: search, page: '{currentPage + 1}'}" class="page-link">
+                                    Weiter &rsaquo;
+                                </f:link.action>
+                            </li>
+                            <li class="page-item">
+                                <f:link.action action="index" arguments="{search: search, page: totalPages}" class="page-link">
+                                    Letzte &raquo;
+                                </f:link.action>
+                            </li>
+                        </f:if>
+                    </ul>
+                </nav>
+            </div>
+        </f:if>
+    </div>
+</f:section>
+</html>

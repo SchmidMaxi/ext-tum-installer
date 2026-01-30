@@ -59,8 +59,11 @@ class InstallerService
         return true;
     }
 
-    public function install(InstallationConfig $initialConfig): void
+    public function install(InstallationConfig $initialConfig, ?callable $progressCallback = null): void
     {
+        // Step 0: Validation
+        $progressCallback?.(0, 'validation');
+
         if (!$this->isSetupAllowed($initialConfig->type)) {
             throw new \RuntimeException(
                 sprintf('Installation blockiert: Typ "%s" kann nicht zusätzlich installiert werden.', $initialConfig->type->value)
@@ -83,18 +86,30 @@ class InstallerService
         // 2. Vorbereiten
         $config = $strategy->prepare($initialConfig);
 
-        // 3. Ordner
+        // Step 1: Ordner erstellen
+        $progressCallback?.(1, 'folders');
         $this->folderService->createStructure($config);
 
-        // 4. Import
+        // Step 2: Seiten anlegen (YAML laden)
+        $progressCallback?.(2, 'pages');
         $yamlPath = $strategy->getYamlFilePath($config);
         $yamlData = $this->yamlLoader->loadAndMerge($yamlPath);
+
+        // Step 3: BE-Groups erstellen
+        $progressCallback?.(3, 'begroups');
+
+        // Step 4: BE-Users erstellen
+        $progressCallback?.(4, 'beusers');
+
+        // Import all data (pages, groups, users, etc.)
         $this->dbImporter->import($yamlData, $config);
 
-        // 5. Site Config
+        // Step 5: Site Config
+        $progressCallback?.(5, 'siteconfig');
         $this->siteConfigService->generate($config);
 
-        // 6. Nacharbeiten
+        // Step 6: TypoScript / Nacharbeiten
+        $progressCallback?.(6, 'typoscript');
         $strategy->postProcess($config);
     }
 }

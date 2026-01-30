@@ -1,0 +1,158 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Website Details</h1>
+        <f:link.action action="index" class="btn btn-outline-secondary">
+            <core:icon identifier="actions-view-go-back" size="small" /> Zurück zur Übersicht
+        </f:link.action>
+    </div>
+
+    <f:flashMessages />
+
+    <div class="row">
+        <!-- Main Info Card -->
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0">Allgemeine Informationen</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless">
+                        <tr>
+                            <th style="width: 200px;">URL</th>
+                            <td>
+                                <a href="{website.url}" target="_blank" rel="noopener" class="text-break">
+                                    {website.url}
+                                    <core:icon identifier="actions-window-open" size="small" />
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Domain</th>
+                            <td><code>{website.domain}</code></td>
+                        </tr>
+                        <tr>
+                            <th>Nav Name</th>
+                            <td><code>{website.navName}</code></td>
+                        </tr>
+                        <tr>
+                            <th>WID</th>
+                            <td><code class="fs-5">{website.wid}</code></td>
+                        </tr>
+                        <tr>
+                            <th>Setup Type</th>
+                            <td><span class="badge bg-info fs-6">{website.setup}</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Webinfo Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0">Webinfo Daten</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless">
+                        <tr>
+                            <th style="width: 200px;">Umgebung</th>
+                            <td><span class="badge bg-secondary">{website.umgebung}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Organization Unit</th>
+                            <td>{website.organizationUnit}</td>
+                        </tr>
+                        <tr>
+                            <th>Website Type</th>
+                            <td>{website.websiteType}</td>
+                        </tr>
+                        <tr>
+                            <th>TYPO3 Version</th>
+                            <td><span class="badge bg-primary">{website.typo3Version}</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Notes Card -->
+            <f:if condition="{website.note}">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4 class="mb-0">Notizen</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-0" style="white-space: pre-wrap;">{website.note}</p>
+                    </div>
+                </div>
+            </f:if>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-md-4">
+            <!-- Dates Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Laufzeit</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="mb-0">
+                        <dt>In TYPO3 seit</dt>
+                        <dd>
+                            <f:if condition="{website.createdAt}">
+                                <f:then>
+                                    <f:format.date format="d.m.Y">{website.createdAt}</f:format.date>
+                                </f:then>
+                                <f:else>
+                                    <span class="text-muted">Nicht angegeben</span>
+                                </f:else>
+                            </f:if>
+                        </dd>
+
+                        <dt>Laufzeit bis</dt>
+                        <dd>
+                            <f:if condition="{website.validUntil}">
+                                <f:then>
+                                    <f:format.date format="d.m.Y">{website.validUntil}</f:format.date>
+                                </f:then>
+                                <f:else>
+                                    <span class="text-muted">Unbefristet</span>
+                                </f:else>
+                            </f:if>
+                        </dd>
+
+                        <dt>Nach Laufzeitende</dt>
+                        <dd>
+                            <f:if condition="{website.afterExpiry}">
+                                <f:then>
+                                    <span class="badge bg-warning text-dark">{website.afterExpiry}</span>
+                                </f:then>
+                                <f:else>
+                                    <span class="text-muted">Nicht festgelegt</span>
+                                </f:else>
+                            </f:if>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Quick Info Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Schnellinfo</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="mb-0">
+                        <dt>UID</dt>
+                        <dd><code>{website.uid}</code></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:section>
+</html>

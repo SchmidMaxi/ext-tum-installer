@@ -1,0 +1,45 @@
+base: 'https://web.typo3.tum.de/t3/'
+rootPageId: 6
+websiteTitle: 'Zentrale Informationstechnik (TYPO3-Team)'
+sitePackage: sitetum
+imports:
+  -
+    resource: 'EXT:sitetum/Configuration/Sites/base.yaml'
+  -
+    resource: 'EXT:sitetum/Configuration/Sites/ext-news.yaml'
+languages:
+  -
+    title: Deutsch
+    enabled: true
+    languageId: 0
+    base: /
+    typo3Language: de
+    locale: de_DE.UTF-8
+    iso-639-1: de
+    navigationTitle: Deutsch
+    flag: de
+  -
+    title: English
+    enabled: true
+    languageId: 1
+    base: /en/
+    typo3Language: en
+    locale: en_US.UTF-8
+    iso-639-1: en
+    navigationTitle: English
+    fallbackType: strict
+    fallbacks: '0'
+    flag: en-us-gb
+errorHandling:
+  -
+    errorCode: 404
+    errorHandler: Page
+    errorContentSource: 't3://page?uid=6'
+  -
+    errorCode: 403
+    errorHandler: Page
+    errorContentSource: 't3://page?uid=6'
+baseVariants:
+  -
+    base: 'https://t3-v12.typo3.lrz.de/t3/'
+    condition: 'applicationContext == "Production/Testing"'

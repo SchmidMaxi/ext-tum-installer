@@ -1,0 +1,8 @@
+# cat=api; type=boolean; label=API aktiviert
+apiEnabled = 1
+
+# cat=api; type=string; label=API Key (Bearer Token)
+apiKey =
+
+# cat=api; type=string; label=Erlaubte Domains (kommagetrennt, * als Wildcard)
+allowedDomains = *.tum.de

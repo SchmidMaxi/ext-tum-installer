@@ -3,3 +3,12 @@ archivWid = w00cdu
 
 # cat=archiv; type=string; label=Zentrale Archiv Domain
 archivDomain = webarchiv.typo3.tum.de
+
+# cat=webinfo; type=string; label=Webinfo API URL
+webinfoApiUrl =
+
+# cat=webinfo; type=string; label=Webinfo API Key (Bearer Token)
+webinfoApiKey =
+
+# cat=webinfo; type=boolean; label=Webinfo API aktiviert
+webinfoApiEnabled = 1
