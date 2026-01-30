@@ -1,0 +1,130 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+    <h1>TUM Installer - Webinfo</h1>
+
+    <!-- Step Indicator -->
+    <div class="mb-4">
+        <div class="d-flex align-items-center">
+            <span class="badge bg-success me-2">&#10003;</span>
+            <span class="text-success">Installation</span>
+            <span class="mx-3 text-muted">→</span>
+            <span class="badge bg-primary me-2">2</span>
+            <span class="fw-bold">Webinfo</span>
+        </div>
+    </div>
+
+    <f:flashMessages />
+
+    <!-- Installation Summary -->
+    <div class="alert alert-success mb-4">
+        <strong>Installation erfolgreich abgeschlossen!</strong><br>
+        <f:if condition="{step1Config.domain}">
+            Domain: <strong>{step1Config.domain}</strong>
+            <f:if condition="{step1Config.navName}">
+                / {step1Config.navName}
+            </f:if>
+        </f:if>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">Webinfo-Daten erfassen</h4>
+        </div>
+        <div class="card-body">
+            <p class="text-muted mb-4">
+                Diese Daten werden an das zentrale Webinfo-System übermittelt.
+            </p>
+
+            <f:form action="submitWebinfo" controller="BackendInstaller" method="post">
+                <div class="row">
+                    <!-- Umgebung -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="umgebung">Umgebung *</label>
+                        <f:form.select name="umgebung" id="umgebung" class="form-select" required="1">
+                            <f:form.select.option value="">Bitte wählen...</f:form.select.option>
+                            <f:form.select.option value="www-v23">www-v23</f:form.select.option>
+                            <f:form.select.option value="www-v19">www-v19</f:form.select.option>
+                            <f:form.select.option value="www-v8">www-v8</f:form.select.option>
+                        </f:form.select>
+                    </div>
+
+                    <!-- Organization Unit -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="organizationUnit">Organization Unit</label>
+                        <f:form.textfield name="organizationUnit" id="organizationUnit" class="form-control" placeholder="z.B. Lehrstuhl für Informatik" />
+                    </div>
+
+                    <!-- Website Type -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="websiteType">Website-Type *</label>
+                        <f:form.select name="websiteType" id="websiteType" class="form-select" required="1">
+                            <f:form.select.option value="">Bitte wählen...</f:form.select.option>
+                            <f:form.select.option value="Einrichtung">Einrichtung</f:form.select.option>
+                            <f:form.select.option value="Forschungsgruppe">Forschungsgruppe</f:form.select.option>
+                            <f:form.select.option value="Kooperation">Kooperation</f:form.select.option>
+                            <f:form.select.option value="Projekt">Projekt</f:form.select.option>
+                            <f:form.select.option value="Studiengang">Studiengang</f:form.select.option>
+                            <f:form.select.option value="Sonstiges">Sonstiges</f:form.select.option>
+                        </f:form.select>
+                    </div>
+
+                    <!-- TYPO3 Version -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="typo3Version">TYPO3 Version *</label>
+                        <f:form.select name="typo3Version" id="typo3Version" class="form-select" value="{typo3Version}" required="1">
+                            <f:form.select.option value="v12">v12</f:form.select.option>
+                            <f:form.select.option value="v14">v14</f:form.select.option>
+                        </f:form.select>
+                        <div class="form-text">Vorausgefüllt mit aktueller Version</div>
+                    </div>
+
+                    <!-- Laufzeit bis -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="laufzeitBis">Laufzeit bis</label>
+                        <f:form.textfield type="date" name="laufzeitBis" id="laufzeitBis" class="form-control" />
+                        <div class="form-text">Optional: Geplantes Ende der Website-Laufzeit</div>
+                    </div>
+
+                    <!-- Nach Laufzeitende -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label" for="nachLaufzeitende">Nach Laufzeitende</label>
+                        <f:form.select name="nachLaufzeitende" id="nachLaufzeitende" class="form-select">
+                            <f:form.select.option value="">Bitte wählen...</f:form.select.option>
+                            <f:form.select.option value="Archiv">Archiv</f:form.select.option>
+                            <f:form.select.option value="Löschen">Löschen</f:form.select.option>
+                            <f:form.select.option value="Verlängern">Verlängern</f:form.select.option>
+                        </f:form.select>
+                    </div>
+
+                    <!-- Notiz -->
+                    <div class="col-12 mb-3">
+                        <label class="form-label" for="notiz">Notiz</label>
+                        <f:form.textarea name="notiz" id="notiz" class="form-control" rows="3" placeholder="Optionale Anmerkungen..." />
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-between">
+                    <f:link.action action="skipWebinfo" class="btn btn-outline-secondary">
+                        Überspringen
+                    </f:link.action>
+
+                    <f:form.submit value="Webinfo übermitteln" class="btn btn-primary" />
+                </div>
+            </f:form>
+        </div>
+    </div>
+
+    <!-- Info Box -->
+    <div class="alert alert-info mt-4">
+        <strong>Hinweis:</strong> Die Webinfo-Daten werden nur an das zentrale System übermittelt,
+        wenn die Domain auf <code>*.tum.de</code> endet und die API konfiguriert ist.
+    </div>
+</f:section>
+</html>
