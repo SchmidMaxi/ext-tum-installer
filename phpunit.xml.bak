@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         cacheDirectory=".phpunit.cache"
+         executionOrder="depends,defects"
+         beStrictAboutOutputDuringTests="true"
+         failOnRisky="true"
+         failOnWarning="true">
+    <testsuites>
+        <testsuite name="Unit Tests - Installer">
+            <directory>packages/installer/Tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Unit Tests - Webinfo">
+            <directory>packages/webinfo/Tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage>
+        <report>
+            <html outputDirectory=".phpunit.cache/coverage-html"/>
+        </report>
+        <include>
+            <directory suffix=".php">packages/installer/Classes</directory>
+            <directory suffix=".php">packages/webinfo/Classes</directory>
+        </include>
+        <exclude>
+            <directory>packages/installer/Classes/Domain/Model</directory>
+            <directory>packages/webinfo/Classes/Domain/Model</directory>
+        </exclude>
+    </coverage>
+</phpunit>

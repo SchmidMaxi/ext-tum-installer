@@ -13,58 +13,59 @@ use TYPO3\CMS\Core\Http\RequestFactory;
 
 class WebinfoApiServiceTest extends TestCase
 {
-    private WebinfoApiService $service;
-    private RequestFactory $requestFactoryMock;
-    private ExtensionConfiguration $extensionConfigurationMock;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->requestFactoryMock = $this->createMock(RequestFactory::class);
-        $this->extensionConfigurationMock = $this->createMock(ExtensionConfiguration::class);
-
-        $this->service = new WebinfoApiService(
-            $this->requestFactoryMock,
-            $this->extensionConfigurationMock
+    private function createService(
+        ?RequestFactory $requestFactory = null,
+        ?ExtensionConfiguration $extensionConfiguration = null
+    ): WebinfoApiService {
+        return new WebinfoApiService(
+            $requestFactory ?? $this->createStub(RequestFactory::class),
+            $extensionConfiguration ?? $this->createStub(ExtensionConfiguration::class)
         );
     }
 
     #[Test]
     public function isDomainAllowedReturnsTrueForTumDeDomain(): void
     {
-        self::assertTrue($this->service->isDomainAllowed('test.tum.de'));
-        self::assertTrue($this->service->isDomainAllowed('www.test.tum.de'));
-        self::assertTrue($this->service->isDomainAllowed('sub.domain.tum.de'));
-        self::assertTrue($this->service->isDomainAllowed('tum.de'));
+        $service = $this->createService();
+
+        self::assertTrue($service->isDomainAllowed('test.tum.de'));
+        self::assertTrue($service->isDomainAllowed('www.test.tum.de'));
+        self::assertTrue($service->isDomainAllowed('sub.domain.tum.de'));
+        self::assertTrue($service->isDomainAllowed('tum.de'));
     }
 
     #[Test]
     public function isDomainAllowedReturnsFalseForNonTumDomain(): void
     {
-        self::assertFalse($this->service->isDomainAllowed('test.example.com'));
-        self::assertFalse($this->service->isDomainAllowed('tum.de.fake.com'));
-        self::assertFalse($this->service->isDomainAllowed('not-tum.de'));
-        self::assertFalse($this->service->isDomainAllowed(''));
+        $service = $this->createService();
+
+        self::assertFalse($service->isDomainAllowed('test.example.com'));
+        self::assertFalse($service->isDomainAllowed('tum.de.fake.com'));
+        self::assertFalse($service->isDomainAllowed('not-tum.de'));
+        self::assertFalse($service->isDomainAllowed(''));
     }
 
     #[Test]
     public function isDomainAllowedReturnsFalseForEmptyDomain(): void
     {
-        self::assertFalse($this->service->isDomainAllowed(''));
+        $service = $this->createService();
+
+        self::assertFalse($service->isDomainAllowed(''));
     }
 
     #[Test]
     public function pushThrowsExceptionForNonTumDomain(): void
     {
-        $this->extensionConfigurationMock
+        $extensionConfigurationStub = $this->createStub(ExtensionConfiguration::class);
+        $extensionConfigurationStub
             ->method('get')
-            ->with('installer')
             ->willReturn([
                 'webinfoApiUrl' => 'https://webinfo.tum.de/api',
                 'webinfoApiKey' => 'test-key',
                 'webinfoApiEnabled' => true,
             ]);
+
+        $service = $this->createService(extensionConfiguration: $extensionConfigurationStub);
 
         $webinfoData = new WebinfoData(
             umgebung: 'www-v23',
@@ -85,20 +86,22 @@ class WebinfoApiServiceTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('API-Push nur für *.tum.de Domains erlaubt');
 
-        $this->service->push($webinfoData, $installationConfig);
+        $service->push($webinfoData, $installationConfig);
     }
 
     #[Test]
     public function pushThrowsExceptionWhenApiUrlNotConfigured(): void
     {
-        $this->extensionConfigurationMock
+        $extensionConfigurationStub = $this->createStub(ExtensionConfiguration::class);
+        $extensionConfigurationStub
             ->method('get')
-            ->with('installer')
             ->willReturn([
                 'webinfoApiUrl' => '',
                 'webinfoApiKey' => 'test-key',
                 'webinfoApiEnabled' => true,
             ]);
+
+        $service = $this->createService(extensionConfiguration: $extensionConfigurationStub);
 
         $webinfoData = new WebinfoData(
             umgebung: 'www-v23',
@@ -119,25 +122,31 @@ class WebinfoApiServiceTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Webinfo API URL nicht konfiguriert');
 
-        $this->service->push($webinfoData, $installationConfig);
+        $service->push($webinfoData, $installationConfig);
     }
 
     #[Test]
     public function pushSkipsSilentlyWhenApiDisabled(): void
     {
-        $this->extensionConfigurationMock
+        $extensionConfigurationStub = $this->createStub(ExtensionConfiguration::class);
+        $extensionConfigurationStub
             ->method('get')
-            ->with('installer')
             ->willReturn([
                 'webinfoApiUrl' => 'https://webinfo.tum.de/api',
                 'webinfoApiKey' => 'test-key',
                 'webinfoApiEnabled' => false,
             ]);
 
-        // Request factory should never be called
-        $this->requestFactoryMock
+        // Request factory should never be called - use mock for this expectation
+        $requestFactoryMock = $this->createMock(RequestFactory::class);
+        $requestFactoryMock
             ->expects(self::never())
             ->method('request');
+
+        $service = $this->createService(
+            requestFactory: $requestFactoryMock,
+            extensionConfiguration: $extensionConfigurationStub
+        );
 
         $webinfoData = new WebinfoData(
             umgebung: 'www-v23',
@@ -156,7 +165,7 @@ class WebinfoApiServiceTest extends TestCase
         ];
 
         // Should not throw, just silently return
-        $this->service->push($webinfoData, $installationConfig);
+        $service->push($webinfoData, $installationConfig);
         self::assertTrue(true); // If we get here, the test passed
     }
 }

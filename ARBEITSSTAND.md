@@ -348,6 +348,14 @@ Tabellen die befüllt werden:
 
 ## Changelog
 
+### Stand: 2026-02-02 (Update: Test-Qualität verbessert)
+
+**Änderungen:**
+- PHPUnit XML-Konfiguration auf neues Schema migriert (PHPUnit 12.x)
+- Unit-Tests refactored: `createStub()` statt `createMock()` wo keine Expectations benötigt
+- 27 PHPUnit Notices behoben (Mock-Objekte ohne Expectations)
+- Alle 33 Tests bestehen ohne Warnings/Notices
+
 ### Stand: 2026-01-30 (Update: Implementierung abgeschlossen)
 
 **Neu erstellte Dateien:**
@@ -401,8 +409,8 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['installer']['webinfoApiEnabled'] = tr
 - [x] API-Endpoint: Domain-Whitelist prüfen (Server-seitig)
 - [x] API-Endpoint: Daten in Webinfo-Datenbank speichern
 - [x] Backend-Modul mit Übersicht und Suchfunktion
-- [x] Unit-Tests geschrieben (33 Tests, alle bestanden)
-- [ ] Testen: Vollständiger Durchlauf Schritt 1 → Schritt 2 → API
+- [x] Unit-Tests geschrieben (33 Tests, alle bestanden, keine PHPUnit Notices/Warnings)
+- [ ] Testen: Vollständiger Durchlauf Schritt 1 → Schritt 2 → API (manueller Test im Browser)
 
 ---
 

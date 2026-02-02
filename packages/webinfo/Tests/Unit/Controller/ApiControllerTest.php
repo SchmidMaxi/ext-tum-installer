@@ -16,33 +16,39 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 
 class ApiControllerTest extends TestCase
 {
-    private ApiController $controller;
-    private WebsiteService $websiteServiceMock;
-    private ApiAuthenticationService $authServiceMock;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->websiteServiceMock = $this->createMock(WebsiteService::class);
-        $this->authServiceMock = $this->createMock(ApiAuthenticationService::class);
-
-        $this->controller = new ApiController(
-            $this->websiteServiceMock,
-            $this->authServiceMock
+    private function createController(
+        ?WebsiteService $websiteService = null,
+        ?ApiAuthenticationService $authService = null
+    ): ApiController {
+        return new ApiController(
+            $websiteService ?? $this->createStub(WebsiteService::class),
+            $authService ?? $this->createStub(ApiAuthenticationService::class)
         );
+    }
+
+    private function createRequestStub(string $authHeader, string $body): ServerRequestInterface
+    {
+        $stream = $this->createStub(StreamInterface::class);
+        $stream->method('getContents')->willReturn($body);
+
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getHeaderLine')->willReturn($authHeader);
+        $request->method('getParsedBody')->willReturn(null);
+        $request->method('getBody')->willReturn($stream);
+
+        return $request;
     }
 
     #[Test]
     public function createActionReturns401WhenAuthFails(): void
     {
-        $request = $this->createRequestMock('', '{}');
+        $authServiceStub = $this->createStub(ApiAuthenticationService::class);
+        $authServiceStub->method('validateRequest')->willReturn('Invalid API key');
 
-        $this->authServiceMock
-            ->method('validateRequest')
-            ->willReturn('Invalid API key');
+        $controller = $this->createController(authService: $authServiceStub);
+        $request = $this->createRequestStub('', '{}');
 
-        $response = $this->controller->createAction($request);
+        $response = $controller->createAction($request);
 
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertSame(401, $response->getStatusCode());
@@ -51,18 +57,16 @@ class ApiControllerTest extends TestCase
     #[Test]
     public function createActionReturns403WhenDomainNotAllowed(): void
     {
+        $authServiceStub = $this->createStub(ApiAuthenticationService::class);
+        $authServiceStub->method('validateRequest')->willReturn(true);
+        $authServiceStub->method('validateOriginDomain')->willReturn('Domain not allowed');
+
+        $controller = $this->createController(authService: $authServiceStub);
+
         $body = json_encode(['domain' => 'test.example.com', 'url' => 'https://test.example.com']);
-        $request = $this->createRequestMock('Bearer valid-key', $body);
+        $request = $this->createRequestStub('Bearer valid-key', $body);
 
-        $this->authServiceMock
-            ->method('validateRequest')
-            ->willReturn(true);
-
-        $this->authServiceMock
-            ->method('validateOriginDomain')
-            ->willReturn('Domain not allowed');
-
-        $response = $this->controller->createAction($request);
+        $response = $controller->createAction($request);
 
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertSame(403, $response->getStatusCode());
@@ -71,17 +75,14 @@ class ApiControllerTest extends TestCase
     #[Test]
     public function createActionReturns400WhenBodyIsEmpty(): void
     {
-        $request = $this->createRequestMock('Bearer valid-key', '');
+        $authServiceStub = $this->createStub(ApiAuthenticationService::class);
+        $authServiceStub->method('validateRequest')->willReturn(true);
+        $authServiceStub->method('validateOriginDomain')->willReturn(true);
 
-        $this->authServiceMock
-            ->method('validateRequest')
-            ->willReturn(true);
+        $controller = $this->createController(authService: $authServiceStub);
+        $request = $this->createRequestStub('Bearer valid-key', '');
 
-        $this->authServiceMock
-            ->method('validateOriginDomain')
-            ->willReturn(true);
-
-        $response = $this->controller->createAction($request);
+        $response = $controller->createAction($request);
 
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertSame(400, $response->getStatusCode());
@@ -90,18 +91,16 @@ class ApiControllerTest extends TestCase
     #[Test]
     public function createActionReturns400WhenRequiredFieldsMissing(): void
     {
+        $authServiceStub = $this->createStub(ApiAuthenticationService::class);
+        $authServiceStub->method('validateRequest')->willReturn(true);
+        $authServiceStub->method('validateOriginDomain')->willReturn(true);
+
+        $controller = $this->createController(authService: $authServiceStub);
+
         $body = json_encode(['navName' => 'test']); // Missing url and domain
-        $request = $this->createRequestMock('Bearer valid-key', $body);
+        $request = $this->createRequestStub('Bearer valid-key', $body);
 
-        $this->authServiceMock
-            ->method('validateRequest')
-            ->willReturn(true);
-
-        $this->authServiceMock
-            ->method('validateOriginDomain')
-            ->willReturn(true);
-
-        $response = $this->controller->createAction($request);
+        $response = $controller->createAction($request);
 
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertSame(400, $response->getStatusCode());
@@ -113,6 +112,22 @@ class ApiControllerTest extends TestCase
     #[Test]
     public function createActionReturns201OnSuccess(): void
     {
+        $websiteStub = $this->createStub(Website::class);
+        $websiteStub->method('getUid')->willReturn(42);
+        $websiteStub->method('getUrl')->willReturn('https://test.tum.de/project');
+
+        $websiteServiceStub = $this->createStub(WebsiteService::class);
+        $websiteServiceStub->method('createFromArray')->willReturn($websiteStub);
+
+        $authServiceStub = $this->createStub(ApiAuthenticationService::class);
+        $authServiceStub->method('validateRequest')->willReturn(true);
+        $authServiceStub->method('validateOriginDomain')->willReturn(true);
+
+        $controller = $this->createController(
+            websiteService: $websiteServiceStub,
+            authService: $authServiceStub
+        );
+
         $body = json_encode([
             'url' => 'https://test.tum.de/project',
             'domain' => 'test.tum.de',
@@ -120,25 +135,9 @@ class ApiControllerTest extends TestCase
             'wid' => 'w00test',
             'setup' => 'Setup1',
         ]);
-        $request = $this->createRequestMock('Bearer valid-key', $body);
+        $request = $this->createRequestStub('Bearer valid-key', $body);
 
-        $this->authServiceMock
-            ->method('validateRequest')
-            ->willReturn(true);
-
-        $this->authServiceMock
-            ->method('validateOriginDomain')
-            ->willReturn(true);
-
-        $website = $this->createMock(Website::class);
-        $website->method('getUid')->willReturn(42);
-        $website->method('getUrl')->willReturn('https://test.tum.de/project');
-
-        $this->websiteServiceMock
-            ->method('createFromArray')
-            ->willReturn($website);
-
-        $response = $this->controller->createAction($request);
+        $response = $controller->createAction($request);
 
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertSame(201, $response->getStatusCode());
@@ -151,13 +150,13 @@ class ApiControllerTest extends TestCase
     #[Test]
     public function listActionReturns401WhenAuthFails(): void
     {
-        $request = $this->createRequestMock('', '');
+        $authServiceStub = $this->createStub(ApiAuthenticationService::class);
+        $authServiceStub->method('validateRequest')->willReturn('Missing Authorization header');
 
-        $this->authServiceMock
-            ->method('validateRequest')
-            ->willReturn('Missing Authorization header');
+        $controller = $this->createController(authService: $authServiceStub);
+        $request = $this->createRequestStub('', '');
 
-        $response = $this->controller->listAction($request);
+        $response = $controller->listAction($request);
 
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertSame(401, $response->getStatusCode());
@@ -166,31 +165,29 @@ class ApiControllerTest extends TestCase
     #[Test]
     public function listActionReturnsWebsitesOnSuccess(): void
     {
-        $request = $this->createMock(ServerRequestInterface::class);
+        $website1Stub = $this->createStub(Website::class);
+        $website1Stub->method('toArray')->willReturn(['uid' => 1, 'url' => 'https://a.tum.de']);
+
+        $website2Stub = $this->createStub(Website::class);
+        $website2Stub->method('toArray')->willReturn(['uid' => 2, 'url' => 'https://b.tum.de']);
+
+        $websiteServiceStub = $this->createStub(WebsiteService::class);
+        $websiteServiceStub->method('findAll')->willReturn([$website1Stub, $website2Stub]);
+        $websiteServiceStub->method('countAll')->willReturn(2);
+
+        $authServiceStub = $this->createStub(ApiAuthenticationService::class);
+        $authServiceStub->method('validateRequest')->willReturn(true);
+
+        $controller = $this->createController(
+            websiteService: $websiteServiceStub,
+            authService: $authServiceStub
+        );
+
+        $request = $this->createStub(ServerRequestInterface::class);
         $request->method('getHeaderLine')->willReturn('Bearer valid-key');
         $request->method('getQueryParams')->willReturn(['search' => '', 'limit' => '10', 'offset' => '0']);
 
-        $this->authServiceMock
-            ->method('validateRequest')
-            ->willReturn(true);
-
-        $website1 = $this->createMock(Website::class);
-        $website1->method('toArray')->willReturn(['uid' => 1, 'url' => 'https://a.tum.de']);
-
-        $website2 = $this->createMock(Website::class);
-        $website2->method('toArray')->willReturn(['uid' => 2, 'url' => 'https://b.tum.de']);
-
-        $this->websiteServiceMock
-            ->method('findAll')
-            ->with('', 10, 0)
-            ->willReturn([$website1, $website2]);
-
-        $this->websiteServiceMock
-            ->method('countAll')
-            ->with('')
-            ->willReturn(2);
-
-        $response = $this->controller->listAction($request);
+        $response = $controller->listAction($request);
 
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertSame(200, $response->getStatusCode());
@@ -204,37 +201,24 @@ class ApiControllerTest extends TestCase
     #[Test]
     public function getActionReturns404WhenWebsiteNotFound(): void
     {
-        $request = $this->createMock(ServerRequestInterface::class);
+        $websiteServiceStub = $this->createStub(WebsiteService::class);
+        $websiteServiceStub->method('findByUid')->willReturn(null);
+
+        $authServiceStub = $this->createStub(ApiAuthenticationService::class);
+        $authServiceStub->method('validateRequest')->willReturn(true);
+
+        $controller = $this->createController(
+            websiteService: $websiteServiceStub,
+            authService: $authServiceStub
+        );
+
+        $request = $this->createStub(ServerRequestInterface::class);
         $request->method('getHeaderLine')->willReturn('Bearer valid-key');
         $request->method('getQueryParams')->willReturn(['uid' => '999']);
 
-        $this->authServiceMock
-            ->method('validateRequest')
-            ->willReturn(true);
-
-        $this->websiteServiceMock
-            ->method('findByUid')
-            ->with(999)
-            ->willReturn(null);
-
-        $response = $this->controller->getAction($request);
+        $response = $controller->getAction($request);
 
         self::assertInstanceOf(JsonResponse::class, $response);
         self::assertSame(404, $response->getStatusCode());
-    }
-
-    private function createRequestMock(string $authHeader, string $body): ServerRequestInterface
-    {
-        $stream = $this->createMock(StreamInterface::class);
-        $stream->method('getContents')->willReturn($body);
-
-        $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getHeaderLine')
-            ->with('Authorization')
-            ->willReturn($authHeader);
-        $request->method('getParsedBody')->willReturn(null);
-        $request->method('getBody')->willReturn($stream);
-
-        return $request;
     }
 }

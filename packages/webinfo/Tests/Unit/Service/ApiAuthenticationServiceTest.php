@@ -14,32 +14,35 @@ use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 
 class ApiAuthenticationServiceTest extends TestCase
 {
-    private ApiAuthenticationService $service;
-    private ExtensionConfiguration $extensionConfigurationMock;
-
-    protected function setUp(): void
+    private function createService(?array $config = null): ApiAuthenticationService
     {
-        parent::setUp();
-
-        $this->extensionConfigurationMock = $this->createMock(ExtensionConfiguration::class);
-        $this->extensionConfigurationMock
+        $extensionConfigurationStub = $this->createStub(ExtensionConfiguration::class);
+        $extensionConfigurationStub
             ->method('get')
-            ->with('webinfo')
-            ->willReturn([
+            ->willReturn($config ?? [
                 'apiEnabled' => true,
                 'apiKey' => 'test-api-key-12345',
                 'allowedDomains' => '*.tum.de',
             ]);
 
-        $this->service = new ApiAuthenticationService($this->extensionConfigurationMock);
+        return new ApiAuthenticationService($extensionConfigurationStub);
+    }
+
+    private function createRequestStub(string $authHeader): ServerRequestInterface
+    {
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getHeaderLine')->willReturn($authHeader);
+
+        return $request;
     }
 
     #[Test]
     public function validateRequestReturnsTrueWithValidApiKey(): void
     {
-        $request = $this->createRequestMock('Bearer test-api-key-12345');
+        $service = $this->createService();
+        $request = $this->createRequestStub('Bearer test-api-key-12345');
 
-        $result = $this->service->validateRequest($request);
+        $result = $service->validateRequest($request);
 
         self::assertTrue($result);
     }
@@ -47,9 +50,10 @@ class ApiAuthenticationServiceTest extends TestCase
     #[Test]
     public function validateRequestReturnsErrorWithInvalidApiKey(): void
     {
-        $request = $this->createRequestMock('Bearer wrong-api-key');
+        $service = $this->createService();
+        $request = $this->createRequestStub('Bearer wrong-api-key');
 
-        $result = $this->service->validateRequest($request);
+        $result = $service->validateRequest($request);
 
         self::assertIsString($result);
         self::assertStringContainsString('Invalid API key', $result);
@@ -58,9 +62,10 @@ class ApiAuthenticationServiceTest extends TestCase
     #[Test]
     public function validateRequestReturnsErrorWithMissingAuthHeader(): void
     {
-        $request = $this->createRequestMock('');
+        $service = $this->createService();
+        $request = $this->createRequestStub('');
 
-        $result = $this->service->validateRequest($request);
+        $result = $service->validateRequest($request);
 
         self::assertIsString($result);
         self::assertStringContainsString('Missing Authorization header', $result);
@@ -70,7 +75,8 @@ class ApiAuthenticationServiceTest extends TestCase
     #[DataProvider('domainPatternProvider')]
     public function isDomainAllowedMatchesPatterns(string $domain, array $patterns, bool $expected): void
     {
-        $result = $this->service->isDomainAllowed($domain, $patterns);
+        $service = $this->createService();
+        $result = $service->isDomainAllowed($domain, $patterns);
         self::assertSame($expected, $result);
     }
 
@@ -123,10 +129,12 @@ class ApiAuthenticationServiceTest extends TestCase
     #[Test]
     public function validateOriginDomainReturnsTrueForAllowedDomain(): void
     {
-        $body = json_encode(['domain' => 'test.tum.de', 'url' => 'https://test.tum.de']);
-        $request = $this->createRequestMockWithBody('Bearer test-api-key-12345', $body);
+        $service = $this->createService();
 
-        $result = $this->service->validateOriginDomain($request);
+        $body = json_encode(['domain' => 'test.tum.de', 'url' => 'https://test.tum.de']);
+        $request = $this->createRequestStubWithBody('Bearer test-api-key-12345', $body);
+
+        $result = $service->validateOriginDomain($request);
 
         self::assertTrue($result);
     }
@@ -134,34 +142,24 @@ class ApiAuthenticationServiceTest extends TestCase
     #[Test]
     public function validateOriginDomainReturnsErrorForDisallowedDomain(): void
     {
-        $body = json_encode(['domain' => 'test.example.com', 'url' => 'https://test.example.com']);
-        $request = $this->createRequestMockWithBody('Bearer test-api-key-12345', $body);
+        $service = $this->createService();
 
-        $result = $this->service->validateOriginDomain($request);
+        $body = json_encode(['domain' => 'test.example.com', 'url' => 'https://test.example.com']);
+        $request = $this->createRequestStubWithBody('Bearer test-api-key-12345', $body);
+
+        $result = $service->validateOriginDomain($request);
 
         self::assertIsString($result);
         self::assertStringContainsString('Domain not allowed', $result);
     }
 
-    private function createRequestMock(string $authHeader): ServerRequestInterface
+    private function createRequestStubWithBody(string $authHeader, string $body): ServerRequestInterface
     {
-        $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getHeaderLine')
-            ->with('Authorization')
-            ->willReturn($authHeader);
-
-        return $request;
-    }
-
-    private function createRequestMockWithBody(string $authHeader, string $body): ServerRequestInterface
-    {
-        $stream = $this->createMock(StreamInterface::class);
+        $stream = $this->createStub(StreamInterface::class);
         $stream->method('getContents')->willReturn($body);
 
-        $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getHeaderLine')
-            ->with('Authorization')
-            ->willReturn($authHeader);
+        $request = $this->createStub(ServerRequestInterface::class);
+        $request->method('getHeaderLine')->willReturn($authHeader);
         $request->method('getParsedBody')->willReturn(null);
         $request->method('getBody')->willReturn($stream);
 
